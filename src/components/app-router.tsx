@@ -2,11 +2,13 @@
 import type { FC } from 'react'
 
 // Components
-import { Route, Routes } from 'react-router'
+import { Navigate, Route, Routes } from 'react-router'
 
 // Utils
-import { privateRoutes, publicRoutes } from '@/config/routes'
+import { history } from '@/config/history'
+import { ERoutes, privateRoutes, publicRoutes } from '@/config/routes'
 import { useAuthStore } from '@/storage'
+import { CustomRouter } from '.'
 
 /**
  * The component responsible for render routes.
@@ -19,17 +21,9 @@ export const AppRouter: FC = () => {
 	const isAuth: boolean = !!useAuthStore(store => store.token)
 
 	return (
-		<Routes>
-			{publicRoutes.map(route => (
-				<Route
-					key={route.path}
-					path={route.path}
-					element={<route.component />}
-				/>
-			))}
-
-			{isAuth &&
-				privateRoutes.map(route => (
+		<CustomRouter history={history}>
+			<Routes>
+				{publicRoutes.map(route => (
 					<Route
 						key={route.path}
 						path={route.path}
@@ -37,7 +31,17 @@ export const AppRouter: FC = () => {
 					/>
 				))}
 
-			<Route path="/*" element={<h1>Not Found</h1>} />
-		</Routes>
+				{isAuth &&
+					privateRoutes.map(route => (
+						<Route
+							key={route.path}
+							path={route.path}
+							element={<route.component />}
+						/>
+					))}
+
+				<Route path="/*" element={<Navigate to={ERoutes.accountConfirm} />} />
+			</Routes>
+		</CustomRouter>
 	)
 }

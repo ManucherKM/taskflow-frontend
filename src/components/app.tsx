@@ -2,7 +2,7 @@
 import type { FC } from 'react'
 
 // Components
-import { AppRouter } from '@/components'
+import { AppRouter, ThemeProvider } from '@/components'
 
 // Utils
 import { useStore } from '@/storage'
@@ -23,7 +23,9 @@ export const App: FC = () => {
 	return (
 		<>
 			{isLoading && <h1>Loading...</h1>}
-			<AppRouter />
+			<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+				<AppRouter />
+			</ThemeProvider>
 		</>
 	)
 }

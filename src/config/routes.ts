@@ -25,7 +25,7 @@ export interface IRoute {
 
 /** Enumeration of possible application routes. */
 export enum ERoutes {
-	/** `Home` page route. */
+	/** Initial page route. */
 	home = '/',
 
 	/** `Login` page route. */
