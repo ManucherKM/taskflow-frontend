@@ -7,6 +7,7 @@ export * from './theme-provider'
 export * from './typography-h1'
 export * from './typography-p'
 export * from './user-login-form/user-login-form'
+export * from './user-registration-form/user-registration-form'
 
 export * from './ui/button'
 export * from './ui/input'

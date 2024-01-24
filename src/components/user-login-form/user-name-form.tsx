@@ -24,7 +24,7 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 						<div className="grid gap-2">
 							<Input
 								id="username"
-								placeholder="user152"
+								placeholder="mypersonalname"
 								type="text"
 								autoCapitalize="none"
 								autoComplete="username"

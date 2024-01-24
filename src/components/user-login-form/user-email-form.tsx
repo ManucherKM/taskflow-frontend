@@ -1,11 +1,23 @@
 import { Button, Icons, Input } from '@/components'
 import { cn } from '@/lib/utils'
-import { useState } from 'react'
+import { validateEmail } from '@/utils'
+import { ChangeEvent, useState } from 'react'
 
 interface UserEmailFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [isValid, setIsValid] = useState<boolean>(false)
+
+	const [email, setEmail] = useState<string>('')
+
+	function emailChangeHandler(e: ChangeEvent<HTMLInputElement>) {
+		setEmail(e.target.value)
+
+		const isValid = validateEmail(e.target.value)
+
+		setIsValid(isValid)
+	}
 
 	async function onSubmit(event: React.SyntheticEvent) {
 		event.preventDefault()
@@ -30,9 +42,11 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 								autoComplete="email"
 								autoCorrect="off"
 								disabled={isLoading}
+								value={email}
+								onChange={emailChangeHandler}
 							/>
 						</div>
-						<Button disabled={isLoading}>
+						<Button disabled={isLoading || !isValid}>
 							{isLoading && (
 								<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 							)}
