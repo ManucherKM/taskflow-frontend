@@ -18,6 +18,7 @@ export const LoaderProvider: FC<ILoaderProvider> = ({ children }) => {
 				</div>
 			)}
 			{children}
+            {/*  */}
 		</>
 	)
 }
