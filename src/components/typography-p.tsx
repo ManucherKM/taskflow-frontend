@@ -10,9 +10,11 @@ export const TypographyP: FC<ITypographyP> = ({
 	className,
 	...props
 }) => {
-	const styles = cn(['leading-7 [&:not(:first-child)]:mt-6', className])
 	return (
-		<p className={styles} {...props}>
+		<p
+			className={cn(['leading-7 [&:not(:first-child)]:mt-6', className])}
+			{...props}
+		>
 			{children}
 		</p>
 	)

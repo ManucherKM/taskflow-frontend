@@ -2,13 +2,12 @@
 import type { FC } from 'react'
 
 // Components
-import { AppRouter, ThemeProvider } from '@/components'
+import { AppRouter, LoaderProvider, ThemeProvider } from '@/components'
 
 // Utils
-import { useStore } from '@/storage'
 
 // Styles
-// import '@/assets/styles/index.scss'
+import '@/assets/styles/global.css'
 
 /**
  * The main component of the application.
@@ -17,14 +16,12 @@ import { useStore } from '@/storage'
  * 	;<App />
  */
 export const App: FC = () => {
-	// Loading state.
-	const isLoading = useStore(store => store.isLoading)
-
 	return (
 		<>
-			{isLoading && <h1>Loading...</h1>}
 			<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-				<AppRouter />
+				<LoaderProvider>
+					<AppRouter />
+				</LoaderProvider>
 			</ThemeProvider>
 		</>
 	)

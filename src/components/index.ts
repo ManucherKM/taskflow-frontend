@@ -1,6 +1,7 @@
 export * from './app'
 export * from './app-router'
 export * from './custom-router'
+export * from './loader-provider'
 export * from './theme-provider'
 export * from './typography-h1'
 export * from './typography-p'

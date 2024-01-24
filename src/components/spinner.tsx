@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils'
 import type { FC } from 'react'
 
 export interface ISpinner {
-	className: string
+	className?: string
 }
 
 export const Spinner: FC<ISpinner> = ({ className }) => {
