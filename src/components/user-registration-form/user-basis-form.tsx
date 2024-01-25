@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useAuthStore } from '@/storage'
-import { FC, FormEvent } from 'react'
+import { FC, FormEvent, useEffect, useRef } from 'react'
 
 const FormSchema = z.object({
 	email: z
@@ -34,6 +34,10 @@ export interface IUserBasisForm {
 }
 
 export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
+	const emailInputRef = useRef<HTMLInputElement | null>(null)
+	const passwordInputRef = useRef<HTMLInputElement | null>(null)
+	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
+
 	const setRegInfo = useAuthStore(store => store.setRegInfo)
 
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -51,9 +55,17 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 
 	function nextHandler(e: FormEvent) {
 		e.preventDefault()
+
 		form.handleSubmit(onSubmit)()
+
 		onNext()
 	}
+
+	useEffect(() => {
+		if (!emailInputRef.current) return
+
+		emailInputRef.current.focus()
+	}, [emailInputRef.current])
 	return (
 		<Form {...form}>
 			<form className="w-full space-y-6">
@@ -64,7 +76,19 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 						<FormItem>
 							<FormLabel>Почта</FormLabel>
 							<FormControl>
-								<Input placeholder="name@example.com" {...field} />
+								<Input
+									placeholder="name@example.com"
+									{...field}
+									ref={e => {
+										field.ref(e)
+										emailInputRef.current = e
+									}}
+									onKeyDown={e => {
+										if (e.key === 'Enter') {
+											passwordInputRef.current?.focus()
+										}
+									}}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -78,7 +102,23 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 						<FormItem>
 							<FormLabel>Пароль</FormLabel>
 							<FormControl>
-								<Input placeholder="MyPassword123?" {...field} />
+								<Input
+									placeholder="MyPassword123?"
+									{...field}
+									ref={e => {
+										field.ref(e)
+										passwordInputRef.current = e
+									}}
+									onKeyDown={e => {
+										if (
+											e.key === 'Enter' &&
+											form.formState.isDirty &&
+											form.formState.isValid
+										) {
+											nextButtonRef.current?.click()
+										}
+									}}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -89,6 +129,8 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 					<Button
 						onClick={nextHandler}
 						disabled={!form.formState.isDirty || !form.formState.isValid}
+						type="button"
+						ref={nextButtonRef}
 					>
 						Далее
 					</Button>

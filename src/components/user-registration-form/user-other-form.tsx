@@ -16,7 +16,7 @@ import { history } from '@/config/history'
 import { ERoutes } from '@/config/routes'
 import { useAuthStore, useStore } from '@/storage'
 import { IRegistrationTarget } from '@/storage/useAuthStore/types'
-import { FC, FormEvent } from 'react'
+import { FC, FormEvent, useEffect, useRef } from 'react'
 import { useToast } from '../ui/use-toast'
 
 const FormSchema = z.object({
@@ -29,6 +29,10 @@ export interface UserOtherForm {
 }
 
 export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
+	const firstNameInputRef = useRef<HTMLInputElement | null>(null)
+	const lastNameInputRef = useRef<HTMLInputElement | null>(null)
+	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
+
 	const registration = useAuthStore(store => store.registration)
 	const regInfo = useAuthStore(store => store.regInfo)
 	const setLoading = useStore(store => store.setLoading)
@@ -53,7 +57,6 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 			const isSuccess = await registration(totalInfo)
 
 			setLoading(false)
-			console.log(isSuccess)
 
 			if (!isSuccess) {
 				toast({
@@ -73,6 +76,12 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 		e.preventDefault()
 		form.handleSubmit(onSubmit)()
 	}
+
+	useEffect(() => {
+		if (!firstNameInputRef.current) return
+
+		firstNameInputRef.current.focus()
+	}, [firstNameInputRef.current])
 	return (
 		<Form {...form}>
 			<form className="w-full space-y-6">
@@ -85,7 +94,19 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 								Имя <span className="text-red-400">*</span>
 							</FormLabel>
 							<FormControl>
-								<Input placeholder="Иван" {...field} />
+								<Input
+									placeholder="Иван"
+									{...field}
+									ref={e => {
+										field.ref(e)
+										firstNameInputRef.current = e
+									}}
+									onKeyDown={e => {
+										if (e.key === 'Enter') {
+											lastNameInputRef.current?.focus()
+										}
+									}}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -101,7 +122,19 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 								Фамилия <span className="text-red-400">*</span>
 							</FormLabel>
 							<FormControl>
-								<Input placeholder="Иванов" {...field} />
+								<Input
+									placeholder="Иванов"
+									{...field}
+									ref={e => {
+										field.ref(e)
+										lastNameInputRef.current = e
+									}}
+									onKeyDown={e => {
+										if (e.key === 'Enter') {
+											nextButtonRef.current?.click()
+										}
+									}}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -109,10 +142,12 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 				/>
 
 				<div className="w-full flex justify-between">
-					<Button onClick={onPrev} variant={'outline'}>
+					<Button onClick={onPrev} variant={'outline'} type="button">
 						Назад
 					</Button>
-					<Button onClick={nextHandler}>Создать</Button>
+					<Button ref={nextButtonRef} onClick={nextHandler} type="button">
+						Создать
+					</Button>
 				</div>
 			</form>
 		</Form>

@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { UserBasisForm } from './user-basis-form'
 import { UserNameForm } from './user-name-form'
@@ -27,14 +28,42 @@ export function UserRegistrationForm() {
 	}
 
 	return (
-		<>
-			{steps[step] === ESteps.basis && <UserBasisForm onNext={nextStep} />}
-
-			{steps[step] === ESteps.username && (
-				<UserNameForm onNext={nextStep} onPrev={prevStep} />
+		<AnimatePresence mode="wait">
+			{steps[step] === ESteps.basis && (
+				<motion.div
+					key={ESteps.basis}
+					initial={{ opacity: 0, x: '-100px' }}
+					animate={{ opacity: 1, x: '0' }}
+					exit={{ opacity: 0, x: '-100px' }}
+					transition={{ duration: '0.2' }}
+				>
+					<UserBasisForm onNext={nextStep} />
+				</motion.div>
 			)}
 
-			{steps[step] === ESteps.other && <UserOtherForm onPrev={prevStep} />}
-		</>
+			{steps[step] === ESteps.username && (
+				<motion.div
+					key={ESteps.username}
+					initial={{ opacity: 0, x: '-100px' }}
+					animate={{ opacity: 1, x: '0' }}
+					exit={{ opacity: 0, x: '-100px' }}
+					transition={{ duration: '0.2' }}
+				>
+					<UserNameForm onNext={nextStep} onPrev={prevStep} />{' '}
+				</motion.div>
+			)}
+
+			{steps[step] === ESteps.other && (
+				<motion.div
+					key={ESteps.other}
+					initial={{ opacity: 0, x: '-100px' }}
+					animate={{ opacity: 1, x: '0' }}
+					exit={{ opacity: 0, x: '-100px' }}
+					transition={{ duration: '0.2' }}
+				>
+					<UserOtherForm onPrev={prevStep} />{' '}
+				</motion.div>
+			)}
+		</AnimatePresence>
 	)
 }

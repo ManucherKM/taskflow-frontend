@@ -30,6 +30,9 @@ export interface IUserNameForm {
 }
 
 export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
+	const userNameInputRef = useRef<HTMLInputElement | null>(null)
+	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
+
 	const setRegInfo = useAuthStore(store => store.setRegInfo)
 	const checkUserName = useAuthStore(store => store.checkUserName)
 
@@ -81,6 +84,7 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 		e.preventDefault()
 
 		form.handleSubmit(onSubmit)()
+
 		onNext()
 	}
 
@@ -88,9 +92,15 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 		setIsValid(form.formState.isDirty && form.formState.isValid && !isExist)
 	}, [form.formState.isDirty, form.formState.isValid, isExist])
 
+	useEffect(() => {
+		if (!userNameInputRef.current) return
+
+		userNameInputRef.current.focus()
+	}, [userNameInputRef.current])
+
 	return (
 		<Form {...form}>
-			<form className="w-full space-y-6">
+			<form onSubmit={e => e.preventDefault()} className="w-full space-y-6">
 				<FormField
 					control={form.control}
 					name="username"
@@ -106,6 +116,15 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 									onChange={e => {
 										field.onChange(e)
 										changeHandler(e)
+									}}
+									ref={e => {
+										field.ref(e)
+										userNameInputRef.current = e
+									}}
+									onKeyDown={e => {
+										if (e.key === 'Enter' && isValid && !isLoading) {
+											nextButtonRef.current?.click()
+										}
 									}}
 								/>
 							</FormControl>
@@ -123,10 +142,15 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 				/>
 
 				<div className="w-full flex justify-between">
-					<Button onClick={onPrev} variant={'outline'}>
+					<Button type="button" onClick={onPrev} variant={'outline'}>
 						Назад
 					</Button>
-					<Button onClick={nextHandler} disabled={!isValid || isLoading}>
+					<Button
+						onClick={nextHandler}
+						disabled={!isValid || isLoading}
+						type="button"
+						ref={nextButtonRef}
+					>
 						{isLoading && (
 							<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 						)}
