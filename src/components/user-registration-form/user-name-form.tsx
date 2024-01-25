@@ -13,7 +13,10 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { FC, FormEvent } from 'react'
+import { useAuthStore } from '@/storage'
+import clsx from 'clsx'
+import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
+import { Icons } from '..'
 
 const FormSchema = z.object({
 	username: z.string().min(2, {
@@ -27,6 +30,15 @@ export interface IUserNameForm {
 }
 
 export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
+	const setRegInfo = useAuthStore(store => store.setRegInfo)
+	const checkUserName = useAuthStore(store => store.checkUserName)
+
+	const [isValid, setIsValid] = useState<boolean>(false)
+	const [isExist, setIsExist] = useState<boolean>(false)
+	const [isLoading, setIsLoading] = useState(false)
+
+	const timer = useRef<NodeJS.Timeout | null>(null)
+
 	const form = useForm<z.infer<typeof FormSchema>>({
 		mode: 'onChange',
 		resolver: zodResolver(FormSchema),
@@ -36,7 +48,33 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 	})
 
 	function onSubmit(data: z.infer<typeof FormSchema>) {
-		console.log(data)
+		setRegInfo({ userName: data.username })
+	}
+
+	const checkUserNameHandler = async (userName: string) => {
+		try {
+			setIsLoading(true)
+			const isValid = await checkUserName(userName)
+			setIsExist(isValid)
+		} catch (e) {
+			console.error(e)
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
+	async function changeHandler(e: ChangeEvent<HTMLInputElement>) {
+		if (timer.current === null) {
+			timer.current = setTimeout(
+				() => checkUserNameHandler(e.target.value),
+				300,
+			)
+			return
+		}
+
+		clearTimeout(timer.current)
+
+		timer.current = setTimeout(() => checkUserNameHandler(e.target.value), 300)
 	}
 
 	function nextHandler(e: FormEvent) {
@@ -46,6 +84,10 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 		onNext()
 	}
 
+	useEffect(() => {
+		setIsValid(form.formState.isDirty && form.formState.isValid && !isExist)
+	}, [form.formState.isDirty, form.formState.isValid, isExist])
+
 	return (
 		<Form {...form}>
 			<form className="w-full space-y-6">
@@ -54,13 +96,27 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 					name="username"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Имя пользователя</FormLabel>
+							<FormLabel className={clsx([isExist && 'text-[#7f1d1d]'])}>
+								Имя пользователя
+							</FormLabel>
 							<FormControl>
-								<Input placeholder="mypersonalname" {...field} />
+								<Input
+									placeholder="mypersonalname"
+									{...field}
+									onChange={e => {
+										field.onChange(e)
+										changeHandler(e)
+									}}
+								/>
 							</FormControl>
 							<FormDescription>
 								Это ваше уникальное имя пользователя
 							</FormDescription>
+							{isExist && (
+								<FormDescription className="text-[#7f1d1d] font-medium">
+									Данное имя пользователя занято
+								</FormDescription>
+							)}
 							<FormMessage />
 						</FormItem>
 					)}
@@ -70,10 +126,10 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 					<Button onClick={onPrev} variant={'outline'}>
 						Назад
 					</Button>
-					<Button
-						onClick={nextHandler}
-						disabled={!form.formState.isDirty || !form.formState.isValid}
-					>
+					<Button onClick={nextHandler} disabled={!isValid || isLoading}>
+						{isLoading && (
+							<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+						)}
 						Далее
 					</Button>
 				</div>

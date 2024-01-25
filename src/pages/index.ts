@@ -1,4 +1,5 @@
 export * from './account-confirm'
+export * from './check-your-email'
 export * from './dashboard'
 export * from './home'
 export * from './login'

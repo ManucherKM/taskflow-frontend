@@ -4,6 +4,7 @@ import type { FC } from 'react'
 // Components
 import {
 	AccountConfirm,
+	CheckYourEmail,
 	Dashboard,
 	Home,
 	Login,
@@ -49,6 +50,9 @@ export enum ERoutes {
 	/** `AccountConfirm` page route. */
 	accountConfirm = '/accountConfirm',
 
+	/** `CheckYourEmail` page route. */
+	checkYourEmail = '/checkYourEmail',
+
 	dashboard = '/dashboard',
 }
 
@@ -75,6 +79,11 @@ export const publicRoutes: IRoute[] = [
 	{
 		path: ERoutes.accountConfirm,
 		component: AccountConfirm,
+	},
+
+	{
+		path: ERoutes.checkYourEmail,
+		component: CheckYourEmail,
 	},
 ]
 

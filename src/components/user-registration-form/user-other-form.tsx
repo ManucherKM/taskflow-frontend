@@ -12,37 +12,66 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { FC } from 'react'
+import { history } from '@/config/history'
+import { ERoutes } from '@/config/routes'
+import { useAuthStore, useStore } from '@/storage'
+import { IRegistrationTarget } from '@/storage/useAuthStore/types'
+import { FC, FormEvent } from 'react'
+import { useToast } from '../ui/use-toast'
 
 const FormSchema = z.object({
-	firstName: z.string(),
-	lastName: z.string(),
-	avatar: z.string(),
+	firstName: z.string().optional(),
+	lastName: z.string().optional(),
 })
 
 export interface UserOtherForm {
-	onNext: () => void
 	onPrev: () => void
 }
 
-export const UserOtherForm: FC<UserOtherForm> = ({ onPrev, onNext }) => {
+export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
+	const registration = useAuthStore(store => store.registration)
+	const regInfo = useAuthStore(store => store.regInfo)
+	const setLoading = useStore(store => store.setLoading)
+
+	const { toast } = useToast()
+
 	const form = useForm<z.infer<typeof FormSchema>>({
 		mode: 'onChange',
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
 			firstName: '',
 			lastName: '',
-			avatar: '',
 		},
 	})
 
-	function onSubmit(data: z.infer<typeof FormSchema>) {
-		console.log(data)
+	async function onSubmit(data: z.infer<typeof FormSchema>) {
+		const totalInfo = { ...regInfo, ...data } as IRegistrationTarget
+
+		try {
+			setLoading(true)
+
+			const isSuccess = await registration(totalInfo)
+
+			setLoading(false)
+			console.log(isSuccess)
+
+			if (!isSuccess) {
+				toast({
+					title: 'Не удалось создать аккаунт.',
+					description: 'Похоже что вы указали некорректные данные.',
+				})
+				return
+			}
+
+			history.push(ERoutes.checkYourEmail)
+		} catch (e) {
+			console.error(e)
+		}
 	}
 
-	function nextHandler() {
-		form.handleSubmit(onSubmit)
-		onNext()
+	function nextHandler(e: FormEvent) {
+		e.preventDefault()
+		form.handleSubmit(onSubmit)()
 	}
 	return (
 		<Form {...form}>
@@ -53,7 +82,7 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev, onNext }) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>
-								Имя <span className="text-red">*</span>
+								Имя <span className="text-red-400">*</span>
 							</FormLabel>
 							<FormControl>
 								<Input placeholder="Иван" {...field} />
@@ -69,30 +98,10 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev, onNext }) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>
-								Фамилия <span className="text-red">*</span>
+								Фамилия <span className="text-red-400">*</span>
 							</FormLabel>
 							<FormControl>
 								<Input placeholder="Иванов" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={form.control}
-					name="avatar"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								Аватар <span className="text-red">*</span>
-							</FormLabel>
-							<FormControl>
-								<Input
-									className="text-sm file:text-white file:cursor-pointer cursor-pointer"
-									type="file"
-									{...field}
-								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -103,12 +112,7 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev, onNext }) => {
 					<Button onClick={onPrev} variant={'outline'}>
 						Назад
 					</Button>
-					<Button
-						onClick={nextHandler}
-						disabled={!form.formState.isDirty || !form.formState.isValid}
-					>
-						Создать
-					</Button>
+					<Button onClick={nextHandler}>Создать</Button>
 				</div>
 			</form>
 		</Form>

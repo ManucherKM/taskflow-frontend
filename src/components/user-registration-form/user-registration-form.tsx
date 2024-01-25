@@ -12,7 +12,7 @@ export enum ESteps {
 const steps: ESteps[] = [ESteps.basis, ESteps.username, ESteps.other]
 
 export function UserRegistrationForm() {
-	const [step, setStep] = useState<number>(2)
+	const [step, setStep] = useState<number>(0)
 
 	function nextStep() {
 		if (steps[step + 1] !== undefined) {
@@ -34,9 +34,7 @@ export function UserRegistrationForm() {
 				<UserNameForm onNext={nextStep} onPrev={prevStep} />
 			)}
 
-			{steps[step] === ESteps.other && (
-				<UserOtherForm onNext={nextStep} onPrev={prevStep} />
-			)}
+			{steps[step] === ESteps.other && <UserOtherForm onPrev={prevStep} />}
 		</>
 	)
 }

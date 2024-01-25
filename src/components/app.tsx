@@ -8,6 +8,7 @@ import { AppRouter, LoaderProvider, ThemeProvider } from '@/components'
 
 // Styles
 import '@/assets/styles/global.css'
+import { ToasterProvider } from './toaster-provider'
 
 /**
  * The main component of the application.
@@ -20,7 +21,9 @@ export const App: FC = () => {
 		<>
 			<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 				<LoaderProvider>
-					<AppRouter />
+					<ToasterProvider>
+						<AppRouter />
+					</ToasterProvider>
 				</LoaderProvider>
 			</ThemeProvider>
 		</>

@@ -12,6 +12,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useAuthStore } from '@/storage'
 import { FC, FormEvent } from 'react'
 
 const FormSchema = z.object({
@@ -24,7 +25,7 @@ const FormSchema = z.object({
 			},
 		),
 	password: z.string().min(8, {
-		message: 'Пароль должен состоять минимум из 8 символов.',
+		message: 'Пароль должен иметь не менее 8 символов и не более 32.',
 	}),
 })
 
@@ -33,6 +34,8 @@ export interface IUserBasisForm {
 }
 
 export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
+	const setRegInfo = useAuthStore(store => store.setRegInfo)
+
 	const form = useForm<z.infer<typeof FormSchema>>({
 		mode: 'onChange',
 		resolver: zodResolver(FormSchema),
@@ -43,7 +46,7 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 	})
 
 	function onSubmit(data: z.infer<typeof FormSchema>) {
-		console.log(data)
+		setRegInfo(data)
 	}
 
 	function nextHandler(e: FormEvent) {

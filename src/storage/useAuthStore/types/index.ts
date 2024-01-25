@@ -5,9 +5,6 @@ export interface ILoginTarget {
 
 	/** Password. */
 	password: string
-
-	/** HCaptcha token. */
-	token: string
 }
 
 /**
@@ -27,8 +24,17 @@ export interface IRegistrationTarget {
 	/** Password. */
 	password: string
 
-	/** HCaptcha token. */
-	token: string
+	/** User name. */
+	userName: string
+
+	/** First name. */
+	firstName?: string
+
+	/** Last name. */
+	lastName?: string
+
+	/** Avatar */
+	avatar?: string
 }
 
 /**
@@ -36,43 +42,6 @@ export interface IRegistrationTarget {
  * `registration` function.
  */
 export interface IRegistrationResponse {
-	/** The result of the request. */
-	success: boolean
-}
-
-/**
- * The interface of parameters returned by the server when using the
- * `loginWithGoogle` function.
- */
-
-export interface ILoginWithGoogleResponse {
-	/** User access token. */
-	accessToken: string
-}
-
-/**
- * The interface of parameters returned by the server when using the
- * `registrationWithGoogle` function.
- */
-export interface IRegistrationWithGoogleResponse {
-	/** The result of the request. */
-	success: boolean
-}
-
-/**
- * The interface of parameters returned by the server when using the
- * `loginWithVK` function.
- */
-export interface ILoginWithVKResponse {
-	/** User access token. */
-	accessToken: string
-}
-
-/**
- * The interface of parameters returned by the server when using the
- * `registrationWithVK` function.
- */
-export interface IRegistrationWithVKResponse {
 	/** The result of the request. */
 	success: boolean
 }
@@ -94,8 +63,9 @@ export type Token = string | null
 
 /** Interface to the authorization store. */
 export interface IAuthStore {
-	/** User access token. */
-	token: Token
+	regInfo: null | Partial<IRegistrationTarget>
+
+	token: null | string
 
 	/**
 	 * User authorization function.
@@ -111,40 +81,10 @@ export interface IAuthStore {
 	 */
 	registration: (registrationDto: IRegistrationTarget) => Promise<boolean>
 
-	/**
-	 * Google registration function.
-	 *
-	 * @param code Code received from Google when the user logs in.
-	 */
-	registrationWithGoogle: (code: string) => Promise<boolean>
-
-	/**
-	 * Google login function.
-	 *
-	 * @param code Code received from Google when the user logs in.
-	 */
-	loginWithGoogle: (code: string) => Promise<boolean>
-
-	/**
-	 * Registration function via VK.
-	 *
-	 * @param code Code received from VK when the user logs in.
-	 * @param redirectUri The URL to which the user will be redirected upon
-	 *   successful authorization.
-	 */
-	registrationWithVk: (code: string, redirectUri: string) => Promise<boolean>
-
-	/**
-	 * Login function via VK.
-	 *
-	 * @param code Code received from VK when the user logs in.
-	 * @param redirectUri The URL to which the user will be redirected upon
-	 *   successful authorization.
-	 */
-	loginWithVK: (code: string, redirectUri: string) => Promise<boolean>
-
 	/** Function to get a new access token. */
 	getNewAccessToken: () => Promise<boolean>
+
+	checkUserName: (target: string) => Promise<boolean>
 
 	/**
 	 * Function to change the user's access token.
@@ -152,6 +92,8 @@ export interface IAuthStore {
 	 * @param token The value to which the access token will be changed.
 	 */
 	setToken: (token: Token) => void
+
+	setRegInfo: (target: Partial<IRegistrationTarget>) => void
 
 	/** Function for logging out of a user account. */
 	logout: () => Promise<boolean>
@@ -168,20 +110,10 @@ export enum EAuthStoreApiRoutes {
 	/** Route for user registration. */
 	registration = '/api/auth/registration',
 
-	/** Route for user login with Google. */
-	loginWithGoogle = '/api/auth/login/google',
-
-	/** Route for user registration with Google. */
-	registrationWithGoogle = '/api/auth/registration/google',
-
-	/** Route for user registration with VK. */
-	registrationWithVK = '/api/auth/registration/vk',
-
-	/** Route for user login with VK. */
-	loginWithVK = '/api/auth/login/vk',
-
 	/** Route to obtain a new user access token. */
 	getNewAccessToken = 'api/jwt/token',
+
+	checkUserName = 'api/auth/username',
 
 	/** Route for logging out of the user account. */
 	logout = 'api/auth/logout',
