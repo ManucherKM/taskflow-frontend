@@ -1,59 +1,151 @@
-import { Button, Icons, Input } from '@/components'
+import { Button, Input, toast } from '@/components'
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form'
+import { ERoutes } from '@/config/routes'
 import { cn } from '@/lib/utils'
-import { validateEmail } from '@/utils'
-import { ChangeEvent, useState } from 'react'
+import { useAuthStore, useStore } from '@/storage'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormEvent, useEffect, useRef } from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
+import * as z from 'zod'
+
+const FormSchema = z.object({
+	email: z
+		.string()
+		.regex(
+			/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
+			{
+				message: 'Введите корректную почту',
+			},
+		),
+	password: z.string().min(8, {
+		message: 'Пароль должен иметь не менее 8 символов и не более 32.',
+	}),
+})
 
 interface UserEmailFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
-	const [isLoading, setIsLoading] = useState<boolean>(false)
-	const [isValid, setIsValid] = useState<boolean>(false)
+	const emailInputRef = useRef<HTMLInputElement | null>(null)
+	const passwordInputRef = useRef<HTMLInputElement | null>(null)
+	const loginButtonRef = useRef<HTMLButtonElement | null>(null)
+	const login = useAuthStore(store => store.loginWithEmail)
+	const setLoading = useStore(store => store.setLoading)
+	const navigation = useNavigate()
 
-	const [email, setEmail] = useState<string>('')
+	const form = useForm<z.infer<typeof FormSchema>>({
+		mode: 'onChange',
+		resolver: zodResolver(FormSchema),
+		defaultValues: {
+			email: '',
+			password: '',
+		},
+	})
 
-	function emailChangeHandler(e: ChangeEvent<HTMLInputElement>) {
-		setEmail(e.target.value)
+	async function onSubmit(data: z.infer<typeof FormSchema>) {
+		try {
+			setLoading(true)
+			const isSuccess = await login(data)
 
-		const isValid = validateEmail(e.target.value)
+			if (!isSuccess) {
+				toast({
+					title: 'Неверная почта или пароль',
+				})
+				return
+			}
 
-		setIsValid(isValid)
+			navigation(ERoutes.home)
+		} catch (e) {
+		} finally {
+			setLoading(false)
+		}
 	}
 
-	async function onSubmit(event: React.SyntheticEvent) {
-		event.preventDefault()
-		setIsLoading(true)
-
-		setTimeout(() => {
-			setIsLoading(false)
-		}, 3000)
+	function sendHandler(e: FormEvent) {
+		e.preventDefault()
+		form.handleSubmit(onSubmit)()
 	}
 
+	useEffect(() => {
+		if (!emailInputRef.current) return
+
+		emailInputRef.current.focus()
+	}, [emailInputRef.current])
 	return (
 		<>
 			<div className={cn('grid gap-6', className)} {...props}>
-				<form onSubmit={onSubmit}>
-					<div className="grid gap-2">
-						<div className="grid gap-2">
-							<Input
-								id="email"
-								placeholder="name@example.com"
-								type="email"
-								autoCapitalize="none"
-								autoComplete="email"
-								autoCorrect="off"
-								disabled={isLoading}
-								value={email}
-								onChange={emailChangeHandler}
-							/>
-						</div>
-						<Button disabled={isLoading || !isValid}>
-							{isLoading && (
-								<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+				<Form {...form}>
+					<form className="w-full space-y-6">
+						<FormField
+							control={form.control}
+							name="email"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Почта</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="name@example.com"
+											{...field}
+											ref={e => {
+												field.ref(e)
+												emailInputRef.current = e
+											}}
+											onKeyDown={e => {
+												if (e.key === 'Enter') {
+													passwordInputRef.current?.focus()
+												}
+											}}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
 							)}
-							Войти с помощью электронной почты
+						/>
+
+						<FormField
+							control={form.control}
+							name="password"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Пароль</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="MyPassword1!?"
+											{...field}
+											ref={e => {
+												field.ref(e)
+												passwordInputRef.current = e
+											}}
+											onKeyDown={e => {
+												if (e.key === 'Enter') {
+													loginButtonRef.current?.click()
+												}
+											}}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<Button
+							ref={loginButtonRef}
+							onClick={sendHandler}
+							type="button"
+							disabled={!form.formState.isDirty || !form.formState.isValid}
+							className="w-full"
+						>
+							Войти
 						</Button>
-					</div>
-				</form>
+					</form>
+				</Form>
 			</div>
 		</>
 	)

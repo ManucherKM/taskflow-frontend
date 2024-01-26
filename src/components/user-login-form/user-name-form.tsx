@@ -1,45 +1,146 @@
-import { Button, Icons, Input } from '@/components'
+import { Button, Input, toast } from '@/components'
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form'
+import { ERoutes } from '@/config/routes'
 import { cn } from '@/lib/utils'
-import { useState } from 'react'
+import { useAuthStore, useStore } from '@/storage'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormEvent, useEffect, useRef } from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
+import * as z from 'zod'
+
+const FormSchema = z.object({
+	userName: z.string().min(2, {
+		message: 'Имя пользователя должно состоять минимум из 2 символов.',
+	}),
+	password: z.string().min(8, {
+		message: 'Пароль должен иметь не менее 8 символов и не более 32.',
+	}),
+})
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserNameForm({ className, ...props }: UserNameFormProps) {
-	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const nameInputRef = useRef<HTMLInputElement | null>(null)
+	const passwordInputRef = useRef<HTMLInputElement | null>(null)
+	const loginButtonRef = useRef<HTMLButtonElement | null>(null)
+	const login = useAuthStore(store => store.loginWithUserName)
+	const setLoading = useStore(store => store.setLoading)
+	const navigation = useNavigate()
 
-	async function onSubmit(event: React.SyntheticEvent) {
-		event.preventDefault()
-		setIsLoading(true)
+	const form = useForm<z.infer<typeof FormSchema>>({
+		mode: 'onChange',
+		resolver: zodResolver(FormSchema),
+		defaultValues: {
+			userName: '',
+			password: '',
+		},
+	})
 
-		setTimeout(() => {
-			setIsLoading(false)
-		}, 3000)
+	async function onSubmit(data: z.infer<typeof FormSchema>) {
+		try {
+			setLoading(true)
+			const isSuccess = await login(data)
+
+			if (!isSuccess) {
+				toast({
+					title: 'Неверное имя пользователя или пароль',
+				})
+				return
+			}
+
+			navigation(ERoutes.home)
+		} catch (e) {
+		} finally {
+			setLoading(false)
+		}
 	}
 
+	function sendHandler(e: FormEvent) {
+		e.preventDefault()
+		form.handleSubmit(onSubmit)()
+	}
+
+	useEffect(() => {
+		if (!nameInputRef.current) return
+
+		nameInputRef.current.focus()
+	}, [nameInputRef.current])
 	return (
 		<>
 			<div className={cn('grid gap-6', className)} {...props}>
-				<form onSubmit={onSubmit}>
-					<div className="grid gap-2">
-						<div className="grid gap-2">
-							<Input
-								id="username"
-								placeholder="mypersonalname"
-								type="text"
-								autoCapitalize="none"
-								autoComplete="username"
-								autoCorrect="off"
-								disabled={isLoading}
-							/>
-						</div>
-						<Button disabled={isLoading}>
-							{isLoading && (
-								<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+				<Form {...form}>
+					<form className="w-full space-y-6">
+						<FormField
+							control={form.control}
+							name="userName"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Имя пользователя</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="mypersonalname"
+											{...field}
+											ref={e => {
+												field.ref(e)
+												nameInputRef.current = e
+											}}
+											onKeyDown={e => {
+												if (e.key === 'Enter') {
+													passwordInputRef.current?.focus()
+												}
+											}}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
 							)}
-							Войти с помощью имени пользователя
+						/>
+
+						<FormField
+							control={form.control}
+							name="password"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Пароль</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="MyPassword1!?"
+											{...field}
+											ref={e => {
+												field.ref(e)
+												passwordInputRef.current = e
+											}}
+											onKeyDown={e => {
+												if (e.key === 'Enter') {
+													loginButtonRef.current?.click()
+												}
+											}}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<Button
+							ref={loginButtonRef}
+							onClick={sendHandler}
+							type="button"
+							disabled={!form.formState.isDirty || !form.formState.isValid}
+							className="w-full"
+						>
+							Войти
 						</Button>
-					</div>
-				</form>
+					</form>
+				</Form>
 			</div>
 		</>
 	)

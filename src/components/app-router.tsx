@@ -40,7 +40,7 @@ export const AppRouter: FC = () => {
 						/>
 					))}
 
-				<Route path="/*" element={<Navigate to={ERoutes.accountConfirm} />} />
+				<Route path="/*" element={<Navigate to={ERoutes.login} />} />
 			</Routes>
 		</CustomRouter>
 	)

@@ -1,9 +1,12 @@
 import { UserRegistrationForm, buttonVariants } from '@/components'
 import { ERoutes } from '@/config/routes'
+import { useRandomMotivationalPhrase } from '@/hooks'
 import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 
 export const Registration = () => {
+	const { author, phrase } = useRandomMotivationalPhrase()
+
 	return (
 		<div className="container relative  h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
 			<Link
@@ -34,12 +37,8 @@ export const Registration = () => {
 				</div>
 				<div className="relative z-20 mt-auto">
 					<blockquote className="space-y-2">
-						<p className="text-lg">
-							&ldquo;This library has saved me countless hours of work and
-							helped me deliver stunning designs to my clients faster than ever
-							before.&rdquo;
-						</p>
-						<footer className="text-sm">Sofia Davis</footer>
+						<p className="text-lg">&ldquo;{phrase}&rdquo;</p>
+						<footer className="text-sm">{author}</footer>
 					</blockquote>
 				</div>
 			</div>

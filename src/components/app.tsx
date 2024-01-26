@@ -8,6 +8,7 @@ import { AppRouter, LoaderProvider, ThemeProvider } from '@/components'
 
 // Styles
 import '@/assets/styles/global.css'
+import { AnimatePresence } from 'framer-motion'
 import { ToasterProvider } from './toaster-provider'
 
 /**
@@ -22,7 +23,9 @@ export const App: FC = () => {
 			<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 				<LoaderProvider>
 					<ToasterProvider>
-						<AppRouter />
+						<AnimatePresence mode="wait">
+							<AppRouter />
+						</AnimatePresence>
 					</ToasterProvider>
 				</LoaderProvider>
 			</ThemeProvider>

@@ -19,7 +19,7 @@ import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
 import { Icons } from '..'
 
 const FormSchema = z.object({
-	username: z.string().min(2, {
+	userName: z.string().min(2, {
 		message: 'Имя пользователя должно состоять минимум из 2 символов.',
 	}),
 })
@@ -46,12 +46,12 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 		mode: 'onChange',
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
-			username: '',
+			userName: '',
 		},
 	})
 
 	function onSubmit(data: z.infer<typeof FormSchema>) {
-		setRegInfo({ userName: data.username })
+		setRegInfo({ userName: data.userName })
 	}
 
 	const checkUserNameHandler = async (userName: string) => {
@@ -103,7 +103,7 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 			<form onSubmit={e => e.preventDefault()} className="w-full space-y-6">
 				<FormField
 					control={form.control}
-					name="username"
+					name="userName"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className={clsx([isExist && 'text-[#7f1d1d]'])}>
