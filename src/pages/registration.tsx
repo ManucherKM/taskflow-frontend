@@ -57,14 +57,14 @@ export const Registration = () => {
 					<p className="px-8 text-center text-sm text-muted-foreground">
 						Продолжая вы соглашаетесь с нашими{' '}
 						<Link
-							to="/terms"
+							to={ERoutes.termsOfUse}
 							className="underline underline-offset-4 hover:text-primary"
 						>
 							Условиями использования
 						</Link>{' '}
 						и{' '}
 						<Link
-							to="/privacy"
+							to={ERoutes.privacyPolicy}
 							className="underline underline-offset-4 hover:text-primary"
 						>
 							Политикой конфиденциальности

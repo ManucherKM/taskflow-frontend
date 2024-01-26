@@ -8,11 +8,13 @@ import {
 	Dashboard,
 	Home,
 	Login,
+	PrivacyPolicy,
 	Registration,
 	RestoreAccountEmail,
 	RestoreAccountOTP,
 	RestoreAccountPassword,
 	Setting,
+	TermsOfUse,
 } from '@/pages'
 
 /** Application Routing Interface. */
@@ -44,14 +46,18 @@ export enum ERoutes {
 	/** `RestoreAccountPassword` page route. */
 	restoreAccountPassword = '/auth/restore/password',
 
+	privacyPolicy = '/privacy-policy',
+
+	termsOfUse = '/terms-of-use',
+
 	/** `Setting` page route. */
 	setting = '/setting',
 
 	/** `AccountConfirm` page route. */
-	accountConfirm = '/accountConfirm',
+	accountConfirm = '/account-confirm',
 
 	/** `CheckYourEmail` page route. */
-	checkYourEmail = '/checkYourEmail',
+	checkYourEmail = '/check-your-email',
 
 	dashboard = '/dashboard',
 }
@@ -84,6 +90,14 @@ export const publicRoutes: IRoute[] = [
 	{
 		path: ERoutes.checkYourEmail,
 		component: CheckYourEmail,
+	},
+	{
+		path: ERoutes.privacyPolicy,
+		component: PrivacyPolicy,
+	},
+	{
+		path: ERoutes.termsOfUse,
+		component: TermsOfUse,
 	},
 ]
 
