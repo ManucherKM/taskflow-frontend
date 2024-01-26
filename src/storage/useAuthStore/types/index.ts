@@ -1,7 +1,15 @@
 /** The interface of parameters that the `login` function accepts. */
-export interface ILoginTarget {
+export interface ILoginWithEmailTarget {
 	/** Email. */
 	email: string
+
+	/** Password. */
+	password: string
+}
+
+export interface ILoginWithUserNameTarget {
+	/** User name. */
+	userName: string
 
 	/** Password. */
 	password: string
@@ -67,12 +75,9 @@ export interface IAuthStore {
 
 	token: null | string
 
-	/**
-	 * User authorization function.
-	 *
-	 * @param loginDto Parameters required to send a request to the API.
-	 */
-	login: (loginDto: ILoginTarget) => Promise<boolean>
+	loginWithEmail: (loginDto: ILoginWithEmailTarget) => Promise<boolean>
+
+	loginWithUserName: (loginDto: ILoginWithUserNameTarget) => Promise<boolean>
 
 	/**
 	 * User registration function.
@@ -104,8 +109,9 @@ export interface IAuthStore {
 
 /** Routes for api requests to the authorization store. */
 export enum EAuthStoreApiRoutes {
-	/** Route for user authorization. */
-	login = '/api/auth/login',
+	loginWithEmail = '/api/auth/login/email',
+
+	loginWithUserName = '/api/auth/login/username',
 
 	/** Route for user registration. */
 	registration = '/api/auth/registration',

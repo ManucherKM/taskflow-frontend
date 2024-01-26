@@ -31,11 +31,11 @@ export const useAuthStore = create(
 	persist<IAuthStore>(
 		(set, get) => ({
 			...defaultAuthStore,
-			async login(loginDto) {
+			async loginWithEmail(loginDto) {
 				try {
 					// We send a request for user authorization to the API.
 					const { data } = await axios.post<ILoginResponse>(
-						EAuthStoreApiRoutes.login,
+						EAuthStoreApiRoutes.loginWithEmail,
 						loginDto,
 					)
 
@@ -58,6 +58,34 @@ export const useAuthStore = create(
 					return false
 				}
 			},
+			async loginWithUserName(loginDto) {
+				try {
+					// We send a request for user authorization to the API.
+					const { data } = await axios.post<ILoginResponse>(
+						EAuthStoreApiRoutes.loginWithUserName,
+						loginDto,
+					)
+
+					// Check if the access token has arrived.
+					if (!data?.accessToken) {
+						// If there is no token, return false.
+						return false
+					}
+
+					// We change the state of the token in the storage.
+					set({ token: data.accessToken })
+
+					// Return true.
+					return true
+				} catch (e) {
+					// We show the error in the console.
+					console.error(e)
+
+					// Return false.
+					return false
+				}
+			},
+
 			async registration(registrationDto) {
 				try {
 					// We send a request for user registration to the API.
