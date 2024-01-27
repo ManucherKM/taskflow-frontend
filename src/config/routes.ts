@@ -3,12 +3,14 @@ import type { FC } from 'react'
 
 // Components
 import {
+	Account,
 	AccountConfirm,
 	CheckYourEmail,
 	Dashboard,
 	Home,
 	Login,
 	PrivacyPolicy,
+	Profile,
 	Registration,
 	RestoreAccountEmail,
 	RestoreAccountOTP,
@@ -52,6 +54,10 @@ export enum ERoutes {
 
 	/** `Setting` page route. */
 	setting = '/setting',
+
+	profile = '/setting/profile',
+
+	account = '/setting/account',
 
 	/** `AccountConfirm` page route. */
 	accountConfirm = '/account-confirm',
@@ -118,5 +124,13 @@ export const privateRoutes: IRoute[] = [
 	{
 		path: ERoutes.dashboard,
 		component: Dashboard,
+	},
+	{
+		path: ERoutes.profile,
+		component: Profile,
+	},
+	{
+		path: ERoutes.account,
+		component: Account,
 	},
 ]

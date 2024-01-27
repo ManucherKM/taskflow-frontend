@@ -1,3 +1,4 @@
+export * from './account'
 export * from './account-confirm'
 export * from './check-your-email'
 export * from './dashboard'

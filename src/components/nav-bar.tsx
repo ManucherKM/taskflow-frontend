@@ -1,9 +1,14 @@
 import { ERoutes } from '@/config/routes'
 import { useAuthStore } from '@/storage'
-import { FC } from 'react'
+import type { FC } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Icons, Input, Logo, TypographyP, useTheme } from '.'
+import { Icons } from './icons'
+import { Logo } from './logo'
+import { Search } from './search'
+import { useTheme } from './theme-provider'
+import { TypographyP } from './typography-p'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Button } from './ui/button'
 
 export const NavBar: FC = () => {
 	const logout = useAuthStore(store => store.logout)
@@ -18,7 +23,7 @@ export const NavBar: FC = () => {
 					</Link>
 
 					<div className="flex gap-2 items-center">
-						<Input type="text" placeholder="Найти доску" />
+						<Search type="text" placeholder="Найти доску" />
 						<div className="flex">
 							<Button
 								variant={'ghost'}
@@ -31,10 +36,11 @@ export const NavBar: FC = () => {
 									}
 								}}
 							>
-								<Icons.sun />
+								<Icons.moon className="block dark:hidden" />
+								<Icons.sun className="hidden dark:block" />
 							</Button>
 							<Button variant={'ghost'} size={'icon'} onClick={logout}>
-								<Icons.exit />
+								<Icons.logout />
 							</Button>
 						</div>
 

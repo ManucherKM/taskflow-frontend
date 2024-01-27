@@ -1,4 +1,4 @@
-import { Button, Input, toast } from '@/components'
+import { Button } from '@/components/ui/button'
 import {
 	Form,
 	FormControl,
@@ -7,6 +7,8 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { toast } from '@/components/ui/use-toast'
 import { ERoutes } from '@/config/routes'
 import { cn } from '@/lib/utils'
 import { useAuthStore, useStore } from '@/storage'

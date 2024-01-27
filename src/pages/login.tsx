@@ -2,9 +2,10 @@ import { Logo, UserLoginForm, buttonVariants } from '@/components'
 import { ERoutes } from '@/config/routes'
 import { useRandomMotivationalPhrase } from '@/hooks'
 import { cn } from '@/lib/utils'
+import type { FC } from 'react'
 import { Link } from 'react-router-dom'
 
-export const Login = () => {
+export const Login: FC = () => {
 	const { author, phrase } = useRandomMotivationalPhrase()
 
 	return (
@@ -19,14 +20,14 @@ export const Login = () => {
 				Создать
 			</Link>
 			<div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-				<div className="absolute inset-0 bg-zinc-900" />
+				<div className="absolute inset-0 bg-input dark:bg-zinc-900" />
 				<div className="relative z-20 flex items-center text-lg font-medium">
 					<Logo />
 				</div>
 				<div className="relative z-20 mt-auto">
 					<blockquote className="space-y-2">
-						<p className="text-lg">&ldquo;{phrase}&rdquo;</p>
-						<footer className="text-sm">{author}</footer>
+						<p className="text-lg text-foreground">&ldquo;{phrase}&rdquo;</p>
+						<footer className="text-sm text-foreground">{author}</footer>
 					</blockquote>
 				</div>
 			</div>

@@ -2,14 +2,16 @@
 import type { FC } from 'react'
 
 // Components
-import { AppRouter, LoaderProvider, ThemeProvider } from '@/components'
+import { AppRouter } from './app-router'
+import { LoaderProvider } from './loader-provider'
+import { ThemeProvider } from './theme-provider'
+import { ToasterProvider } from './toaster-provider'
 
 // Utils
+import { AnimatePresence } from 'framer-motion'
 
 // Styles
 import '@/assets/styles/global.css'
-import { AnimatePresence } from 'framer-motion'
-import { ToasterProvider } from './toaster-provider'
 
 /**
  * The main component of the application.
@@ -19,16 +21,14 @@ import { ToasterProvider } from './toaster-provider'
  */
 export const App: FC = () => {
 	return (
-		<>
-			<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-				<LoaderProvider>
-					<ToasterProvider>
-						<AnimatePresence mode="wait">
-							<AppRouter />
-						</AnimatePresence>
-					</ToasterProvider>
-				</LoaderProvider>
-			</ThemeProvider>
-		</>
+		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+			<LoaderProvider>
+				<ToasterProvider>
+					<AnimatePresence mode="wait">
+						<AppRouter />
+					</AnimatePresence>
+				</ToasterProvider>
+			</LoaderProvider>
+		</ThemeProvider>
 	)
 }

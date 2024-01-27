@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { FC, HTMLAttributes, ReactNode } from 'react'
+import type { FC, HTMLAttributes, ReactNode } from 'react'
 
 export interface ITypographyH2 extends HTMLAttributes<HTMLHeadingElement> {
 	children: ReactNode

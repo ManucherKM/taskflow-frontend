@@ -1,4 +1,4 @@
-import { Icons } from '.'
+import { Icons } from './icons'
 
 export const Logo = () => {
 	return (

@@ -8,7 +8,7 @@ import { Navigate, Route, Routes } from 'react-router'
 import { history } from '@/config/history'
 import { ERoutes, privateRoutes, publicRoutes } from '@/config/routes'
 import { useAuthStore } from '@/storage'
-import { CustomRouter } from '.'
+import { CustomRouter } from './custom-router'
 
 /**
  * The component responsible for render routes.

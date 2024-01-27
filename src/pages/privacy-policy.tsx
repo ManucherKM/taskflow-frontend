@@ -5,7 +5,7 @@ import {
 	TypographyP,
 	Ul,
 } from '@/components'
-import { FC } from 'react'
+import type { FC } from 'react'
 
 export const PrivacyPolicy: FC = () => {
 	return (

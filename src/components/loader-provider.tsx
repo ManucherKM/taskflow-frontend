@@ -1,6 +1,6 @@
 import { useStore } from '@/storage'
 import type { FC, ReactNode } from 'react'
-import { Icons } from '.'
+import { Icons } from './icons'
 
 export interface ILoaderProvider {
 	children: ReactNode
