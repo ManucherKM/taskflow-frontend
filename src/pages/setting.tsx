@@ -1,3 +1,9 @@
+import { NavBarBack } from '@/components'
+
 export const Setting = () => {
-	return <div>Setting</div>
+	return (
+		<>
+			<NavBarBack />
+		</>
+	)
 }
