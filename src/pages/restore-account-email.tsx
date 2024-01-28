@@ -77,7 +77,7 @@ export const RestoreAccountEmail: FC = () => {
 			<SlideLeft>
 				<div className="container flex justify-center items-center h-[calc(100vh-56px)]">
 					<div className={'grid gap-6 max-w-96'}>
-						<TypographyH3>Востановление учетной записи</TypographyH3>
+						<TypographyH3>Восстановление учетной записи</TypographyH3>
 						<Form {...form}>
 							<form
 								onSubmit={e => e.preventDefault()}

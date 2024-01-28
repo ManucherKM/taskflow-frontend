@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { motion } from 'framer-motion'
+import { SlideLeft } from '..'
 import { UserEmailForm } from './user-email-form'
 import { UserNameForm } from './user-name-form'
 
@@ -18,26 +18,14 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
 					</TabsTrigger>
 				</TabsList>
 				<TabsContent value="email">
-					<motion.div
-						key={'login-form-with-email'}
-						initial={{ opacity: 0, x: '100px' }}
-						animate={{ opacity: 1, x: '0' }}
-						exit={{ opacity: 0, x: '-100px' }}
-						transition={{ duration: '0.2' }}
-					>
+					<SlideLeft>
 						<UserEmailForm {...props} />
-					</motion.div>
+					</SlideLeft>
 				</TabsContent>
 				<TabsContent value="userName">
-					<motion.div
-						key={'login-form-with-user-name'}
-						initial={{ opacity: 0, x: '100px' }}
-						animate={{ opacity: 1, x: '0' }}
-						exit={{ opacity: 0, x: '100px' }}
-						transition={{ duration: '0.2' }}
-					>
+					<SlideLeft>
 						<UserNameForm {...props} />
-					</motion.div>
+					</SlideLeft>
 				</TabsContent>
 			</Tabs>
 		</>

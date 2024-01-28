@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { SlideLeft } from '..'
 import { UserBasisForm } from './user-basis-form'
 import { UserNameForm } from './user-name-form'
 import { UserOtherForm } from './user-other-form'
@@ -30,39 +30,21 @@ export function UserRegistrationForm() {
 	return (
 		<>
 			{steps[step] === ESteps.basis && (
-				<motion.div
-					key={'registration-form-basis'}
-					initial={{ opacity: 0, x: '100px' }}
-					animate={{ opacity: 1, x: '0' }}
-					exit={{ opacity: 0, x: '100px' }}
-					transition={{ duration: '0.2' }}
-				>
+				<SlideLeft>
 					<UserBasisForm onNext={nextStep} />
-				</motion.div>
+				</SlideLeft>
 			)}
 
 			{steps[step] === ESteps.userName && (
-				<motion.div
-					key={'registration-form-user-name'}
-					initial={{ opacity: 0, x: '100px' }}
-					animate={{ opacity: 1, x: '0' }}
-					exit={{ opacity: 0, x: '100px' }}
-					transition={{ duration: '0.2' }}
-				>
+				<SlideLeft>
 					<UserNameForm onNext={nextStep} onPrev={prevStep} />{' '}
-				</motion.div>
+				</SlideLeft>
 			)}
 
 			{steps[step] === ESteps.other && (
-				<motion.div
-					key={'registration-form-other'}
-					initial={{ opacity: 0, x: '100px' }}
-					animate={{ opacity: 1, x: '0' }}
-					exit={{ opacity: 0, x: '100px' }}
-					transition={{ duration: '0.2' }}
-				>
+				<SlideLeft>
 					<UserOtherForm onPrev={prevStep} />{' '}
-				</motion.div>
+				</SlideLeft>
 			)}
 		</>
 	)

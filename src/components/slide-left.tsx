@@ -10,9 +10,13 @@ export const SlideLeft: FC<ISlideLeft> = ({ children }) => {
 	return (
 		<motion.div
 			initial={{ opacity: 0, x: '100px' }}
-			animate={{ opacity: 1, x: '0' }}
+			animate={{ opacity: 1, x: '0px' }}
 			exit={{ opacity: 0, x: '100px' }}
-			transition={{ duration: '0.2' }}
+			transition={{
+				duration: '0.4',
+				type: 'spring',
+				bounce: 0.4,
+			}}
 		>
 			{children}
 		</motion.div>
