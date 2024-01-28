@@ -14,10 +14,12 @@ import { ERoutes } from '@/config/routes'
 import { cn } from '@/lib/utils'
 import { useAuthStore, useStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormEvent, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import * as z from 'zod'
+import { TypographyP } from '../typography-p'
 
 const FormSchema = z.object({
 	userName: z.string().min(2, {
@@ -66,7 +68,7 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 		}
 	}
 
-	function sendHandler(e: FormEvent) {
+	function sendHandler(e: MouseEvent<HTMLButtonElement>) {
 		e.preventDefault()
 		form.handleSubmit(onSubmit)()
 	}
@@ -132,6 +134,14 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 								</FormItem>
 							)}
 						/>
+
+						<div className="w-full flex justify-end !mt-2">
+							<Link to={ERoutes.restoreAccountEmail}>
+								<TypographyP className="text-xs hover:underline text-muted-foreground">
+									Забыли пароль?
+								</TypographyP>
+							</Link>
+						</div>
 
 						<Button
 							ref={loginButtonRef}

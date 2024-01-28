@@ -29,7 +29,7 @@ export interface IRestoreAccountStore {
 	setEmail: (email: string) => void
 
 	/** Function for creating a one-time password. */
-	createOtp: () => Promise<boolean>
+	createOtp: (email: string) => Promise<boolean>
 
 	/** Function for verification a one-time password. */
 	verificationOtp: (otp: number) => Promise<boolean>

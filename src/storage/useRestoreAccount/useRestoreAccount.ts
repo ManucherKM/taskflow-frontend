@@ -27,16 +27,9 @@ export const useRestoreAccount = create(
 				// Change email to a new value.
 				set({ email })
 			},
-			async createOtp() {
+			async createOtp(email) {
 				try {
-					// Retrieve email from storage.
-					const email = get().email
-
-					// If the email was not specified.
-					if (!email) {
-						// Return false.
-						return false
-					}
+					get().setEmail(email)
 
 					// We send a request to create a one-time password.
 					const { data } = await axios.post<IResponseCreateOtp>(

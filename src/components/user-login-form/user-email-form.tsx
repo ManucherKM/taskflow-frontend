@@ -13,10 +13,12 @@ import { ERoutes } from '@/config/routes'
 import { cn } from '@/lib/utils'
 import { useAuthStore, useStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormEvent, useEffect, useRef } from 'react'
+import { MouseEvent, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import * as z from 'zod'
+import { TypographyP } from '../typography-p'
 
 const FormSchema = z.object({
 	email: z
@@ -70,7 +72,7 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 		}
 	}
 
-	function sendHandler(e: FormEvent) {
+	function sendHandler(e: MouseEvent<HTMLButtonElement>) {
 		e.preventDefault()
 		form.handleSubmit(onSubmit)()
 	}
@@ -81,74 +83,80 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 		emailInputRef.current.focus()
 	}, [emailInputRef.current])
 	return (
-		<>
-			<div className={cn('grid gap-6', className)} {...props}>
-				<Form {...form}>
-					<form className="w-full space-y-6">
-						<FormField
-							control={form.control}
-							name="email"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Почта</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="name@example.com"
-											{...field}
-											ref={e => {
-												field.ref(e)
-												emailInputRef.current = e
-											}}
-											onKeyDown={e => {
-												if (e.key === 'Enter') {
-													passwordInputRef.current?.focus()
-												}
-											}}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+		<div className={cn('grid gap-6', className)} {...props}>
+			<Form {...form}>
+				<form className="w-full space-y-6">
+					<FormField
+						control={form.control}
+						name="email"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Почта</FormLabel>
+								<FormControl>
+									<Input
+										placeholder="name@example.com"
+										{...field}
+										ref={e => {
+											field.ref(e)
+											emailInputRef.current = e
+										}}
+										onKeyDown={e => {
+											if (e.key === 'Enter') {
+												passwordInputRef.current?.focus()
+											}
+										}}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-						<FormField
-							control={form.control}
-							name="password"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Пароль</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="MyPassword1!?"
-											{...field}
-											ref={e => {
-												field.ref(e)
-												passwordInputRef.current = e
-											}}
-											onKeyDown={e => {
-												if (e.key === 'Enter') {
-													loginButtonRef.current?.click()
-												}
-											}}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+					<FormField
+						control={form.control}
+						name="password"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Пароль</FormLabel>
+								<FormControl>
+									<Input
+										placeholder="MyPassword1!?"
+										{...field}
+										ref={e => {
+											field.ref(e)
+											passwordInputRef.current = e
+										}}
+										onKeyDown={e => {
+											if (e.key === 'Enter') {
+												loginButtonRef.current?.click()
+											}
+										}}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-						<Button
-							ref={loginButtonRef}
-							onClick={sendHandler}
-							type="button"
-							disabled={!form.formState.isDirty || !form.formState.isValid}
-							className="w-full"
-						>
-							Войти
-						</Button>
-					</form>
-				</Form>
-			</div>
-		</>
+					<div className="w-full flex justify-end !mt-2">
+						<Link to={ERoutes.restoreAccountEmail}>
+							<TypographyP className="text-xs hover:underline text-muted-foreground">
+								Забыли пароль?
+							</TypographyP>
+						</Link>
+					</div>
+
+					<Button
+						ref={loginButtonRef}
+						onClick={sendHandler}
+						type="button"
+						disabled={!form.formState.isDirty || !form.formState.isValid}
+						className="w-full"
+					>
+						Войти
+					</Button>
+				</form>
+			</Form>
+		</div>
 	)
 }
