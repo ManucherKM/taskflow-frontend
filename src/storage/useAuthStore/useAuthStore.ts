@@ -14,7 +14,7 @@ import { history } from '@/config/history'
 import { ERoutes } from '@/config/routes'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { useStore } from '../useStore/useStore'
+import { useStore } from '..'
 import { EAuthStoreApiRoutes } from './types'
 
 // The URL where the web application is hosted.
@@ -165,6 +165,7 @@ export const useAuthStore = create(
 
 					// Redirecting the user to the login page.
 					history.push(CLIENT_URL + ERoutes.login)
+
 					// Return false.
 					return false
 				}

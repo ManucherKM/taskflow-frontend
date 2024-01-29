@@ -20,7 +20,7 @@ export interface IBoardStore {
 
 	setIsShow: (target: boolean) => void
 
-	getAllBoards: (target: { deep: boolean }) => Promise<IBoard[] | undefined>
+	getAllBoards: (target?: { deep: boolean }) => Promise<IBoard[] | undefined>
 
 	getAllByName: (target: { name: string }) => Promise<IBoard[] | undefined>
 

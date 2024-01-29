@@ -25,6 +25,8 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 				return
 			}
 
+			set({ boards: data })
+
 			return data
 		} catch (e) {
 			console.error(e)

@@ -12,7 +12,6 @@ import { AnimatePresence } from 'framer-motion'
 
 // Styles
 import '@/assets/styles/global.css'
-import { CreateBoardProvider } from '.'
 
 /**
  * The main component of the application.
@@ -25,11 +24,9 @@ export const App: FC = () => {
 		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 			<LoaderProvider>
 				<ToasterProvider>
-					<CreateBoardProvider>
-						<AnimatePresence mode="wait">
-							<AppRouter />
-						</AnimatePresence>
-					</CreateBoardProvider>
+					<AnimatePresence mode="wait">
+						<AppRouter />
+					</AnimatePresence>
 				</ToasterProvider>
 			</LoaderProvider>
 		</ThemeProvider>
