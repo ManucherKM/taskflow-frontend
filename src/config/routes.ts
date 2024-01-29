@@ -7,6 +7,7 @@ import {
 	AccountConfirm,
 	Board,
 	CheckYourEmail,
+	Display,
 	Home,
 	Login,
 	PrivacyPolicy,
@@ -15,7 +16,6 @@ import {
 	RestoreAccountEmail,
 	RestoreAccountOTP,
 	RestoreAccountPassword,
-	Setting,
 	TermsOfUse,
 } from '@/pages'
 
@@ -52,12 +52,11 @@ export enum ERoutes {
 
 	termsOfUse = '/terms-of-use',
 
-	/** `Setting` page route. */
-	setting = '/setting',
-
 	profile = '/setting/profile',
 
 	account = '/setting/account',
+
+	display = '/setting/display',
 
 	/** `AccountConfirm` page route. */
 	accountConfirm = '/account-confirm',
@@ -110,8 +109,8 @@ export const publicRoutes: IRoute[] = [
 /** Private Routes */
 export const privateRoutes: IRoute[] = [
 	{
-		path: ERoutes.setting,
-		component: Setting,
+		path: ERoutes.display,
+		component: Display,
 	},
 	{
 		path: ERoutes.restoreAccountPassword,

@@ -6,10 +6,13 @@ import { EBoardStoreApiRoutes, IBoard, type IBoardStore } from './types'
 import { create } from 'zustand'
 
 // Default storage object.
-const defaultStore = {} as IBoardStore
+const defaultStore = {
+	isShow: false,
+	boards: [] as IBoard[],
+} as IBoardStore
 
 /** With this hook you can access shared storage. */
-export const useBoardStore = create<IBoardStore>(set => ({
+export const useBoardStore = create<IBoardStore>((set, get) => ({
 	...defaultStore,
 	async getAllBoards(target) {
 		try {
@@ -25,6 +28,36 @@ export const useBoardStore = create<IBoardStore>(set => ({
 			return data
 		} catch (e) {
 			console.error(e)
+		}
+	},
+	setIsShow(target) {
+		set({ isShow: target })
+	},
+	setBoards(target) {
+		set({ boards: target })
+	},
+	addBoard(target) {
+		set(prev => ({
+			boards: [...prev.boards, target],
+		}))
+	},
+	async create(target) {
+		try {
+			const { data } = await axios.post<IBoard>(
+				EBoardStoreApiRoutes.create,
+				target,
+			)
+
+			if (!data) {
+				return false
+			}
+
+			get().addBoard(data)
+
+			return true
+		} catch (e) {
+			console.error(e)
+			return false
 		}
 	},
 

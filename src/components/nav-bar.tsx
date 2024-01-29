@@ -1,11 +1,11 @@
 import { ERoutes } from '@/config/routes'
 import { useOutsideClick } from '@/hooks'
-import { useAuthStore } from '@/storage'
 import { useEffect, useRef, useState, type FC } from 'react'
 import { Link } from 'react-router-dom'
-import { SearchBoard } from '.'
+import { CreateBoardProvider, NavbarContextMenuProvider, SearchBoard } from '.'
 import { Icons } from './icons'
 import { Logo } from './logo'
+import { LogoutProvider } from './logout-provider'
 import { Search } from './search'
 import { useTheme } from './theme-provider'
 import { TypographyP } from './typography-p'
@@ -18,7 +18,6 @@ export const NavBar: FC = () => {
 	const searchBoardRef = useRef<HTMLDivElement | null>(null)
 	const [isContain, clickHandler] = useOutsideClick(searchBoardRef)
 
-	const logout = useAuthStore(store => store.logout)
 	const { setTheme, theme } = useTheme()
 
 	useEffect(() => {
@@ -60,6 +59,11 @@ export const NavBar: FC = () => {
 							isShow={isShowSearchBoard && isContain}
 						/>
 						<div className="flex">
+							<CreateBoardProvider>
+								<Button variant={'ghost'} size={'icon'}>
+									<Icons.plus />
+								</Button>
+							</CreateBoardProvider>
 							<Button
 								variant={'ghost'}
 								size={'icon'}
@@ -74,20 +78,22 @@ export const NavBar: FC = () => {
 								<Icons.moon className="block dark:hidden" />
 								<Icons.sun className="hidden dark:block" />
 							</Button>
-							<Button variant={'ghost'} size={'icon'} onClick={logout}>
-								<Icons.logout />
-							</Button>
+							<LogoutProvider>
+								<Button variant={'ghost'} size={'icon'}>
+									<Icons.logout />
+								</Button>
+							</LogoutProvider>
 						</div>
 
 						<TypographyP className="w-20 overflow-hidden text-ellipsis !mt-0">
 							test@gmail.com
 						</TypographyP>
-						<Link to={ERoutes.setting}>
+						<NavbarContextMenuProvider>
 							<Avatar className="cursor-pointer hover:opacity-80">
 								<AvatarImage src="https://github.com/shadcn.png" />
 								<AvatarFallback>CN</AvatarFallback>
 							</Avatar>
-						</Link>
+						</NavbarContextMenuProvider>
 					</div>
 				</div>
 			</div>
