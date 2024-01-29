@@ -22,12 +22,20 @@ export const NavBar: FC = () => {
 	const { setTheme, theme } = useTheme()
 
 	useEffect(() => {
+		if (!isShowSearchBoard) return
+
 		window.addEventListener('click', clickHandler)
 
 		return () => {
 			window.removeEventListener('click', clickHandler)
 		}
 	}, [isShowSearchBoard])
+
+	useEffect(() => {
+		if (!isContain) {
+			setIsShowSearchBoard(false)
+		}
+	}, [isContain])
 
 	return (
 		<nav>
