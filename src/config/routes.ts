@@ -5,8 +5,8 @@ import type { FC } from 'react'
 import {
 	Account,
 	AccountConfirm,
+	Board,
 	CheckYourEmail,
-	Dashboard,
 	Home,
 	Login,
 	PrivacyPolicy,
@@ -65,7 +65,7 @@ export enum ERoutes {
 	/** `CheckYourEmail` page route. */
 	checkYourEmail = '/check-your-email',
 
-	dashboard = '/dashboard',
+	board = '/dashboard',
 }
 
 /** Public Routes */
@@ -122,8 +122,8 @@ export const privateRoutes: IRoute[] = [
 		component: Home,
 	},
 	{
-		path: ERoutes.dashboard,
-		component: Dashboard,
+		path: ERoutes.board + '/:id',
+		component: Board,
 	},
 	{
 		path: ERoutes.profile,

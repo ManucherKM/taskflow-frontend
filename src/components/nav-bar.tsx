@@ -1,7 +1,9 @@
 import { ERoutes } from '@/config/routes'
+import { useOutsideClick } from '@/hooks'
 import { useAuthStore } from '@/storage'
-import type { FC } from 'react'
+import { useEffect, useRef, useState, type FC } from 'react'
 import { Link } from 'react-router-dom'
+import { SearchBoard } from '.'
 import { Icons } from './icons'
 import { Logo } from './logo'
 import { Search } from './search'
@@ -11,8 +13,21 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
 
 export const NavBar: FC = () => {
+	const [searchQuery, setSearchQuery] = useState<string>('')
+	const [isShowSearchBoard, setIsShowSearchBoard] = useState<boolean>(false)
+	const searchBoardRef = useRef<HTMLDivElement | null>(null)
+	const [isContain, clickHandler] = useOutsideClick(searchBoardRef)
+
 	const logout = useAuthStore(store => store.logout)
 	const { setTheme, theme } = useTheme()
+
+	useEffect(() => {
+		window.addEventListener('click', clickHandler)
+
+		return () => {
+			window.removeEventListener('click', clickHandler)
+		}
+	}, [isShowSearchBoard])
 
 	return (
 		<nav>
@@ -23,7 +38,19 @@ export const NavBar: FC = () => {
 					</Link>
 
 					<div className="flex gap-2 items-center">
-						<Search type="text" placeholder="Найти доску" />
+						<SearchBoard
+							ref={searchBoardRef}
+							searchComponent={
+								<Search
+									type="text"
+									placeholder="Найти доску"
+									onChange={e => setSearchQuery(e.target.value)}
+									onFocus={() => setIsShowSearchBoard(true)}
+								/>
+							}
+							query={searchQuery}
+							isShow={isShowSearchBoard && isContain}
+						/>
 						<div className="flex">
 							<Button
 								variant={'ghost'}

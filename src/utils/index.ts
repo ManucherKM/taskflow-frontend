@@ -1,3 +1,5 @@
+export * from './formatDateDDMMYYYY'
 export * from './getAuthorization'
+export * from './getAvatarFallback'
 export * from './getRandomInt'
 export * from './validateEmail'
