@@ -8,6 +8,7 @@ import { Navigate, Route, Routes } from 'react-router'
 import { history } from '@/config/history'
 import { ERoutes, privateRoutes, publicRoutes } from '@/config/routes'
 import { useAuthStore } from '@/storage'
+import { CreateBoardProvider } from '.'
 import { CustomRouter } from './custom-router'
 
 /**
@@ -22,17 +23,9 @@ export const AppRouter: FC = () => {
 
 	return (
 		<CustomRouter history={history}>
-			<Routes>
-				{publicRoutes.map(route => (
-					<Route
-						key={route.path}
-						path={route.path}
-						element={<route.component />}
-					/>
-				))}
-
-				{isAuth &&
-					privateRoutes.map(route => (
+			<CreateBoardProvider>
+				<Routes>
+					{publicRoutes.map(route => (
 						<Route
 							key={route.path}
 							path={route.path}
@@ -40,8 +33,18 @@ export const AppRouter: FC = () => {
 						/>
 					))}
 
-				<Route path="/*" element={<Navigate to={ERoutes.login} />} />
-			</Routes>
+					{isAuth &&
+						privateRoutes.map(route => (
+							<Route
+								key={route.path}
+								path={route.path}
+								element={<route.component />}
+							/>
+						))}
+
+					<Route path="/*" element={<Navigate to={ERoutes.login} />} />
+				</Routes>
+			</CreateBoardProvider>
 		</CustomRouter>
 	)
 }

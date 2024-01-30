@@ -11,8 +11,9 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { ERoutes } from '@/config/routes'
+import { useLoader } from '@/hooks'
 import { cn } from '@/lib/utils'
-import { useAuthStore, useStore } from '@/storage'
+import { useAuthStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MouseEvent, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
@@ -37,7 +38,8 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
 	const loginButtonRef = useRef<HTMLButtonElement | null>(null)
 	const login = useAuthStore(store => store.loginWithUserName)
-	const setLoading = useStore(store => store.setLoading)
+	const loader = useLoader()
+
 	const navigation = useNavigate()
 
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -51,8 +53,7 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
 		try {
-			setLoading(true)
-			const isSuccess = await login(data)
+			const isSuccess = await loader(login, data)
 
 			if (!isSuccess) {
 				toast({
@@ -62,10 +63,7 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 			}
 
 			navigation(ERoutes.home)
-		} catch (e) {
-		} finally {
-			setLoading(false)
-		}
+		} catch (e) {}
 	}
 
 	function sendHandler(e: MouseEvent<HTMLButtonElement>) {

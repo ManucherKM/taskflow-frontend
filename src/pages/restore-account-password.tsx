@@ -15,7 +15,8 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { ERoutes } from '@/config/routes'
-import { useRestoreAccount, useStore } from '@/storage'
+import { useLoader } from '@/hooks'
+import { useRestoreAccount } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MouseEvent, useEffect, useRef, type FC } from 'react'
 import { useForm } from 'react-hook-form'
@@ -32,7 +33,8 @@ export const RestoreAccountPassword: FC = () => {
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
 	const loginButtonRef = useRef<HTMLButtonElement | null>(null)
 	const changePassword = useRestoreAccount(store => store.changePassword)
-	const setLoading = useStore(store => store.setLoading)
+	const loader = useLoader()
+
 	const navigation = useNavigate()
 
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -45,9 +47,7 @@ export const RestoreAccountPassword: FC = () => {
 
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
 		try {
-			setLoading(true)
-
-			const isSuccess = await changePassword(data.password)
+			const isSuccess = await loader(changePassword, data.password)
 
 			if (!isSuccess) {
 				toast({
@@ -61,8 +61,6 @@ export const RestoreAccountPassword: FC = () => {
 			navigation(ERoutes.login)
 		} catch (e) {
 			console.log(e)
-		} finally {
-			setLoading(false)
 		}
 	}
 

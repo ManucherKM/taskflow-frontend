@@ -1,21 +1,21 @@
 import { NavBarBack, Otp, SlideLeft, TypographyH3, toast } from '@/components'
 import { ERoutes } from '@/config/routes'
-import { useRestoreAccount, useStore } from '@/storage'
+import { useLoader } from '@/hooks'
+import { useRestoreAccount } from '@/storage'
 import { useEffect, useState, type FC } from 'react'
 import { useNavigate } from 'react-router'
 
 export const RestoreAccountOTP: FC = () => {
 	const [otp, setOtp] = useState<number>(0)
-	const setLoading = useStore(store => store.setLoading)
+	const loader = useLoader()
+
 	const verificationOtp = useRestoreAccount(store => store.verificationOtp)
 
 	const navigation = useNavigate()
 
 	async function onSubmit() {
 		try {
-			setLoading(true)
-
-			const isSuccess = await verificationOtp(otp)
+			const isSuccess = await loader(verificationOtp, otp)
 
 			if (!isSuccess) {
 				toast({
@@ -27,8 +27,6 @@ export const RestoreAccountOTP: FC = () => {
 			navigation(ERoutes.restoreAccountPassword)
 		} catch (e) {
 			console.error(e)
-		} finally {
-			setLoading(false)
 		}
 	}
 

@@ -9,48 +9,44 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
-import { useBoardStore, useCraeteBoardStore } from '@/storage'
+import { useBoardStore, useUpdateBoardStore } from '@/storage'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { MouseEvent, useRef, useState, type FC, type ReactNode } from 'react'
-import { useNavigate } from 'react-router'
 import { toast } from './ui/use-toast'
 
-export interface ICreateBoardProvider {
+export interface IUpdateBoardProvider {
 	children: ReactNode
 }
 
-export const CreateBoardProvider: FC<ICreateBoardProvider> = ({ children }) => {
-	const isShow = useCraeteBoardStore(store => store.isShow)
-
-	const setIsShow = useCraeteBoardStore(store => store.setIsShow)
+export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
+	const isShow = useUpdateBoardStore(store => store.isShow)
+	const setIsShow = useUpdateBoardStore(store => store.setIsShow)
+	const id = useUpdateBoardStore(store => store.id)
 
 	const createButtonRef = useRef<HTMLButtonElement | null>(null)
 
 	const [name, setName] = useState<string>('')
 
-	const create = useBoardStore(store => store.create)
-
 	const loader = useLoader()
 
-	const navigate = useNavigate()
+	const update = useBoardStore(store => store.update)
 
-	async function onCreateSubmit() {
+	async function onUpdateSubmit() {
+		if (!id.length) return
+
 		try {
-			const createdBoard = await loader(create, { name })
+			const updatedBoard = await loader(update, id, { name })
 
-			if (!createdBoard) {
+			if (!updatedBoard) {
 				toast({
-					title: 'Не удалось создать доску',
+					title: 'Не удалось обновить доску',
 				})
 
 				return
 			}
 
 			setIsShow(false)
-
-			navigate(ERoutes.board + '/' + createdBoard._id)
 		} catch (e) {
 			console.error(e)
 		}
@@ -58,7 +54,7 @@ export const CreateBoardProvider: FC<ICreateBoardProvider> = ({ children }) => {
 
 	function submitHandler(e: MouseEvent<HTMLButtonElement>) {
 		e.preventDefault()
-		onCreateSubmit()
+		onUpdateSubmit()
 	}
 
 	return (
@@ -66,9 +62,9 @@ export const CreateBoardProvider: FC<ICreateBoardProvider> = ({ children }) => {
 			<Dialog open={isShow} onOpenChange={setIsShow}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Новая доска</DialogTitle>
+						<DialogTitle>Обновить доску</DialogTitle>
 						<DialogDescription>
-							Заполните форму чтобы создать новую доску.
+							Заполните форму чтобы обновить доску.
 						</DialogDescription>
 					</DialogHeader>
 					<div className="flex flex-col gap-6 py-4">
@@ -96,7 +92,7 @@ export const CreateBoardProvider: FC<ICreateBoardProvider> = ({ children }) => {
 								disabled={!name.length}
 								onClick={submitHandler}
 							>
-								Создать
+								Обновить
 							</Button>
 						</DialogClose>
 					</DialogFooter>

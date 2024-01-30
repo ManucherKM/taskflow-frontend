@@ -125,8 +125,4 @@ export const useRestoreAccount = create<IRestoreAccountStore>((set, get) => ({
 			return false
 		}
 	},
-	reset() {
-		// We reset the storage to its original state.
-		set(defaultRestoreAccountStore)
-	},
 }))

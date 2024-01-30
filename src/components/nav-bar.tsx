@@ -2,10 +2,9 @@ import { ERoutes } from '@/config/routes'
 import { useOutsideClick } from '@/hooks'
 import { useEffect, useRef, useState, type FC } from 'react'
 import { Link } from 'react-router-dom'
-import { CreateBoardProvider, NavbarContextMenuProvider, SearchBoard } from '.'
+import { NavbarContextMenu, SearchBoard } from '.'
 import { Icons } from './icons'
 import { Logo } from './logo'
-import { LogoutProvider } from './logout-provider'
 import { Search } from './search'
 import { useTheme } from './theme-provider'
 import { TypographyP } from './typography-p'
@@ -59,11 +58,6 @@ export const NavBar: FC = () => {
 							isShow={isShowSearchBoard && isContain}
 						/>
 						<div className="flex">
-							<CreateBoardProvider>
-								<Button variant={'ghost'} size={'icon'}>
-									<Icons.plus />
-								</Button>
-							</CreateBoardProvider>
 							<Button
 								variant={'ghost'}
 								size={'icon'}
@@ -78,22 +72,17 @@ export const NavBar: FC = () => {
 								<Icons.moon className="block dark:hidden" />
 								<Icons.sun className="hidden dark:block" />
 							</Button>
-							<LogoutProvider>
-								<Button variant={'ghost'} size={'icon'}>
-									<Icons.logout />
-								</Button>
-							</LogoutProvider>
 						</div>
 
 						<TypographyP className="w-20 overflow-hidden text-ellipsis !mt-0">
 							test@gmail.com
 						</TypographyP>
-						<NavbarContextMenuProvider>
+						<NavbarContextMenu>
 							<Avatar className="cursor-pointer hover:opacity-80">
 								<AvatarImage src="https://github.com/shadcn.png" />
 								<AvatarFallback>CN</AvatarFallback>
 							</Avatar>
-						</NavbarContextMenuProvider>
+						</NavbarContextMenu>
 					</div>
 				</div>
 			</div>
