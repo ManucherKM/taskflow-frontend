@@ -9,17 +9,18 @@ import {
 	ContextMenuTrigger,
 } from '@/components/ui/context-menu'
 import { ERoutes } from '@/config/routes'
+import { useAuthStore, useCraeteBoardStore } from '@/storage'
 import type { FC, ReactNode } from 'react'
 import { useNavigate } from 'react-router'
 
-export interface IContextMenuDemo {
+export interface INavbarContextMenu {
 	children: ReactNode
 }
 
-export const NavbarContextMenuProvider: FC<IContextMenuDemo> = ({
-	children,
-}) => {
+export const NavbarContextMenu: FC<INavbarContextMenu> = ({ children }) => {
 	const navigation = useNavigate()
+	const setIsShow = useCraeteBoardStore(store => store.setIsShow)
+	const logout = useAuthStore(store => store.logout)
 
 	function backHandler() {
 		navigation(-1)
@@ -31,6 +32,14 @@ export const NavbarContextMenuProvider: FC<IContextMenuDemo> = ({
 
 	function reloadPageHandler() {
 		window.location.reload()
+	}
+
+	function newBoardHandler() {
+		setIsShow(true)
+	}
+
+	function logoutHandler() {
+		logout()
 	}
 
 	return (
@@ -61,6 +70,13 @@ export const NavbarContextMenuProvider: FC<IContextMenuDemo> = ({
 						</ContextMenuItem>
 					</ContextMenuSubContent>
 				</ContextMenuSub>
+				<ContextMenuSeparator />
+				<ContextMenuItem inset onClick={newBoardHandler}>
+					Новая доска
+				</ContextMenuItem>
+				<ContextMenuItem inset onClick={logoutHandler} className="text-red-400">
+					Выйти
+				</ContextMenuItem>
 			</ContextMenuContent>
 		</ContextMenu>
 	)

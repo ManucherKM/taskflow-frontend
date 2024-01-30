@@ -45,11 +45,10 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 		}
 
 		useEffect(() => {
-			if (!query) {
-				return
-			}
+			if (!query) return
 
 			setIsLoading(true)
+
 			delayForType(() => {
 				fetchBoards().finally(() => setIsLoading(false))
 			})
@@ -58,15 +57,16 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 			<div ref={ref} className="relative">
 				{searchComponent}
 				{query.length !== 0 && isShow && (
-					<ScrollArea className="!absolute top-10 h-72 rounded-md border w-96 bg-background">
+					<ScrollArea className="!absolute top-10 h-72 rounded-md border w-96 bg-background z-50">
 						{isLoading && (
-							<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center z-20">
+							<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-20">
 								<Icons.spinner className="animate-spin" />
 							</div>
 						)}
 
 						{boards.map(board => (
 							<Link
+								key={board._id}
 								to={ERoutes.board + '/' + board._id}
 								className="flex flex-col"
 							>
@@ -81,12 +81,10 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 										</AvatarFallback>
 									</Avatar>
 									<div className="space-y-1 overflow-hidden ">
-										{/* <h4 className="text-sm font-semibold">@nextjs</h4> */}
 										<p className="text-sm text-ellipsis overflow-hidden  text-nowrap">
 											{board.name}
 										</p>
 										<div className="flex items-center pt-2">
-											{/* <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />{' '} */}
 											<span className="text-xs text-muted-foreground">
 												Создан{' '}
 												{formatDateDDMMYYYY(new Date(board.createdAt)).join(

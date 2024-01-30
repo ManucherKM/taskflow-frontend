@@ -46,15 +46,49 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 	async create(target) {
 		try {
 			const { data } = await axios.post<IBoard>(
-				EBoardStoreApiRoutes.create,
+				EBoardStoreApiRoutes.main,
 				target,
 			)
 
 			if (!data) {
-				return false
+				return
 			}
 
 			get().addBoard(data)
+
+			return data
+		} catch (e) {
+			console.error(e)
+		}
+	},
+
+	async update(id, target) {
+		try {
+			const { data } = await axios.patch<{ success: boolean }>(
+				EBoardStoreApiRoutes.main + '/' + id,
+				target,
+			)
+
+			if (!data?.success) {
+				return false
+			}
+
+			return true
+		} catch (e) {
+			console.error(e)
+			return false
+		}
+	},
+
+	async remove(id) {
+		try {
+			const { data } = await axios.delete<{ success: boolean }>(
+				EBoardStoreApiRoutes.main + '/' + id,
+			)
+
+			if (!data?.success) {
+				return false
+			}
 
 			return true
 		} catch (e) {
@@ -78,9 +112,5 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 		} catch (e) {
 			console.error(e)
 		}
-	},
-	reset() {
-		// Reset the storage to its original state.
-		set(defaultStore)
 	},
 }))

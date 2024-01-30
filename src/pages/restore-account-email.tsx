@@ -10,7 +10,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { ERoutes } from '@/config/routes'
-import { useRestoreAccount, useStore } from '@/storage'
+import { useLoader } from '@/hooks'
+import { useRestoreAccount } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FC, MouseEvent, useRef } from 'react'
 import { useForm } from 'react-hook-form'
@@ -33,7 +34,8 @@ export const RestoreAccountEmail: FC = () => {
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
 	const createOtp = useRestoreAccount(store => store.createOtp)
 
-	const setLoading = useStore(store => store.setLoading)
+	const loader = useLoader()
+
 	const navigation = useNavigate()
 
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -46,9 +48,7 @@ export const RestoreAccountEmail: FC = () => {
 
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
 		try {
-			setLoading(true)
-
-			const isSuccess = await createOtp(data.email)
+			const isSuccess = await loader(createOtp, data.email)
 
 			if (!isSuccess) {
 				toast({
@@ -60,8 +60,6 @@ export const RestoreAccountEmail: FC = () => {
 			navigation(ERoutes.restoreAccountOTP)
 		} catch (e) {
 			console.error(e)
-		} finally {
-			setLoading(false)
 		}
 	}
 

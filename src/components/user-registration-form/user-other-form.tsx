@@ -12,11 +12,12 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { history } from '@/config/history'
 import { ERoutes } from '@/config/routes'
-import { useAuthStore, useStore } from '@/storage'
+import { useLoader } from '@/hooks'
+import { useAuthStore } from '@/storage'
 import { IRegistrationTarget } from '@/storage/useAuthStore/types'
 import { FC, FormEvent, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router'
 import { useToast } from '../ui/use-toast'
 
 const FormSchema = z.object({
@@ -32,10 +33,10 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 	const firstNameInputRef = useRef<HTMLInputElement | null>(null)
 	const lastNameInputRef = useRef<HTMLInputElement | null>(null)
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
-
+	const navigate = useNavigate()
 	const registration = useAuthStore(store => store.registration)
 	const regInfo = useAuthStore(store => store.regInfo)
-	const setLoading = useStore(store => store.setLoading)
+	const loader = useLoader()
 
 	const { toast } = useToast()
 
@@ -52,11 +53,7 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 		const totalInfo = { ...regInfo, ...data } as IRegistrationTarget
 
 		try {
-			setLoading(true)
-
-			const isSuccess = await registration(totalInfo)
-
-			setLoading(false)
+			const isSuccess = await loader(registration, totalInfo)
 
 			if (!isSuccess) {
 				toast({
@@ -66,7 +63,7 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 				return
 			}
 
-			history.push(ERoutes.checkYourEmail)
+			navigate(ERoutes.checkYourEmail)
 		} catch (e) {
 			console.error(e)
 		}

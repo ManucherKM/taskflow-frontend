@@ -1,14 +1,12 @@
-// Types
-import type { ILogoutStore } from './types'
+import type { ICreateBoardStore } from './types'
 
-// Utils
 import { create } from 'zustand'
 
 const defaultStore = {
 	isShow: false,
-} as ILogoutStore
+} as ICreateBoardStore
 
-export const useLogoutStore = create<ILogoutStore>(set => ({
+export const useCraeteBoardStore = create<ICreateBoardStore>(set => ({
 	...defaultStore,
 	setIsShow(target) {
 		set({ isShow: target })

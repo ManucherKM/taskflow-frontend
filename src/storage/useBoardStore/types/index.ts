@@ -24,14 +24,15 @@ export interface IBoardStore {
 
 	getAllByName: (target: { name: string }) => Promise<IBoard[] | undefined>
 
-	create: (target: { name: string }) => Promise<boolean>
+	create: (target: { name: string }) => Promise<IBoard | undefined>
 
-	/** Function to reset the storage to its original state. */
-	reset: () => void
+	update: (id: string, target: Partial<Omit<IBoard, '_id'>>) => Promise<boolean>
+
+	remove: (id: string) => Promise<boolean>
 }
 
 export enum EBoardStoreApiRoutes {
 	all = '/api/board/all',
 	name = '/api/board/name',
-	create = '/api/board',
+	main = '/api/board',
 }

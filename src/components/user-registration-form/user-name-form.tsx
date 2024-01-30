@@ -13,7 +13,8 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useAuthStore } from '@/storage'
+import { useLoader } from '@/hooks'
+import { useAuthStore, useStore } from '@/storage'
 import clsx from 'clsx'
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
 import { Icons } from '..'
@@ -36,9 +37,11 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 	const setRegInfo = useAuthStore(store => store.setRegInfo)
 	const checkUserName = useAuthStore(store => store.checkUserName)
 
+	const isLoading = useStore(store => store.isLoading)
+
 	const [isValid, setIsValid] = useState<boolean>(false)
 	const [isExist, setIsExist] = useState<boolean>(false)
-	const [isLoading, setIsLoading] = useState(false)
+	const loader = useLoader()
 
 	const timer = useRef<NodeJS.Timeout | null>(null)
 
@@ -56,13 +59,11 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 
 	const checkUserNameHandler = async (userName: string) => {
 		try {
-			setIsLoading(true)
-			const isValid = await checkUserName(userName)
-			setIsExist(isValid)
+			const isValid = await loader(checkUserName, userName)
+
+			setIsExist(!!isValid)
 		} catch (e) {
 			console.error(e)
-		} finally {
-			setIsLoading(false)
 		}
 	}
 
