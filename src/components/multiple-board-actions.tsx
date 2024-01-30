@@ -56,7 +56,7 @@ export const MultipleBoardActionsProvider: FC<
 	)
 	return (
 		<>
-			{selectedBoards.length !== 0 && <MultipleBoardActions />}
+			{selectedBoards.length > 1 && <MultipleBoardActions />}
 			{children}
 		</>
 	)
