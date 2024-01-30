@@ -59,7 +59,7 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 				{query.length !== 0 && isShow && (
 					<ScrollArea className="!absolute top-10 h-72 rounded-md border w-96 bg-background z-50">
 						{isLoading && (
-							<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-20">
+							<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-accent/75 z-20">
 								<Icons.spinner className="animate-spin" />
 							</div>
 						)}

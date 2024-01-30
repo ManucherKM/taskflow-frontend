@@ -9,7 +9,7 @@ import {
 	ContextMenuTrigger,
 } from '@/components/ui/context-menu'
 import { ERoutes } from '@/config/routes'
-import { useAuthStore, useCraeteBoardStore } from '@/storage'
+import { useCraeteBoardStore, useLogoutStore } from '@/storage'
 import type { FC, ReactNode } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -19,8 +19,8 @@ export interface INavbarContextMenu {
 
 export const NavbarContextMenu: FC<INavbarContextMenu> = ({ children }) => {
 	const navigation = useNavigate()
-	const setIsShow = useCraeteBoardStore(store => store.setIsShow)
-	const logout = useAuthStore(store => store.logout)
+	const setIsShowCreateBoard = useCraeteBoardStore(store => store.setIsShow)
+	const setIsShowLogout = useLogoutStore(store => store.setIsShow)
 
 	function backHandler() {
 		navigation(-1)
@@ -35,11 +35,11 @@ export const NavbarContextMenu: FC<INavbarContextMenu> = ({ children }) => {
 	}
 
 	function newBoardHandler() {
-		setIsShow(true)
+		setIsShowCreateBoard(true)
 	}
 
 	function logoutHandler() {
-		logout()
+		setIsShowLogout(true)
 	}
 
 	return (
@@ -74,7 +74,11 @@ export const NavbarContextMenu: FC<INavbarContextMenu> = ({ children }) => {
 				<ContextMenuItem inset onClick={newBoardHandler}>
 					Новая доска
 				</ContextMenuItem>
-				<ContextMenuItem inset onClick={logoutHandler} className="text-red-400">
+				<ContextMenuItem
+					inset
+					onClick={logoutHandler}
+					className="text-red-400 !hover:text-red-600"
+				>
 					Выйти
 				</ContextMenuItem>
 			</ContextMenuContent>
