@@ -10,7 +10,7 @@ import {
 	SelectValue,
 } from './ui/select'
 
-import { Button, Input, toast } from '@/components'
+import { Button, Icons, Input, toast } from '@/components'
 import {
 	Form,
 	FormControl,
@@ -20,6 +20,10 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form'
+import { useDelayForType, useLoader } from '@/hooks'
+import { useAuthStore, useUserStore } from '@/storage'
+import clsx from 'clsx'
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 
 const accountFormSchema = z.object({
 	userName: z
@@ -30,36 +34,88 @@ const accountFormSchema = z.object({
 		.max(30, {
 			message: 'Имя пользователя не должно превышать 30 символов.',
 		}),
-	email: z.string().email({
-		message: 'Введите корректную почту',
-	}),
+	email: z.string().email().optional(),
 })
 
 type AccountFormValues = z.infer<typeof accountFormSchema>
 
 // This can come from your database or API.
-const defaultValues: Partial<AccountFormValues> = {
-	email: 'test@gmail.com',
-	userName: 'asdiuyqwe',
-}
 
 export function AccountForm() {
+	const user = useUserStore(store => store.user)
+
+	const checkUserName = useAuthStore(store => store.checkUserName)
+
+	const update = useUserStore(store => store.update)
+
+	const [isValidUserName, setIsValidUserName] = useState(false)
+
+	const [isLoading, setIsLoading] = useState(false)
+
+	const [defaultValues, setDefaultValues] = useState<
+		Partial<AccountFormValues>
+	>({
+		email: user?.email || '',
+		userName: user?.userName || '',
+	})
+
+	const loader = useLoader()
+
+	const delayForType = useDelayForType()
+
 	const form = useForm<AccountFormValues>({
 		resolver: zodResolver(accountFormSchema),
 		defaultValues,
 	})
 
-	function onSubmit(data: AccountFormValues) {
-		toast({
-			title: 'You submitted the following values:',
-			description: (
-				<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-					<code className="text-white">{JSON.stringify(data, null, 2)}</code>
-				</pre>
-			),
-		})
+	async function onSubmit(data: AccountFormValues) {
+		try {
+			const isSuccess = await loader(update, data)
+
+			if (!isSuccess) {
+				toast({
+					title: 'Не удалось обновить профиль',
+				})
+				return
+			}
+		} catch (e) {
+			console.log(e)
+		}
 	}
 
+	const fetchUserName = async (query: string) => {
+		try {
+			const isSuccess = await checkUserName(query)
+
+			setIsValidUserName(!isSuccess)
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+	async function userNameHandler(e: ChangeEvent<HTMLInputElement>) {
+		setIsLoading(true)
+
+		delayForType(() =>
+			fetchUserName(e.target.value).finally(() => setIsLoading(false)),
+		)
+	}
+
+	function submitHandler(e: MouseEvent<HTMLButtonElement>) {
+		e.preventDefault()
+		form.handleSubmit(onSubmit)()
+	}
+
+	useEffect(() => {
+		setDefaultValues({
+			email: user?.email || '',
+			userName: user?.userName || '',
+		})
+	}, [user])
+
+	useEffect(() => {
+		form.reset(defaultValues)
+	}, [defaultValues])
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -68,14 +124,45 @@ export function AccountForm() {
 					name="userName"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Имя пользователя</FormLabel>
+							<FormLabel
+								className={clsx([
+									!isValidUserName &&
+										field.value !== defaultValues.userName &&
+										!isLoading &&
+										'text-[#7f1d1d]',
+								])}
+							>
+								Имя пользователя
+							</FormLabel>
 							<FormControl>
-								<Input placeholder="taskflowteam" {...field} />
+								<Input
+									className={clsx([
+										!isValidUserName &&
+											field.value !== defaultValues.userName &&
+											!isLoading &&
+											'border-[#7f1d1d]',
+									])}
+									placeholder="taskflowteam"
+									{...field}
+									onChange={e => {
+										field.onChange(e)
+										userNameHandler(e)
+									}}
+								/>
 							</FormControl>
+							{!isValidUserName &&
+								field.value !== defaultValues.userName &&
+								!isLoading && (
+									<FormDescription className="text-[#7f1d1d]">
+										Это имя пользователя уже занято
+									</FormDescription>
+								)}
+
 							<FormDescription>
 								Это ваше общедоступное отображаемое имя пользователя. С помощью
 								него вас могу находить другие пользователи.
 							</FormDescription>
+
 							<FormMessage />
 						</FormItem>
 					)}
@@ -86,25 +173,33 @@ export function AccountForm() {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Почта</FormLabel>
-							<Select
-								onValueChange={field.onChange}
-								defaultValue={field.value || 'asdasd'}
-							>
-								<FormControl>
-									<SelectTrigger>
-										<SelectValue placeholder="Select a verified email to display" />
-									</SelectTrigger>
-								</FormControl>
-								<SelectContent>
-									<SelectItem value="test@gmail.com">test@gmail.com</SelectItem>
-								</SelectContent>
-							</Select>
+							{!!field.value && (
+								<Select defaultValue={field.value}>
+									<FormControl>
+										<SelectTrigger>
+											<SelectValue placeholder="Загрузка" />
+										</SelectTrigger>
+									</FormControl>
+									<SelectContent>
+										<SelectItem value={field.value}>{field.value}</SelectItem>
+									</SelectContent>
+								</Select>
+							)}
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
 
-				<Button type="submit">Сохранить изменения</Button>
+				<Button
+					type="submit"
+					onClick={submitHandler}
+					disabled={!isValidUserName || isLoading}
+				>
+					{isLoading && (
+						<Icons.spinner className="animate-spin dark:text-black w-4 h-4 mr-1" />
+					)}
+					Сохранить изменения
+				</Button>
 			</form>
 		</Form>
 	)
