@@ -3,8 +3,17 @@ import { ChevronDownIcon } from '@radix-ui/react-icons'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { cn } from '@/lib/utils'
-import { Button, buttonVariants } from './ui/button'
+import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
+
+import {
+	Button,
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	toast,
+} from '@/components'
 import {
 	Form,
 	FormControl,
@@ -13,34 +22,51 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from './ui/form'
-import { RadioGroup, RadioGroupItem } from './ui/radio-group'
-import { toast } from './ui/use-toast'
+} from '@/components/ui/form'
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
 
-const appearanceFormSchema = z.object({
-	theme: z.enum(['light', 'dark'], {
-		required_error: 'Please select a theme.',
-	}),
-	font: z.enum(['inter', 'manrope', 'system'], {
-		invalid_type_error: 'Select a font',
-		required_error: 'Please select a font.',
-	}),
+import { buttonVariants } from './ui/button'
+import { RadioGroup, RadioGroupItem } from './ui/radio-group'
+
+const languages = [
+	{ label: 'English', value: 'en' },
+	{ label: 'French', value: 'fr' },
+	{ label: 'German', value: 'de' },
+	{ label: 'Spanish', value: 'es' },
+	{ label: 'Portuguese', value: 'pt' },
+	{ label: 'Russian', value: 'ru' },
+	{ label: 'Japanese', value: 'ja' },
+	{ label: 'Korean', value: 'ko' },
+	{ label: 'Chinese', value: 'zh' },
+] as const
+
+const displayFormSchema = z.object({
+	theme: z.enum(['light', 'dark']),
+	font: z.enum(['inter', 'manrope', 'system']),
+	language: z.string(),
 })
 
-type AppearanceFormValues = z.infer<typeof appearanceFormSchema>
+type DisplayFormValues = z.infer<typeof displayFormSchema>
 
 // This can come from your database or API.
-const defaultValues: Partial<AppearanceFormValues> = {
-	theme: 'light',
+const defaultValues: Partial<DisplayFormValues> = {
+	theme: 'dark',
+	font: 'inter',
+	language: 'ru',
 }
 
-export function AppearanceForm() {
-	const form = useForm<AppearanceFormValues>({
-		resolver: zodResolver(appearanceFormSchema),
+export function DisplayForm() {
+	const form = useForm<DisplayFormValues>({
+		resolver: zodResolver(displayFormSchema),
 		defaultValues,
 	})
 
-	function onSubmit(data: AppearanceFormValues) {
+	function onSubmit(data: DisplayFormValues) {
 		toast({
 			title: 'You submitted the following values:',
 			description: (
@@ -78,6 +104,68 @@ export function AppearanceForm() {
 							</div>
 							<FormDescription>
 								Установите шрифт, который вы хотите использовать в приложении.
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="language"
+					render={({ field }) => (
+						<FormItem className="flex flex-col">
+							<FormLabel>Язык</FormLabel>
+							<Popover>
+								<PopoverTrigger asChild>
+									<FormControl>
+										<Button
+											variant="outline"
+											role="combobox"
+											className={cn(
+												'w-[200px] justify-between',
+												!field.value && 'text-muted-foreground',
+											)}
+										>
+											{field.value
+												? languages.find(
+														language => language.value === field.value,
+													)?.label
+												: 'Выбрать язык'}
+											<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+										</Button>
+									</FormControl>
+								</PopoverTrigger>
+								<PopoverContent className="w-[200px] p-0">
+									<Command>
+										<CommandInput placeholder="Выбрать язык..." />
+										<CommandEmpty>Язык не найден.</CommandEmpty>
+										<CommandGroup>
+											{languages.map(language => (
+												<CommandItem
+													value={language.label}
+													key={language.value}
+													onSelect={() => {
+														form.setValue('language', language.value)
+													}}
+												>
+													<CheckIcon
+														className={cn(
+															'mr-2 h-4 w-4',
+															language.value === field.value
+																? 'opacity-100'
+																: 'opacity-0',
+														)}
+													/>
+													{language.label}
+												</CommandItem>
+											))}
+										</CommandGroup>
+									</Command>
+								</PopoverContent>
+							</Popover>
+							<FormDescription>
+								Это язык, который будет использоваться в приложении.
 							</FormDescription>
 							<FormMessage />
 						</FormItem>

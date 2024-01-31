@@ -1,9 +1,9 @@
-import { AppearanceForm, LayoutUserSetting } from '@/components'
+import { DisplayForm, LayoutUserSetting } from '@/components'
 
 export const Display = () => {
 	return (
 		<LayoutUserSetting>
-			<AppearanceForm />
+			<DisplayForm />
 		</LayoutUserSetting>
 	)
 }

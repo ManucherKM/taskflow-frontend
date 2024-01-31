@@ -21,8 +21,25 @@ import { useNavigate } from 'react-router'
 import { useToast } from '../ui/use-toast'
 
 const FormSchema = z.object({
-	firstName: z.string().optional(),
-	lastName: z.string().optional(),
+	firstName: z
+		.string()
+		.min(2, {
+			message: 'Имя должно содержать хотя бы 2 символа',
+		})
+		.max(30, {
+			message: 'Имя должно быть не более 30 символов',
+		})
+		.optional(),
+
+	lastName: z
+		.string()
+		.min(2, {
+			message: 'Фамилия должна содержать хотя бы 2 символа',
+		})
+		.max(30, {
+			message: 'Фамилия должна содержать не более 30 символов',
+		})
+		.optional(),
 })
 
 export interface UserOtherForm {

@@ -23,9 +23,14 @@ import * as z from 'zod'
 import { TypographyP } from '../typography-p'
 
 const FormSchema = z.object({
-	userName: z.string().min(2, {
-		message: 'Имя пользователя должно состоять минимум из 2 символов.',
-	}),
+	userName: z
+		.string()
+		.min(2, {
+			message: 'Имя пользователя должно состоять минимум из 2 символов.',
+		})
+		.max(30, {
+			message: 'Имя пользователя не должно превышать 30 символов.',
+		}),
 	password: z.string().min(8, {
 		message: 'Пароль должен иметь не менее 8 символов и не более 32.',
 	}),

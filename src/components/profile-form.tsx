@@ -1,8 +1,15 @@
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { CalendarIcon } from '@radix-ui/react-icons'
+import { format } from 'date-fns'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
-
-import { cn } from '@/lib/utils'
+import { Calendar } from '.'
 import { Button } from './ui/button'
 import {
 	Form,
@@ -14,35 +21,32 @@ import {
 	FormMessage,
 } from './ui/form'
 import { Input } from './ui/input'
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from './ui/select'
 import { Textarea } from './ui/textarea'
 import { toast } from './ui/use-toast'
 
 const profileFormSchema = z.object({
-	username: z
+	firstName: z
 		.string()
 		.min(2, {
-			message: 'Username must be at least 2 characters.',
+			message: 'Имя должно содержать хотя бы 2 символа',
 		})
 		.max(30, {
-			message: 'Username must not be longer than 30 characters.',
+			message: 'Имя должно быть не более 30 символов',
 		}),
-	email: z
-		.string({
-			required_error: 'Please select an email to display.',
+	lastName: z
+		.string()
+		.min(2, {
+			message: 'Фамилия должна содержать хотя бы 2 символа',
 		})
-		.email(),
+		.max(30, {
+			message: 'Фамилия должна содержать не более 30 символов',
+		}),
 	bio: z.string().max(160).min(4),
+	dob: z.date(),
 	urls: z
 		.array(
 			z.object({
-				value: z.string().url({ message: 'Please enter a valid URL.' }),
+				value: z.string().url({ message: 'Пожалуйста введите валидный URL' }),
 			}),
 		)
 		.optional(),
@@ -52,7 +56,11 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
-	bio: 'I own a computer.',
+	firstName: 'asdasd',
+	lastName: 'asdasd',
+	dob: new Date(Date.now()),
+	bio: 'asdasd',
+
 	urls: [
 		{ value: 'https://shadcn.com' },
 		{ value: 'http://twitter.com/shadcn' },
@@ -87,44 +95,83 @@ export function ProfileForm() {
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 				<FormField
 					control={form.control}
-					name="username"
+					name="firstName"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Имя пользователя</FormLabel>
+							<FormLabel>Имя</FormLabel>
 							<FormControl>
 								<Input placeholder="taskflowteam" {...field} />
 							</FormControl>
 							<FormDescription>
-								Это ваше общедоступное отображаемое имя пользователя. С помощью
-								него вас могу находить другие пользователи.
+								Это ваше общедоступное отображаемое имя.
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
+
 				<FormField
 					control={form.control}
-					name="email"
+					name="lastName"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Почта</FormLabel>
-							<Select
-								onValueChange={field.onChange}
-								defaultValue={field.value || 'asdasd'}
-							>
-								<FormControl>
-									<SelectTrigger>
-										<SelectValue placeholder="Select a verified email to display" />
-									</SelectTrigger>
-								</FormControl>
-								<SelectContent>
-									<SelectItem value="asdasd">m@google.com</SelectItem>
-								</SelectContent>
-							</Select>
+							<FormLabel>Фамилия</FormLabel>
+							<FormControl>
+								<Input placeholder="taskflowteam" {...field} />
+							</FormControl>
+							<FormDescription>
+								Это ваша общедоступная отображаемая фамилия.
+							</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
+
+				<FormField
+					control={form.control}
+					name="dob"
+					render={({ field }) => (
+						<FormItem className="flex flex-col">
+							<FormLabel>День рождения</FormLabel>
+							<Popover>
+								<PopoverTrigger asChild>
+									<FormControl>
+										<Button
+											variant={'outline'}
+											className={cn(
+												'w-[240px] pl-3 text-left font-normal',
+												!field.value && 'text-muted-foreground',
+											)}
+										>
+											{field.value ? (
+												format(field.value, 'PPP')
+											) : (
+												<span>Выбрать дату</span>
+											)}
+											<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+										</Button>
+									</FormControl>
+								</PopoverTrigger>
+								<PopoverContent className="w-auto p-0" align="start">
+									<Calendar
+										mode="single"
+										selected={field.value}
+										onSelect={field.onChange}
+										disabled={date =>
+											date > new Date() || date < new Date('1900-01-01')
+										}
+										initialFocus
+									/>
+								</PopoverContent>
+							</Popover>
+							<FormDescription>
+								Дата рождения используется для расчета вашего возраста.
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
 				<FormField
 					control={form.control}
 					name="bio"
@@ -139,8 +186,7 @@ export function ProfileForm() {
 								/>
 							</FormControl>
 							<FormDescription>
-								Вы можете <span>@упоминать</span> других пользователей и
-								организации.
+								Вы можете <span>@упоминать</span> других пользователей.
 							</FormDescription>
 							<FormMessage />
 						</FormItem>

@@ -22,14 +22,9 @@ import * as z from 'zod'
 import { TypographyP } from '../typography-p'
 
 const FormSchema = z.object({
-	email: z
-		.string()
-		.regex(
-			/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
-			{
-				message: 'Введите корректную почту',
-			},
-		),
+	email: z.string().email({
+		message: 'Введите корректную почту',
+	}),
 	password: z.string().min(8, {
 		message: 'Пароль должен иметь не менее 8 символов и не более 32.',
 	}),
