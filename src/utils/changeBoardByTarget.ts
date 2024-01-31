@@ -7,25 +7,29 @@ export function changeBoardByTarget(
 ) {
 	return boards.map(prevBoard => {
 		if (prevBoard._id === id) {
-			if (target.name) {
-				prevBoard.name = target.name
+			const board = { ...prevBoard }
+
+			if (target.name !== undefined) {
+				board.name = target.name
 			}
 
-			if (target.isFavorite) {
-				prevBoard.isFavorite = target.isFavorite
+			if (target.isFavorite !== undefined) {
+				board.isFavorite = target.isFavorite
 			}
 
-			if (target.stages) {
-				prevBoard.stages = target.stages
+			if (target.stages !== undefined) {
+				board.stages = target.stages
 			}
 
-			if (target.admins) {
-				prevBoard.admins = target.admins
+			if (target.admins !== undefined) {
+				board.admins = target.admins
 			}
 
-			if (target.users) {
-				prevBoard.users = target.users
+			if (target.users !== undefined) {
+				board.users = target.users
 			}
+
+			return board
 		}
 
 		return prevBoard
