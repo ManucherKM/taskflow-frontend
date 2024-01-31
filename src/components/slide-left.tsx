@@ -9,6 +9,7 @@ export interface ISlideLeft {
 export const SlideLeft: FC<ISlideLeft> = ({ children }) => {
 	return (
 		<motion.div
+			// key={'slide-left' + Math.random()}
 			initial={{ opacity: 0, x: '100px' }}
 			animate={{ opacity: 1, x: '0px' }}
 			exit={{ opacity: 0, x: '100px' }}

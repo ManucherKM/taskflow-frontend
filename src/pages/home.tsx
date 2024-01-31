@@ -22,6 +22,7 @@ export const Home: FC = () => {
 		() => boards.filter(board => !board.isFavorite),
 		[boards],
 	)
+
 	const getAllBoards = useBoardStore(store => store.getAllBoards)
 
 	useEffect(() => {

@@ -51,16 +51,14 @@ export const MultipleBoardActions = () => {
 		<motion.div
 			initial={{ y: '-100px' }}
 			animate={{ y: '0' }}
-			exit={{
-				y: '-100px',
-			}}
+			exit={{ y: '-100px' }}
 			transition={{ duration: '0.4', type: 'spring', bounce: 0.4 }}
 			className="fixed w-full flex justify-between items-center p-4 bg-background border-b z-50"
 		>
 			<TypographyP>Выбранно: {selectedBoards.length}</TypographyP>
 
 			<div>
-				<Button variant={'ghost'} onClick={removeHandler}>
+				<Button variant={'ghost'} onMouseDown={removeHandler}>
 					Удалить
 				</Button>
 			</div>
