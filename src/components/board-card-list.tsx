@@ -1,34 +1,69 @@
 import { IBoard } from '@/storage/useBoardStore/types'
-import { FC } from 'react'
+import { Dispatch, FC, SetStateAction } from 'react'
+import Selecto, { OnSelect } from 'react-selecto'
 import { BoardCard } from './board-card'
 import { List } from './list'
 
 export interface IBoardCardList {
 	activeBoards: string[]
 	boards: IBoard[]
-	onActiveBoardChange: (board: IBoard) => void
+	setActiveBoards: Dispatch<SetStateAction<string[]>>
+	container: HTMLElement | null
 }
 
 export const BoardCardList: FC<IBoardCardList> = ({
 	boards,
 	activeBoards,
-	onActiveBoardChange,
+	setActiveBoards,
+	container,
 }) => {
-	function activeBoardChangeHanler(board: IBoard) {
-		onActiveBoardChange(board)
+	// Function that will be executed when an element of the file is selected.
+	function selectHandler(e: OnSelect) {
+		e.added.forEach(el => {
+			const boardId = el.dataset.id
+
+			if (!boardId) return
+
+			setActiveBoards(prev => [...prev, boardId])
+		})
+
+		// Iterate through the files that were deleted.
+		e.removed.forEach(el => {
+			const boardId = el.dataset.id
+
+			if (!boardId) return
+
+			setActiveBoards(prev => prev.filter(id => id !== boardId))
+		})
 	}
 
 	return (
-		<List
-			arr={boards}
-			callback={board => (
-				<BoardCard
-					key={board._id}
-					isActive={activeBoards.includes(board._id)}
-					board={board}
-					onClick={() => activeBoardChangeHanler(board)}
-				/>
-			)}
-		/>
+		<>
+			<List
+				arr={boards}
+				callback={board => (
+					<BoardCard
+						key={board._id}
+						data-id={board._id}
+						isActive={activeBoards.includes(board._id)}
+						board={board}
+						className="board"
+					/>
+				)}
+			/>
+
+			<Selecto
+				// className="!bg-dominant-1-50 !border-dominant-1"
+				container={container}
+				dragContainer={document.body}
+				selectableTargets={['.board']}
+				selectByClick
+				selectFromInside
+				continueSelect={false}
+				toggleContinueSelect={'shift'}
+				hitRate={100}
+				onSelect={selectHandler}
+			/>
+		</>
 	)
 }

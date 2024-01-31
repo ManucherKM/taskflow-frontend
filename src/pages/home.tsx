@@ -1,10 +1,17 @@
 import { BoardCardList, NavBar, TypographyH3, toast } from '@/components'
 import { useLoader } from '@/hooks'
 import { useBoardStore } from '@/storage'
-import { useEffect, useMemo, useState, type FC } from 'react'
+import { useMultipleBoardActionStore } from '@/storage/useMultipleBoardActionsStore/useMultipleBoardActionsStore'
+import { useEffect, useMemo, useRef, useState, type FC } from 'react'
 
 export const Home: FC = () => {
 	const [selectedBoards, setSelectedBoards] = useState<string[]>([])
+	const containerBoardsRef = useRef<HTMLDivElement | null>(null)
+
+	const multipleSetSelectedBoards = useMultipleBoardActionStore(
+		store => store.setSelectedBoards,
+	)
+
 	const loader = useLoader()
 	const boards = useBoardStore(store => store.boards)
 	const favoriteBoards = useMemo(
@@ -36,29 +43,28 @@ export const Home: FC = () => {
 		fetch()
 	}, [])
 
+	useEffect(() => {
+		multipleSetSelectedBoards(
+			boards.filter(b => selectedBoards.includes(b._id)),
+		)
+	}, [selectedBoards])
+
 	return (
 		<>
 			<NavBar />
 
 			{boards.length !== 0 ? (
-				<div className="container">
-					<div className="mt-10 flex flex-col gap-10">
+				<div ref={containerBoardsRef} className="container">
+					<div className="mt-10 flex flex-col gap-10 select-none">
 						{favoriteBoards.length !== 0 && (
 							<>
 								<TypographyH3>Избранное</TypographyH3>
 								<div className="grid gap-3 grid-cols-5">
 									<BoardCardList
+										container={containerBoardsRef.current}
 										activeBoards={selectedBoards}
 										boards={favoriteBoards}
-										onActiveBoardChange={board =>
-											setSelectedBoards(prev => {
-												if (prev.includes(board._id)) {
-													return prev.filter(curr => curr !== board._id)
-												} else {
-													return [...prev, board._id]
-												}
-											})
-										}
+										setActiveBoards={setSelectedBoards}
 									/>
 								</div>
 							</>
@@ -69,17 +75,10 @@ export const Home: FC = () => {
 								<TypographyH3>Рабочее пространство</TypographyH3>
 								<div className="grid gap-3 grid-cols-5">
 									<BoardCardList
+										container={containerBoardsRef.current}
 										activeBoards={selectedBoards}
 										boards={notFavoriteBoards}
-										onActiveBoardChange={board =>
-											setSelectedBoards(prev => {
-												if (prev.includes(board._id)) {
-													return prev.filter(curr => curr !== board._id)
-												} else {
-													return [...prev, board._id]
-												}
-											})
-										}
+										setActiveBoards={setSelectedBoards}
 									/>
 								</div>
 							</>

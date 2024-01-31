@@ -1,7 +1,10 @@
 import { useLoader } from '@/hooks'
+import { useBoardStore } from '@/storage'
 import { useMultipleBoardActionStore } from '@/storage/useMultipleBoardActionsStore/useMultipleBoardActionsStore'
 import { FC, ReactNode } from 'react'
 import { Button, TypographyP, toast } from '.'
+
+import { motion } from 'framer-motion'
 
 export const MultipleBoardActions = () => {
 	const selectedBoards = useMultipleBoardActionStore(
@@ -16,6 +19,8 @@ export const MultipleBoardActions = () => {
 
 	const remove = useMultipleBoardActionStore(store => store.remove)
 
+	const getAllBoards = useBoardStore(store => store.getAllBoards)
+
 	async function removeHandler() {
 		try {
 			const isSuccess = await loader(remove, selectedBoards)
@@ -28,19 +33,38 @@ export const MultipleBoardActions = () => {
 			}
 
 			setSelectedBoards([])
+
+			const fetchedBoards = await loader(getAllBoards)
+
+			if (!fetchedBoards) {
+				toast({
+					title: 'Не удалось получить список досок',
+				})
+				return
+			}
 		} catch (e) {
 			console.log(e)
 		}
 	}
 
 	return (
-		<div>
+		<motion.div
+			initial={{ y: '-100px' }}
+			animate={{ y: '0' }}
+			exit={{
+				y: '-100px',
+			}}
+			transition={{ duration: '0.4', type: 'spring', bounce: 0.4 }}
+			className="fixed w-full flex justify-between items-center p-4 bg-background border-b z-50"
+		>
 			<TypographyP>Выбранно: {selectedBoards.length}</TypographyP>
 
 			<div>
-				<Button onClick={removeHandler}>Удалить</Button>
+				<Button variant={'ghost'} onClick={removeHandler}>
+					Удалить
+				</Button>
 			</div>
-		</div>
+		</motion.div>
 	)
 }
 

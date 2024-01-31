@@ -110,7 +110,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 					{board.isFavorite ? 'Убрать из избранного' : ' В избранное'}
 				</ContextMenuItem>
 
-				<ContextMenuItem inset onClick={removeHandler}>
+				<ContextMenuItem inset onClick={removeHandler} className="text-red-400">
 					Удалить
 				</ContextMenuItem>
 			</ContextMenuContent>
