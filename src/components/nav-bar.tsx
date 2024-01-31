@@ -1,5 +1,6 @@
 import { ERoutes } from '@/config/routes'
 import { useOutsideClick } from '@/hooks'
+import { useUserStore } from '@/storage'
 import { useEffect, useRef, useState, type FC } from 'react'
 import { Link } from 'react-router-dom'
 import { NavbarContextMenu, SearchBoard } from '.'
@@ -16,6 +17,8 @@ export const NavBar: FC = () => {
 	const [isShowSearchBoard, setIsShowSearchBoard] = useState<boolean>(false)
 	const searchBoardRef = useRef<HTMLDivElement | null>(null)
 	const [isContain, clickHandler] = useOutsideClick(searchBoardRef)
+
+	const user = useUserStore(store => store.user)
 
 	const { setTheme, theme } = useTheme()
 
@@ -75,11 +78,11 @@ export const NavBar: FC = () => {
 						</div>
 
 						<TypographyP className="w-20 overflow-hidden text-ellipsis !mt-0">
-							test@gmail.com
+							{user?.email}
 						</TypographyP>
 						<NavbarContextMenu>
 							<Avatar className="cursor-pointer hover:opacity-80">
-								<AvatarImage src="https://github.com/shadcn.png" />
+								<AvatarImage src={user?.avatar} />
 								<AvatarFallback>CN</AvatarFallback>
 							</Avatar>
 						</NavbarContextMenu>

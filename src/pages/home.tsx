@@ -4,9 +4,7 @@ import {
 	NavBar,
 	TypographyH3,
 	TypographyP,
-	toast,
 } from '@/components'
-import { useLoader } from '@/hooks'
 import { useBoardStore } from '@/storage'
 import { useMultipleBoardActionStore } from '@/storage/useMultipleBoardActionsStore/useMultipleBoardActionsStore'
 import { useEffect, useMemo, useRef, useState, type FC } from 'react'
@@ -19,7 +17,6 @@ export const Home: FC = () => {
 		store => store.setSelectedBoards,
 	)
 
-	const loader = useLoader()
 	const boards = useBoardStore(store => store.boards)
 	const favoriteBoards = useMemo(
 		() => boards.filter(board => board.isFavorite),
@@ -29,27 +26,6 @@ export const Home: FC = () => {
 		() => boards.filter(board => !board.isFavorite),
 		[boards],
 	)
-
-	const getAllBoards = useBoardStore(store => store.getAllBoards)
-
-	useEffect(() => {
-		const fetch = async () => {
-			try {
-				const fetchedBoards = await loader(getAllBoards)
-
-				if (!fetchedBoards) {
-					toast({
-						title: 'Не удалось получить список досок',
-					})
-					return
-				}
-			} catch (e) {
-				console.log(e)
-			}
-		}
-
-		fetch()
-	}, [])
 
 	useEffect(() => {
 		multipleSetSelectedBoards(
@@ -94,7 +70,7 @@ export const Home: FC = () => {
 					</div>
 				</div>
 			) : (
-				<div className="w-full h-[calc(100%-72px)] flex flex-col justify-center items-center gap-2">
+				<div className="w-full h-[calc(100vh-72px)] flex flex-col justify-center items-center gap-2">
 					<Icons.moodPuzzled className="w-20 h-20" />
 					<TypographyP className="!mt-0">
 						Похоже что у вас нет активных досок

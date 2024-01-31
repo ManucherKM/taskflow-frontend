@@ -3,10 +3,13 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
+import { useLoader } from '@/hooks'
 import { cn } from '@/lib/utils'
+import { useUserStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Calendar } from '.'
@@ -32,7 +35,8 @@ const profileFormSchema = z.object({
 		})
 		.max(30, {
 			message: 'Имя должно быть не более 30 символов',
-		}),
+		})
+		.optional(),
 	lastName: z
 		.string()
 		.min(2, {
@@ -40,9 +44,20 @@ const profileFormSchema = z.object({
 		})
 		.max(30, {
 			message: 'Фамилия должна содержать не более 30 символов',
-		}),
-	bio: z.string().max(160).min(4),
-	dob: z.date(),
+		})
+		.optional(),
+	bio: z
+		.string()
+		.min(4, {
+			message: 'Биография должна содержать не менее 4 символов',
+		})
+		.max(160, {
+			message: 'Биография должна содержать не более 160 символов',
+		})
+		.optional(),
+
+	birthday: z.date().optional(),
+
 	urls: z
 		.array(
 			z.object({
@@ -54,32 +69,47 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-	firstName: 'asdasd',
-	lastName: 'asdasd',
-	dob: new Date(Date.now()),
-	bio: 'asdasd',
-
-	urls: [
-		{ value: 'https://shadcn.com' },
-		{ value: 'http://twitter.com/shadcn' },
-	],
-}
-
 export function ProfileForm() {
+	const user = useUserStore(store => store.user)
+
+	const update = useUserStore(store => store.update)
+
+	const [defaultValues, setDefaultValues] = useState<
+		Partial<ProfileFormValues>
+	>({
+		firstName: user?.firstName || '',
+		lastName: user?.lastName || '',
+		birthday: user?.birthday ? new Date(user.birthday) : undefined,
+		bio: user?.bio || '',
+		urls: user?.urls,
+	})
+
+	const loader = useLoader()
+
 	const form = useForm<ProfileFormValues>({
 		resolver: zodResolver(profileFormSchema),
 		defaultValues,
 		mode: 'onChange',
 	})
 
-	const { fields, append } = useFieldArray({
+	const { fields, append, remove } = useFieldArray({
 		name: 'urls',
 		control: form.control,
 	})
 
-	function onSubmit(data: ProfileFormValues) {
+	async function onSubmit(data: ProfileFormValues) {
+		try {
+			const isSuccess = await loader(update, data)
+
+			if (!isSuccess) {
+				toast({
+					title: 'Не удалось обновить профиль',
+				})
+				return
+			}
+		} catch (e) {
+			console.log(e)
+		}
 		toast({
 			title: 'You submitted the following values:',
 			description: (
@@ -90,9 +120,28 @@ export function ProfileForm() {
 		})
 	}
 
+	function submitHandler(e: MouseEvent<HTMLButtonElement>) {
+		e.preventDefault()
+		form.handleSubmit(onSubmit)()
+	}
+
+	useEffect(() => {
+		setDefaultValues({
+			firstName: user?.firstName || '',
+			lastName: user?.lastName || '',
+			birthday: user?.birthday ? new Date(user.birthday) : undefined,
+			bio: user?.bio || '',
+			urls: user?.urls,
+		})
+	}, [user])
+
+	useEffect(() => {
+		form.reset(defaultValues)
+	}, [defaultValues])
+
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+			<form className="space-y-8">
 				<FormField
 					control={form.control}
 					name="firstName"
@@ -129,7 +178,7 @@ export function ProfileForm() {
 
 				<FormField
 					control={form.control}
-					name="dob"
+					name="birthday"
 					render={({ field }) => (
 						<FormItem className="flex flex-col">
 							<FormLabel>День рождения</FormLabel>
@@ -215,6 +264,16 @@ export function ProfileForm() {
 							)}
 						/>
 					))}
+
+					{fields.length === 0 && (
+						<>
+							<FormLabel>Ссылки</FormLabel>
+							<FormDescription className="mt-2">
+								Добавляйте полезные ссылки. Это может быть ссылка на веб-сайт,
+								резюме, социальные сети и так далее.
+							</FormDescription>
+						</>
+					)}
 					<Button
 						type="button"
 						variant="outline"
@@ -224,8 +283,26 @@ export function ProfileForm() {
 					>
 						Добавить
 					</Button>
+
+					{fields.length !== 0 && (
+						<Button
+							type="button"
+							variant="outline"
+							size="sm"
+							className="mt-2 ml-2 border-red-400 text-red-400 hover:text-red-400"
+							onClick={() => remove(-1)}
+						>
+							Удалить
+						</Button>
+					)}
 				</div>
-				<Button type="submit">Обновить профиль</Button>
+				<Button
+					type="submit"
+					disabled={!form.formState.isDirty || !form.formState.isValid}
+					onClick={submitHandler}
+				>
+					Обновить профиль
+				</Button>
 			</form>
 		</Form>
 	)

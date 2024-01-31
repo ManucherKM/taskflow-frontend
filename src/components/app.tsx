@@ -13,6 +13,7 @@ import { AnimatePresence } from 'framer-motion'
 // Styles
 import '@/assets/styles/global.css'
 import {
+	InitProvider,
 	LogoutProvider,
 	MultipleBoardActionsProvider,
 	UpdateBoardProvider,
@@ -26,20 +27,24 @@ import {
  */
 export const App: FC = () => {
 	return (
-		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-			<AnimatePresence mode="wait">
-				<LoaderProvider>
-					<ToasterProvider>
-						<MultipleBoardActionsProvider>
-							<UpdateBoardProvider>
-								<LogoutProvider>
-									<AppRouter />
-								</LogoutProvider>
-							</UpdateBoardProvider>
-						</MultipleBoardActionsProvider>
-					</ToasterProvider>
-				</LoaderProvider>
-			</AnimatePresence>
-		</ThemeProvider>
+		<div>
+			<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+				<AnimatePresence mode="wait">
+					<LoaderProvider>
+						<ToasterProvider>
+							<MultipleBoardActionsProvider>
+								<UpdateBoardProvider>
+									<LogoutProvider>
+										<InitProvider>
+											<AppRouter />
+										</InitProvider>
+									</LogoutProvider>
+								</UpdateBoardProvider>
+							</MultipleBoardActionsProvider>
+						</ToasterProvider>
+					</LoaderProvider>
+				</AnimatePresence>
+			</ThemeProvider>
+		</div>
 	)
 }

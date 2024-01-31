@@ -46,7 +46,7 @@ const languages = [
 ] as const
 
 const displayFormSchema = z.object({
-	theme: z.enum(['light', 'dark']),
+	mode: z.enum(['light', 'dark']),
 	font: z.enum(['inter', 'manrope', 'system']),
 	language: z.string(),
 })
@@ -55,7 +55,7 @@ type DisplayFormValues = z.infer<typeof displayFormSchema>
 
 // This can come from your database or API.
 const defaultValues: Partial<DisplayFormValues> = {
-	theme: 'dark',
+	mode: 'dark',
 	font: 'inter',
 	language: 'ru',
 }
@@ -173,7 +173,7 @@ export function DisplayForm() {
 				/>
 				<FormField
 					control={form.control}
-					name="theme"
+					name="mode"
 					render={({ field }) => (
 						<FormItem className="space-y-1">
 							<FormLabel>Режим</FormLabel>
