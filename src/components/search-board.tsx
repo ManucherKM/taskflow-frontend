@@ -98,9 +98,10 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 						))}
 
 						{boards.length === 0 && !isLoading && (
-							<div className="w-full h-[280px] flex justify-center items-center">
-								<TypographyP>
-									Похоже что у вас нет доски с таким именем
+							<div className="w-full h-[280px] flex flex-col justify-center items-center">
+								<Icons.zoomCancel className="w-10 h-10" />
+								<TypographyP className="!mt-0">
+									Не найдено совпадений
 								</TypographyP>
 							</div>
 						)}

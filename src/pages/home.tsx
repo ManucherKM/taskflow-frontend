@@ -1,4 +1,11 @@
-import { BoardCardList, NavBar, TypographyH3, toast } from '@/components'
+import {
+	BoardCardList,
+	Icons,
+	NavBar,
+	TypographyH3,
+	TypographyP,
+	toast,
+} from '@/components'
 import { useLoader } from '@/hooks'
 import { useBoardStore } from '@/storage'
 import { useMultipleBoardActionStore } from '@/storage/useMultipleBoardActionsStore/useMultipleBoardActionsStore'
@@ -87,9 +94,12 @@ export const Home: FC = () => {
 					</div>
 				</div>
 			) : (
-				<>
-					<h1>Похоже что у вас нет активных досок</h1>
-				</>
+				<div className="w-full h-[calc(100%-72px)] flex flex-col justify-center items-center gap-2">
+					<Icons.moodPuzzled className="w-20 h-20" />
+					<TypographyP className="!mt-0">
+						Похоже что у вас нет активных досок
+					</TypographyP>
+				</div>
 			)}
 		</>
 	)

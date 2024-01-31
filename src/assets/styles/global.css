@@ -64,4 +64,9 @@
 		@apply bg-background text-foreground;
 		height: 100vh;
 	}
+
+	#root {
+		height: 100%;
+		width: 100%;
+	}
 }
