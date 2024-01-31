@@ -3,11 +3,11 @@ import axios from '@/config/axios'
 import { EBoardStoreApiRoutes, IBoard, type IBoardStore } from './types'
 
 // Utils
+import { changeBoardByTarget } from '@/utils'
 import { create } from 'zustand'
 
 // Default storage object.
 const defaultStore = {
-	isShow: false,
 	boards: [] as IBoard[],
 } as IBoardStore
 
@@ -32,17 +32,11 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 			console.error(e)
 		}
 	},
-	setIsShow(target) {
-		set({ isShow: target })
-	},
+
 	setBoards(target) {
 		set({ boards: target })
 	},
-	addBoard(target) {
-		set(prev => ({
-			boards: [...prev.boards, target],
-		}))
-	},
+
 	async create(target) {
 		try {
 			const { data } = await axios.post<IBoard>(
@@ -54,7 +48,9 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 				return
 			}
 
-			get().addBoard(data)
+			set(prev => ({
+				boards: [...prev.boards, data],
+			}))
 
 			return data
 		} catch (e) {
@@ -73,6 +69,10 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 				return false
 			}
 
+			const boards = changeBoardByTarget(get().boards, id, target)
+
+			set({ boards })
+
 			return true
 		} catch (e) {
 			console.error(e)
@@ -89,6 +89,10 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 			if (!data?.success) {
 				return false
 			}
+
+			const boards = get().boards.filter(b => b._id !== id)
+
+			set({ boards })
 
 			return true
 		} catch (e) {

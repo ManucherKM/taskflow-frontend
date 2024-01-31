@@ -9,16 +9,14 @@ export interface IBoard {
 	updatedAt: string
 }
 
-export interface IBoardStore {
-	isShow: boolean
+export type IUpdateBoard = Partial<
+	Omit<IBoard, '_id' | 'createdAt' | 'updatedAt'>
+>
 
+export interface IBoardStore {
 	boards: IBoard[]
 
 	setBoards: (target: IBoard[]) => void
-
-	addBoard: (target: IBoard) => void
-
-	setIsShow: (target: boolean) => void
 
 	getAllBoards: (target?: { deep: boolean }) => Promise<IBoard[] | undefined>
 
@@ -26,7 +24,7 @@ export interface IBoardStore {
 
 	create: (target: { name: string }) => Promise<IBoard | undefined>
 
-	update: (id: string, target: Partial<Omit<IBoard, '_id'>>) => Promise<boolean>
+	update: (id: string, target: IUpdateBoard) => Promise<boolean>
 
 	remove: (id: string) => Promise<boolean>
 }

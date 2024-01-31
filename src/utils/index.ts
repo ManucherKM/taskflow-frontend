@@ -1,3 +1,4 @@
+export * from './changeBoardByTarget'
 export * from './formatDateDDMMYYYY'
 export * from './getAuthorization'
 export * from './getAvatarFallback'

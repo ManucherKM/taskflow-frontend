@@ -31,8 +31,6 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 
 	const update = useBoardStore(store => store.update)
 
-	const getAllBoards = useBoardStore(store => store.getAllBoards)
-
 	const remove = useBoardStore(store => store.remove)
 
 	function openHandler() {
@@ -56,15 +54,6 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 				})
 				return
 			}
-
-			const fetchedBoards = await getAllBoards()
-
-			if (!fetchedBoards) {
-				toast({
-					title: 'Не удалось получить список досок',
-				})
-				return
-			}
 		} catch (e) {
 			console.log(e)
 		}
@@ -77,15 +66,6 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 			if (!isSuccess) {
 				toast({
 					title: 'Не удалось удалить доску',
-				})
-				return
-			}
-
-			const fetchedBoards = await getAllBoards()
-
-			if (!fetchedBoards) {
-				toast({
-					title: 'Не удалось получить список досок',
 				})
 				return
 			}

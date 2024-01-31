@@ -9,6 +9,7 @@ type OtpInputProps = {
 
 let currentOtpIndex: number = 0
 
+// @ts-ignore
 const Otp = ({ length, otp, onOtpChange }: OtpInputProps): JSX.Element => {
 	const [tempOtp, setTempOtp] = useState<string[]>(
 		new Array(length || 6).fill(''),
