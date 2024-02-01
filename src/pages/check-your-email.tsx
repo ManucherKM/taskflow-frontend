@@ -1,11 +1,13 @@
 import { Button, TypographyH1, TypographyP } from '@/components'
-import { history } from '@/config/history'
 import { ERoutes } from '@/config/routes'
 import type { FC } from 'react'
+import { useNavigate } from 'react-router'
 
 export const CheckYourEmail: FC = () => {
+	const navigate = useNavigate()
+
 	function clickHandler() {
-		history.push(ERoutes.login)
+		navigate(ERoutes.login)
 	}
 
 	return (

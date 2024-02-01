@@ -1,7 +1,8 @@
 import { AccountForm, LayoutUserSetting } from '@/components'
 import { Separator } from '@radix-ui/react-context-menu'
+import type { FC } from 'react'
 
-export function Account() {
+export const Account: FC = () => {
 	return (
 		<LayoutUserSetting>
 			<div className="space-y-6">

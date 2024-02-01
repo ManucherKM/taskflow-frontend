@@ -53,7 +53,6 @@ export const BoardCardList: FC<IBoardCardList> = ({
 			/>
 
 			<Selecto
-				// className="!bg-dominant-1-50 !border-dominant-1"
 				container={container}
 				dragContainer={document.body}
 				selectableTargets={['.board']}
