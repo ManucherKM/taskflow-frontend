@@ -12,7 +12,8 @@ import {
 	CommandGroup,
 	CommandInput,
 	CommandItem,
-	toast,
+	Theme,
+	useTheme,
 } from '@/components'
 import {
 	Form,
@@ -30,6 +31,10 @@ import {
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 
+import { useDisplayStore } from '@/storage'
+import { EFont } from '@/storage/useDisplayStore/types'
+import { changeFirstLetterToUppercase } from '@/utils'
+import { ChangeEvent } from 'react'
 import { buttonVariants } from './ui/button'
 import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 
@@ -47,39 +52,42 @@ const languages = [
 
 const displayFormSchema = z.object({
 	mode: z.enum(['light', 'dark']),
-	font: z.enum(['inter', 'manrope', 'system']),
+	font: z.enum(['sans', 'mono', 'serif']),
 	language: z.string(),
 })
 
 type DisplayFormValues = z.infer<typeof displayFormSchema>
 
-// This can come from your database or API.
-const defaultValues: Partial<DisplayFormValues> = {
-	mode: 'dark',
-	font: 'inter',
-	language: 'ru',
-}
-
 export function DisplayForm() {
+	const setFont = useDisplayStore(store => store.setFont)
+
+	const font = useDisplayStore(store => store.font)
+
+	const { setTheme, theme } = useTheme()
+
+	const defaultValues: Partial<DisplayFormValues> = {
+		mode: theme as 'light' | 'dark',
+		font: font,
+		language: 'ru',
+	}
+
 	const form = useForm<DisplayFormValues>({
 		resolver: zodResolver(displayFormSchema),
+		mode: 'onChange',
 		defaultValues,
 	})
 
-	function onSubmit(data: DisplayFormValues) {
-		toast({
-			title: 'You submitted the following values:',
-			description: (
-				<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-					<code className="text-white">{JSON.stringify(data, null, 2)}</code>
-				</pre>
-			),
-		})
+	function changeThemeHandler(e: string) {
+		setTheme(e as Theme)
+	}
+
+	function changeFontHandler(e: ChangeEvent<HTMLSelectElement>) {
+		setFont(e.target.value as EFont)
 	}
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+			<form className="space-y-8">
 				<FormField
 					control={form.control}
 					name="font"
@@ -94,10 +102,20 @@ export function DisplayForm() {
 											'w-[200px] appearance-none font-normal',
 										)}
 										{...field}
+										onChange={e => {
+											field.onChange(e)
+											changeFontHandler(e)
+										}}
 									>
-										<option value="inter">Inter</option>
-										<option value="manrope">Manrope</option>
-										<option value="system">System</option>
+										<option value={EFont.sans}>
+											{changeFirstLetterToUppercase(EFont.sans)}
+										</option>
+										<option value={EFont.mono}>
+											{changeFirstLetterToUppercase(EFont.mono)}
+										</option>
+										<option value={EFont.serif}>
+											{changeFirstLetterToUppercase(EFont.serif)}
+										</option>
 									</select>
 								</FormControl>
 								<ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
@@ -182,7 +200,10 @@ export function DisplayForm() {
 							</FormDescription>
 							<FormMessage />
 							<RadioGroup
-								onValueChange={field.onChange}
+								onValueChange={e => {
+									field.onChange(e)
+									changeThemeHandler(e)
+								}}
 								defaultValue={field.value}
 								className="grid max-w-md grid-cols-2 gap-8 pt-2"
 							>
@@ -242,8 +263,6 @@ export function DisplayForm() {
 						</FormItem>
 					)}
 				/>
-
-				<Button type="submit">Обновить настройки</Button>
 			</form>
 		</Form>
 	)

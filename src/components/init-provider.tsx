@@ -1,5 +1,5 @@
 import { useLoader } from '@/hooks'
-import { useBoardStore, useUserStore } from '@/storage'
+import { useAuthStore, useBoardStore, useUserStore } from '@/storage'
 import { useEffect, type FC, type ReactNode } from 'react'
 import { toast } from './ui/use-toast'
 
@@ -8,11 +8,14 @@ export interface IInitProvider {
 }
 
 export const InitProvider: FC<IInitProvider> = ({ children }) => {
+	const token = useAuthStore(store => store.token)
 	const getUser = useUserStore(store => store.getUser)
 	const loader = useLoader()
 	const getAllBoards = useBoardStore(store => store.getAllBoards)
 
 	useEffect(() => {
+		if (!token) return
+
 		const fetch = async () => {
 			try {
 				const fetchedBoards = await getAllBoards()
@@ -36,6 +39,6 @@ export const InitProvider: FC<IInitProvider> = ({ children }) => {
 		}
 
 		loader(fetch)
-	}, [])
+	}, [token])
 	return <>{children}</>
 }

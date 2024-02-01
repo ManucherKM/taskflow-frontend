@@ -18,6 +18,7 @@ import {
 	MultipleBoardActionsProvider,
 	UpdateBoardProvider,
 } from '.'
+import { FontProvider } from './font-provider'
 
 /**
  * The main component of the application.
@@ -30,19 +31,21 @@ export const App: FC = () => {
 		<div>
 			<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 				<AnimatePresence mode="wait">
-					<LoaderProvider>
-						<ToasterProvider>
-							<MultipleBoardActionsProvider>
-								<UpdateBoardProvider>
-									<LogoutProvider>
-										<InitProvider>
-											<AppRouter />
-										</InitProvider>
-									</LogoutProvider>
-								</UpdateBoardProvider>
-							</MultipleBoardActionsProvider>
-						</ToasterProvider>
-					</LoaderProvider>
+					<FontProvider>
+						<LoaderProvider>
+							<ToasterProvider>
+								<MultipleBoardActionsProvider>
+									<UpdateBoardProvider>
+										<LogoutProvider>
+											<InitProvider>
+												<AppRouter />
+											</InitProvider>
+										</LogoutProvider>
+									</UpdateBoardProvider>
+								</MultipleBoardActionsProvider>
+							</ToasterProvider>
+						</LoaderProvider>
+					</FontProvider>
 				</AnimatePresence>
 			</ThemeProvider>
 		</div>
