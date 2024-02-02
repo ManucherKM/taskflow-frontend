@@ -13,10 +13,18 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useLoader } from '@/hooks'
+import { useDelayForType, useLoader } from '@/hooks'
 import { useAuthStore, useStore } from '@/storage'
 import clsx from 'clsx'
-import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
+import {
+	ChangeEvent,
+	FC,
+	FormEvent,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+} from 'react'
 import { Icons } from '..'
 
 const FormSchema = z.object({
@@ -39,11 +47,12 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 
 	const isLoading = useStore(store => store.isLoading)
 
-	const [isValid, setIsValid] = useState<boolean>(false)
-	const [isExist, setIsExist] = useState<boolean>(false)
 	const loader = useLoader()
 
-	const timer = useRef<NodeJS.Timeout | null>(null)
+	const [isValid, setIsValid] = useState<boolean>(false)
+	const [isExist, setIsExist] = useState<boolean>(false)
+
+	const delayForType = useDelayForType()
 
 	const form = useForm<z.infer<typeof FormSchema>>({
 		mode: 'onChange',
@@ -52,6 +61,10 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 			userName: '',
 		},
 	})
+
+	const changeIsValid = useCallback(() => {
+		setIsValid(form.formState.isDirty && form.formState.isValid && !isExist)
+	}, [form.formState.isDirty, form.formState.isValid, isExist])
 
 	function onSubmit(data: z.infer<typeof FormSchema>) {
 		setRegInfo({ userName: data.userName })
@@ -68,17 +81,11 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 	}
 
 	async function changeHandler(e: ChangeEvent<HTMLInputElement>) {
-		if (timer.current === null) {
-			timer.current = setTimeout(
-				() => checkUserNameHandler(e.target.value),
-				300,
-			)
-			return
-		}
+		setIsValid(false)
 
-		clearTimeout(timer.current)
-
-		timer.current = setTimeout(() => checkUserNameHandler(e.target.value), 300)
+		delayForType(() =>
+			checkUserNameHandler(e.target.value).finally(changeIsValid),
+		)
 	}
 
 	function nextHandler(e: FormEvent) {
@@ -88,10 +95,6 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 
 		onNext()
 	}
-
-	useEffect(() => {
-		setIsValid(form.formState.isDirty && form.formState.isValid && !isExist)
-	}, [form.formState.isDirty, form.formState.isValid, isExist])
 
 	useEffect(() => {
 		if (!userNameInputRef.current) return
@@ -148,7 +151,7 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 					</Button>
 					<Button
 						onClick={nextHandler}
-						disabled={!isValid || isLoading}
+						disabled={!isValid}
 						type="button"
 						ref={nextButtonRef}
 					>

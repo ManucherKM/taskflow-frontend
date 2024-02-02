@@ -29,7 +29,8 @@ const FormSchema = z.object({
 		.max(30, {
 			message: 'Имя должно быть не более 30 символов',
 		})
-		.optional(),
+		.optional()
+		.or(z.literal('')),
 
 	lastName: z
 		.string()
@@ -39,7 +40,8 @@ const FormSchema = z.object({
 		.max(30, {
 			message: 'Фамилия должна содержать не более 30 символов',
 		})
-		.optional(),
+		.optional()
+		.or(z.literal('')),
 })
 
 export interface UserOtherForm {
@@ -60,10 +62,6 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 	const form = useForm<z.infer<typeof FormSchema>>({
 		mode: 'onChange',
 		resolver: zodResolver(FormSchema),
-		defaultValues: {
-			firstName: '',
-			lastName: '',
-		},
 	})
 
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
