@@ -3,11 +3,11 @@ import type { FC } from 'react'
 import { List } from './list'
 import { TaskBoard } from './task-board'
 
-export interface ITaskBoardTist {
+export interface ITaskBoardList {
 	tasks: ITask[]
 }
 
-export const TaskBoardTist: FC<ITaskBoardTist> = ({ tasks }) => {
+export const TaskBoardList: FC<ITaskBoardList> = ({ tasks }) => {
 	return (
 		<List
 			arr={tasks}

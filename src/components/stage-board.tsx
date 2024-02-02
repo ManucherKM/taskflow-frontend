@@ -1,4 +1,4 @@
-import { useUpdateStageStore } from '@/storage'
+import { useCreateTaskStore, useUpdateStageStore } from '@/storage'
 import { IStage } from '@/storage/useBoardStore/types'
 import type { FC } from 'react'
 import {
@@ -10,7 +10,7 @@ import {
 	CardTitle,
 	Icons,
 } from '.'
-import { TaskBoardTist } from './task-board-list'
+import { TaskBoardList } from './task-board-list'
 
 export interface IStageBoard {
 	stage: IStage
@@ -18,11 +18,19 @@ export interface IStageBoard {
 
 export const StageBoard: FC<IStageBoard> = ({ stage }) => {
 	const setIsShowUpdateBoard = useUpdateStageStore(store => store.setIsShow)
-	const setStageId = useUpdateStageStore(store => store.setStageId)
+	const setStageIdUpdateBoard = useUpdateStageStore(store => store.setStageId)
+
+	const setIsShowCreateTask = useCreateTaskStore(store => store.setIsShow)
+	const setStageIdCreateTask = useCreateTaskStore(store => store.setStageId)
 
 	function boardChangeHandler() {
-		setStageId(stage._id)
+		setStageIdUpdateBoard(stage._id)
 		setIsShowUpdateBoard(true)
+	}
+
+	function taskCreateHandler() {
+		setStageIdCreateTask(stage._id)
+		setIsShowCreateTask(true)
 	}
 
 	return (
@@ -40,13 +48,17 @@ export const StageBoard: FC<IStageBoard> = ({ stage }) => {
 			</CardHeader>
 			{stage.tasks.length !== 0 && (
 				<CardContent>
-					<div className="w-full flex flex-col ">
-						<TaskBoardTist tasks={stage.tasks} />
+					<div className="w-full flex flex-col gap-2">
+						<TaskBoardList tasks={stage.tasks} />
 					</div>
 				</CardContent>
 			)}
 			<CardFooter className="p-4 pt-0">
-				<Button variant={'ghost'} className="flex gap-2 w-full">
+				<Button
+					variant={'ghost'}
+					className="flex gap-2 w-full"
+					onClick={taskCreateHandler}
+				>
 					<Icons.plus />
 					Создать новую задачу
 				</Button>

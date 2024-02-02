@@ -14,6 +14,7 @@ import { AnimatePresence } from 'framer-motion'
 import '@/assets/styles/global.css'
 import {
 	CreateStageProvider,
+	CreateTaskProvider,
 	InitProvider,
 	LogoutProvider,
 	MultipleBoardActionsProvider,
@@ -40,11 +41,13 @@ export const App: FC = () => {
 									<UpdateStageProvider>
 										<UpdateBoardProvider>
 											<CreateStageProvider>
-												<LogoutProvider>
-													<InitProvider>
-														<AppRouter />
-													</InitProvider>
-												</LogoutProvider>
+												<CreateTaskProvider>
+													<LogoutProvider>
+														<InitProvider>
+															<AppRouter />
+														</InitProvider>
+													</LogoutProvider>
+												</CreateTaskProvider>
 											</CreateStageProvider>
 										</UpdateBoardProvider>
 									</UpdateStageProvider>

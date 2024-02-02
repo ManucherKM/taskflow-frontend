@@ -9,13 +9,13 @@ export interface ITaskBoard {
 
 export const TaskBoard: FC<ITaskBoard> = ({ task }) => {
 	return (
-		<Button className="justify-start task">
+		<Button className="justify-start group">
 			{task.title}
 
 			<Button
 				variant={'ghost'}
 				size={'icon'}
-				className="p-[3px] w-fit h-fit ml-auto hidden task-hover:block"
+				className="p-[3px] w-fit h-fit ml-auto hidden group-hover:block"
 			>
 				<Icons.pencil />
 			</Button>
