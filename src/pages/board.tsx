@@ -1,4 +1,11 @@
-import { Button, Icons, NavBar, toast } from '@/components'
+import {
+	Button,
+	Icons,
+	NavBar,
+	ScrollArea,
+	ScrollBar,
+	toast,
+} from '@/components'
 import { StageBoardList } from '@/components/stage-board-list'
 import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
@@ -61,16 +68,21 @@ export const Board: FC = () => {
 	return (
 		<>
 			<NavBar />
-			<div className="container flex gap-5">
-				{!!board && <StageBoardList stages={board.stages} />}
-				<Button
-					variant={'ghost'}
-					className="flex gap-2 w-[300px]"
-					onClick={createStageHandler}
-				>
-					<Icons.plus />
-					Создать новый этап
-				</Button>
+			<div className="container">
+				<ScrollArea className="w-full h-[calc(100vh-72px)]">
+					<div className="flex w-max space-x-4 p-4">
+						{!!board && <StageBoardList stages={board.stages} />}
+						<Button
+							variant={'ghost'}
+							className="flex gap-2 w-[300px]"
+							onClick={createStageHandler}
+						>
+							<Icons.plus />
+							Создать новый этап
+						</Button>
+					</div>
+					<ScrollBar orientation="horizontal" />
+				</ScrollArea>
 			</div>
 		</>
 	)

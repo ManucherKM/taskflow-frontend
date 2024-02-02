@@ -20,6 +20,7 @@ import {
 	UpdateBoardProvider,
 } from '.'
 import { FontProvider } from './font-provider'
+import { UpdateStageProvider } from './update-stage-provider'
 
 /**
  * The main component of the application.
@@ -36,15 +37,17 @@ export const App: FC = () => {
 						<LoaderProvider>
 							<ToasterProvider>
 								<MultipleBoardActionsProvider>
-									<UpdateBoardProvider>
-										<CreateStageProvider>
-											<LogoutProvider>
-												<InitProvider>
-													<AppRouter />
-												</InitProvider>
-											</LogoutProvider>
-										</CreateStageProvider>
-									</UpdateBoardProvider>
+									<UpdateStageProvider>
+										<UpdateBoardProvider>
+											<CreateStageProvider>
+												<LogoutProvider>
+													<InitProvider>
+														<AppRouter />
+													</InitProvider>
+												</LogoutProvider>
+											</CreateStageProvider>
+										</UpdateBoardProvider>
+									</UpdateStageProvider>
 								</MultipleBoardActionsProvider>
 							</ToasterProvider>
 						</LoaderProvider>
