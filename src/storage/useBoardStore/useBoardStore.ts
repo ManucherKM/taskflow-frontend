@@ -14,6 +14,7 @@ import { create } from 'zustand'
 // Default storage object.
 const defaultStore = {
 	boards: [] as IBoard[],
+	activeBoard: null,
 } as IBoardStore
 
 /** With this hook you can access shared storage. */
@@ -36,6 +37,10 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 			console.error(e)
 		}
 	},
+	setActiveBoard(target) {
+		set({ activeBoard: target })
+	},
+
 	async getDeepBoard(id) {
 		try {
 			const { data, status } = await axios.post<IDeepBoard>(

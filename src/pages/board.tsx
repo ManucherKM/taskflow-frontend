@@ -1,20 +1,33 @@
-import { NavBar, toast } from '@/components'
+import { Button, Icons, NavBar, toast } from '@/components'
+import { StageBoardList } from '@/components/stage-board-list'
 import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
-import { useBoardStore } from '@/storage'
+import { useBoardStore, useCreateStageStore } from '@/storage'
 import { IDeepBoard } from '@/storage/useBoardStore/types'
-import { useEffect, useState, type FC } from 'react'
+import { useEffect, type FC } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
 export const Board: FC = () => {
 	const { id } = useParams()
-	const [board, setBoard] = useState<IDeepBoard | null>(null)
+
+	const setBoard = useBoardStore(store => store.setActiveBoard)
+
+	const board = useBoardStore(store => store.activeBoard) as IDeepBoard
 
 	const loader = useLoader()
 
 	const navigate = useNavigate()
 
 	const getDeepBoard = useBoardStore(store => store.getDeepBoard)
+
+	const setIsShowCreateStage = useCreateStageStore(store => store.setIsShow)
+
+	const setBoardId = useCreateStageStore(store => store.setBoardId)
+
+	function createStageHandler() {
+		setBoardId(id as string)
+		setIsShowCreateStage(true)
+	}
 
 	useEffect(() => {
 		if (!id) {
@@ -37,8 +50,6 @@ export const Board: FC = () => {
 					return
 				}
 
-				console.log(board)
-
 				setBoard(board)
 			} catch (e) {
 				console.log(e)
@@ -50,7 +61,17 @@ export const Board: FC = () => {
 	return (
 		<>
 			<NavBar />
-			<div>{id}</div>
+			<div className="container flex gap-5">
+				{!!board && <StageBoardList stages={board.stages} />}
+				<Button
+					variant={'ghost'}
+					className="flex gap-2 w-[300px]"
+					onClick={createStageHandler}
+				>
+					<Icons.plus />
+					Создать новый этап
+				</Button>
+			</div>
 		</>
 	)
 }

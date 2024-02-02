@@ -32,6 +32,10 @@ export type IUpdateBoard = Partial<
 export interface IBoardStore {
 	boards: IBoard[]
 
+	activeBoard: IDeepBoard | null
+
+	setActiveBoard: (target: IDeepBoard) => void
+
 	setBoards: (target: IBoard[]) => void
 
 	getAllBoards: () => Promise<IBoard[] | undefined>
