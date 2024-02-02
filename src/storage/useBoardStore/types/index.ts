@@ -9,6 +9,22 @@ export interface IBoard {
 	updatedAt: string
 }
 
+export interface ITask {
+	_id: string
+	description: string
+	title: string
+}
+
+export interface IStage {
+	_id: string
+	name: string
+	tasks: ITask[]
+}
+
+export interface IDeepBoard extends Omit<IBoard, 'stages'> {
+	stages: IStage[]
+}
+
 export type IUpdateBoard = Partial<
 	Omit<IBoard, '_id' | 'createdAt' | 'updatedAt'>
 >
@@ -18,7 +34,9 @@ export interface IBoardStore {
 
 	setBoards: (target: IBoard[]) => void
 
-	getAllBoards: (target?: { deep: boolean }) => Promise<IBoard[] | undefined>
+	getAllBoards: () => Promise<IBoard[] | undefined>
+
+	getDeepBoard: (id: string) => Promise<IDeepBoard | undefined>
 
 	getAllByName: (target: { name: string }) => Promise<IBoard[] | undefined>
 
@@ -33,4 +51,5 @@ export enum EBoardStoreApiRoutes {
 	all = '/api/board/all',
 	name = '/api/board/name',
 	main = '/api/board',
+	deep = '/api/board/id',
 }

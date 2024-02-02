@@ -11,9 +11,6 @@ export interface IUser {
 	bio?: string
 	birthday?: Date
 	urls: IUrl[]
-	language: string
-	mode: string
-	font: string
 }
 
 export interface IUserStore {

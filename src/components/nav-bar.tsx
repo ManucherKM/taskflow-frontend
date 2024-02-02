@@ -4,13 +4,10 @@ import { useUserStore } from '@/storage'
 import { useEffect, useRef, useState, type FC } from 'react'
 import { Link } from 'react-router-dom'
 import { NavbarContextMenu, SearchBoard } from '.'
-import { Icons } from './icons'
 import { Logo } from './logo'
 import { Search } from './search'
-import { useTheme } from './theme-provider'
 import { TypographyP } from './typography-p'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import { Button } from './ui/button'
 
 export const NavBar: FC = () => {
 	const [searchQuery, setSearchQuery] = useState<string>('')
@@ -19,8 +16,6 @@ export const NavBar: FC = () => {
 	const [isContain, clickHandler] = useOutsideClick(searchBoardRef)
 
 	const user = useUserStore(store => store.user)
-
-	const { setTheme, theme } = useTheme()
 
 	useEffect(() => {
 		if (!isShowSearchBoard) return
@@ -60,24 +55,8 @@ export const NavBar: FC = () => {
 							query={searchQuery}
 							isShow={isShowSearchBoard && isContain}
 						/>
-						<div className="flex">
-							<Button
-								variant={'ghost'}
-								size={'icon'}
-								onClick={() => {
-									if (theme === 'dark') {
-										setTheme('light')
-									} else {
-										setTheme('dark')
-									}
-								}}
-							>
-								<Icons.moon className="block dark:hidden" />
-								<Icons.sun className="hidden dark:block" />
-							</Button>
-						</div>
 
-						<TypographyP className="w-20 overflow-hidden text-ellipsis !mt-0">
+						<TypographyP className="w-24 overflow-hidden text-ellipsis !mt-0 ml-2">
 							{user?.email}
 						</TypographyP>
 						<NavbarContextMenu>

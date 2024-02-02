@@ -1,6 +1,11 @@
 // Types
 import axios from '@/config/axios'
-import { EBoardStoreApiRoutes, IBoard, type IBoardStore } from './types'
+import {
+	EBoardStoreApiRoutes,
+	IBoard,
+	IDeepBoard,
+	type IBoardStore,
+} from './types'
 
 // Utils
 import { changeBoardByTarget } from '@/utils'
@@ -14,11 +19,10 @@ const defaultStore = {
 /** With this hook you can access shared storage. */
 export const useBoardStore = create<IBoardStore>((set, get) => ({
 	...defaultStore,
-	async getAllBoards(target) {
+	async getAllBoards() {
 		try {
 			const { data, status } = await axios.post<IBoard[]>(
 				EBoardStoreApiRoutes.all,
-				target,
 			)
 
 			if (status >= 400) {
@@ -26,6 +30,26 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 			}
 
 			set({ boards: data })
+
+			return data
+		} catch (e) {
+			console.error(e)
+		}
+	},
+	async getDeepBoard(id) {
+		try {
+			const { data, status } = await axios.post<IDeepBoard>(
+				EBoardStoreApiRoutes.deep,
+				{
+					id,
+				},
+			)
+
+			if (status >= 400) {
+				return
+			}
+
+			console.log()
 
 			return data
 		} catch (e) {
