@@ -1,4 +1,4 @@
-import { useCreateTaskStore, useUpdateStageStore } from '@/storage'
+import { useCreateTaskStore } from '@/storage'
 
 import { IStage } from '@/storage/useStageStore/types'
 import type { FC } from 'react'
@@ -19,16 +19,8 @@ export interface IStageBoard {
 }
 
 export const StageBoard: FC<IStageBoard> = ({ stage }) => {
-	const setIsShowUpdateBoard = useUpdateStageStore(store => store.setIsShow)
-	const setStageIdUpdateBoard = useUpdateStageStore(store => store.setStageId)
-
 	const setIsShowCreateTask = useCreateTaskStore(store => store.setIsShow)
 	const setStageIdCreateTask = useCreateTaskStore(store => store.setStageId)
-
-	function boardChangeHandler() {
-		setStageIdUpdateBoard(stage._id)
-		setIsShowUpdateBoard(true)
-	}
 
 	function taskCreateHandler() {
 		setStageIdCreateTask(stage._id)
@@ -37,17 +29,9 @@ export const StageBoard: FC<IStageBoard> = ({ stage }) => {
 
 	return (
 		<StageContextMenu stage={stage}>
-			<Card className="w-[300px] h-fit">
-				<CardHeader className="p-4 flex flex-row justify-between group">
+			<Card className="w-[300px] h-fit cursor-grab">
+				<CardHeader className="p-4">
 					<CardTitle>{stage.name}</CardTitle>
-					<Button
-						variant={'ghost'}
-						size={'icon'}
-						className="p-[3px] !m-0 w-fit h-fit opacity-0 group-hover:opacity-100"
-						onClick={boardChangeHandler}
-					>
-						<Icons.pencil />
-					</Button>
 				</CardHeader>
 				{stage.tasks.length !== 0 && (
 					<CardContent>
