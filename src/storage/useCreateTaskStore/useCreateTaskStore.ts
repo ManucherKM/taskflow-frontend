@@ -4,7 +4,7 @@ import { ECreateTaskStoreApiRoutes, type ICreateTaskStore } from './types'
 
 // Utils
 import { create } from 'zustand'
-import { ITask } from '../useBoardStore/types'
+import { ITask } from '../useTaskStore/types'
 
 const defaultStore = {
 	isShow: false,

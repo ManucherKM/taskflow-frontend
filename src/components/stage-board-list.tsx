@@ -1,4 +1,4 @@
-import { IStage } from '@/storage/useBoardStore/types'
+import { IStage } from '@/storage/useStageStore/types'
 import type { FC } from 'react'
 import { List } from '.'
 import { StageBoard } from './stage-board'

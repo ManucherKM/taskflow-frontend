@@ -1,4 +1,4 @@
-import { ITask } from '@/storage/useBoardStore/types'
+import { ITask } from '@/storage/useTaskStore/types'
 
 export interface ICreateTarget {
 	stageId: string

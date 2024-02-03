@@ -1,4 +1,4 @@
-import { IStage } from '@/storage/useBoardStore/types'
+import { IStage } from '@/storage/useStageStore/types'
 
 export interface ICreateTarget {
 	name: string

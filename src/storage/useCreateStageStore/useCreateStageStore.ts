@@ -4,7 +4,7 @@ import { ECreateStageStoreApiRoutes, type ICreateStageStore } from './types'
 
 // Utils
 import { create } from 'zustand'
-import { IStage } from '../useBoardStore/types'
+import { IStage } from '../useStageStore/types'
 
 const defaultStore = {
 	isShow: false,

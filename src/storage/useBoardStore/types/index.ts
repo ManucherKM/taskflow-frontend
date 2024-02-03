@@ -11,12 +11,6 @@ export interface IBoard {
 	updatedAt: string
 }
 
-export interface ITask {
-	_id: string
-	description: string
-	title: string
-}
-
 export interface IDeepBoard extends Omit<IBoard, 'stages'> {
 	stages: IStage[]
 }

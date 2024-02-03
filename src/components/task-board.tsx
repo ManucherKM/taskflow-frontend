@@ -1,4 +1,4 @@
-import { ITask } from '@/storage/useBoardStore/types'
+import { ITask } from '@/storage/useTaskStore/types'
 import type { FC } from 'react'
 import { CustomTooltip } from './stage-tooltip'
 import { TaskContextMenu } from './task-context-menu'
@@ -10,7 +10,7 @@ export interface ITaskBoard {
 
 export const TaskBoard: FC<ITaskBoard> = ({ task }) => {
 	return (
-		<TaskContextMenu>
+		<TaskContextMenu task={task}>
 			<CustomTooltip text="Нажмите на правую кнопку мыши чтобы открыть меню опций задачи">
 				<Button className="justify-start group w-full cursor-grab">
 					{task.title}

@@ -45,8 +45,6 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 
 			newStages.splice(foundIdx + 1, 0, createdStage as IStage)
 
-			newStages.forEach(item => console.log(item._id))
-
 			const newBoard = {
 				...activeBoard,
 				stages: newStages,

@@ -1,4 +1,4 @@
-import { ITask } from '@/storage/useBoardStore/types'
+import { ITask } from '@/storage/useTaskStore/types'
 import type { FC } from 'react'
 import { List } from './list'
 import { TaskBoard } from './task-board'
