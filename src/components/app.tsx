@@ -21,6 +21,7 @@ import {
 	UpdateBoardProvider,
 } from '.'
 import { FontProvider } from './font-provider'
+import { OpenTaskProvider } from './task-open-provider'
 import { UpdateStageProvider } from './update-stage-provider'
 
 /**
@@ -42,11 +43,13 @@ export const App: FC = () => {
 										<UpdateBoardProvider>
 											<CreateStageProvider>
 												<CreateTaskProvider>
-													<LogoutProvider>
-														<InitProvider>
-															<AppRouter />
-														</InitProvider>
-													</LogoutProvider>
+													<OpenTaskProvider>
+														<LogoutProvider>
+															<InitProvider>
+																<AppRouter />
+															</InitProvider>
+														</LogoutProvider>
+													</OpenTaskProvider>
 												</CreateTaskProvider>
 											</CreateStageProvider>
 										</UpdateBoardProvider>
