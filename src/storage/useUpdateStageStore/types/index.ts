@@ -1,5 +1,5 @@
-import { IStage } from '@/storage/useBoardStore/types'
 import { ICreateTarget } from '@/storage/useCreateStageStore/types'
+import { IStage } from '@/storage/useStageStore/types'
 
 export interface IUpdateTarget extends ICreateTarget {}
 

@@ -1,3 +1,5 @@
+import { IStage } from '@/storage/useStageStore/types'
+
 export interface IBoard {
 	_id: string
 	name: string
@@ -13,12 +15,6 @@ export interface ITask {
 	_id: string
 	description: string
 	title: string
-}
-
-export interface IStage {
-	_id: string
-	name: string
-	tasks: ITask[]
 }
 
 export interface IDeepBoard extends Omit<IBoard, 'stages'> {

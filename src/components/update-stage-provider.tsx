@@ -45,7 +45,7 @@ export const UpdateStageProvider: FC<IUpdateStageProvider> = ({ children }) => {
 
 			if (!updatedStage) {
 				toast({
-					title: 'Не удалось обновить этап',
+					title: 'Не удалось изменить этап',
 				})
 
 				return
@@ -85,9 +85,9 @@ export const UpdateStageProvider: FC<IUpdateStageProvider> = ({ children }) => {
 			<Dialog open={isShow} onOpenChange={setIsShow}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Обновить этап</DialogTitle>
+						<DialogTitle>Изменить этап</DialogTitle>
 						<DialogDescription>
-							Заполните форму чтобы обновить этап.
+							Заполните форму чтобы изменить этап.
 						</DialogDescription>
 					</DialogHeader>
 					<div className="flex flex-col gap-6 py-4">
