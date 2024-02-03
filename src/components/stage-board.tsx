@@ -12,6 +12,7 @@ import {
 	Icons,
 } from '.'
 import { StageContextMenu } from './stage-context-menu'
+import { CustomTooltip } from './stage-tooltip'
 import { TaskBoardList } from './task-board-list'
 
 export interface IStageBoard {
@@ -30,11 +31,14 @@ export const StageBoard: FC<IStageBoard> = ({ stage }) => {
 	return (
 		<StageContextMenu stage={stage}>
 			<Card className="w-[300px] h-fit cursor-grab">
-				<CardHeader className="p-4">
-					<CardTitle>{stage.name}</CardTitle>
-				</CardHeader>
+				<CustomTooltip text="Нажмите на правую кнопку мыши чтобы открыть меню опций этапа">
+					<CardHeader className="p-4 pb-6">
+						<CardTitle>{stage.name}</CardTitle>
+					</CardHeader>
+				</CustomTooltip>
+
 				{stage.tasks.length !== 0 && (
-					<CardContent>
+					<CardContent className="pb-4">
 						<div className="w-full flex flex-col gap-2">
 							<TaskBoardList tasks={stage.tasks} />
 						</div>
