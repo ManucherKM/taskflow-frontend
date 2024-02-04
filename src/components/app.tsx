@@ -23,6 +23,7 @@ import {
 import { FontProvider } from './font-provider'
 import { OpenTaskProvider } from './task-open-provider'
 import { UpdateStageProvider } from './update-stage-provider'
+import { UpdateTaskProvider } from './update-task-provider'
 
 /**
  * The main component of the application.
@@ -44,11 +45,13 @@ export const App: FC = () => {
 											<CreateStageProvider>
 												<CreateTaskProvider>
 													<OpenTaskProvider>
-														<LogoutProvider>
-															<InitProvider>
-																<AppRouter />
-															</InitProvider>
-														</LogoutProvider>
+														<UpdateTaskProvider>
+															<LogoutProvider>
+																<InitProvider>
+																	<AppRouter />
+																</InitProvider>
+															</LogoutProvider>
+														</UpdateTaskProvider>
 													</OpenTaskProvider>
 												</CreateTaskProvider>
 											</CreateStageProvider>

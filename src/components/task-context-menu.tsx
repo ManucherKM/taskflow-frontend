@@ -1,4 +1,9 @@
-import { useBoardStore, useOpenTaskStore, useTaskStore } from '@/storage'
+import {
+	useBoardStore,
+	useOpenTaskStore,
+	useTaskStore,
+	useUpdateTaskStore,
+} from '@/storage'
 import { IDeepBoard } from '@/storage/useBoardStore/types'
 import { ITask } from '@/storage/useTaskStore/types'
 import type { FC, ReactNode } from 'react'
@@ -20,6 +25,9 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({ children, task }) => {
 	const duplication = useTaskStore(store => store.duplication)
 	const setIsShowTask = useOpenTaskStore(store => store.setIsShow)
 	const setTaskInfo = useOpenTaskStore(store => store.setTask)
+
+	const setTaskIdForUpdate = useUpdateTaskStore(store => store.setTaskId)
+	const setIsShowForUpdate = useUpdateTaskStore(store => store.setIsShow)
 
 	const setActiveBoard = useBoardStore(store => store.setActiveBoard)
 	const activeBoard = useBoardStore(store => store.activeBoard) as IDeepBoard
@@ -75,7 +83,10 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({ children, task }) => {
 		}
 	}
 
-	async function updateHandler() {}
+	function updateHandler() {
+		setTaskIdForUpdate(task._id)
+		setIsShowForUpdate(true)
+	}
 
 	async function removeHandler() {
 		try {

@@ -16,7 +16,7 @@ export const CustomTooltip: FC<IStageCustomTooltip> = ({ children, text }) => {
 		<TooltipProvider>
 			<Tooltip>
 				<TooltipTrigger asChild>{children}</TooltipTrigger>
-				<TooltipContent>
+				<TooltipContent className="max-w-64 w-full text-justify">
 					<p>{text}</p>
 				</TooltipContent>
 			</Tooltip>

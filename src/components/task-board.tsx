@@ -1,6 +1,6 @@
 import { ITask } from '@/storage/useTaskStore/types'
 import type { FC } from 'react'
-import { CustomTooltip } from './stage-tooltip'
+import { CustomTooltip } from './custom-tooltip'
 import { TaskContextMenu } from './task-context-menu'
 import { Button } from './ui/button'
 

@@ -11,8 +11,8 @@ import {
 	CardTitle,
 	Icons,
 } from '.'
+import { CustomTooltip } from './custom-tooltip'
 import { StageContextMenu } from './stage-context-menu'
-import { CustomTooltip } from './stage-tooltip'
 import { TaskBoardList } from './task-board-list'
 
 export interface IStageBoard {
