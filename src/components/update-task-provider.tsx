@@ -88,9 +88,9 @@ export const UpdateTaskProvider: FC<IUpdateTaskProvider> = ({ children }) => {
 			<Dialog open={isShow} onOpenChange={setIsShow}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Создать задачу</DialogTitle>
+						<DialogTitle>Изменить задачу</DialogTitle>
 						<DialogDescription>
-							Заполните форму чтобы создать задачу.
+							Заполните форму чтобы изменить задачу.
 						</DialogDescription>
 					</DialogHeader>
 					<div className="flex flex-col gap-6 py-4">
@@ -134,7 +134,7 @@ export const UpdateTaskProvider: FC<IUpdateTaskProvider> = ({ children }) => {
 								disabled={!title.length || !description.length}
 								onClick={submitHandler}
 							>
-								Создать
+								Изменить
 							</Button>
 						</DialogClose>
 					</DialogFooter>
