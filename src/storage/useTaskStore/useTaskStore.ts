@@ -6,10 +6,11 @@ import { ETaskStoreApiRoutes, ITask, ITaskStore } from './types'
 import { create } from 'zustand'
 
 export const useTaskStore = create<ITaskStore>(() => ({
-	async duplication(id) {
+	async duplication(id, stageId) {
 		try {
 			const { data } = await axios.post<ITask>(ETaskStoreApiRoutes.duplicate, {
 				id,
+				stageId,
 			})
 
 			if (!data) {

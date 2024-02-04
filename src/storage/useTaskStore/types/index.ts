@@ -7,7 +7,7 @@ export interface ITask {
 export interface IUpdateTaskTarget extends Partial<Omit<ITask, '_id'>> {}
 
 export interface ITaskStore {
-	duplication: (id: string) => Promise<ITask | boolean>
+	duplication: (id: string, stageId: string) => Promise<ITask | boolean>
 
 	update: (id: string, target: IUpdateTaskTarget) => Promise<boolean>
 

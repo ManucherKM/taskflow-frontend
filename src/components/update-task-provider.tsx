@@ -44,9 +44,12 @@ export const UpdateTaskProvider: FC<IUpdateTaskProvider> = ({ children }) => {
 
 	async function onSubmit() {
 		try {
-			const isSuccess = await loader(update, { title, description })
+			const updatedTask = await loader(update, {
+				title: title || undefined,
+				description: description || undefined,
+			})
 
-			if (!isSuccess) {
+			if (!updatedTask) {
 				toast({
 					title: 'Не удалось обновить задачу',
 				})
@@ -58,8 +61,7 @@ export const UpdateTaskProvider: FC<IUpdateTaskProvider> = ({ children }) => {
 				const foundIdx = stage.tasks.findIndex(task => task._id === taskId)
 
 				if (foundIdx !== -1) {
-					stage.tasks[foundIdx].title = title
-					stage.tasks[foundIdx].description = description
+					stage.tasks[foundIdx] = updatedTask
 				}
 
 				return stage
@@ -131,7 +133,7 @@ export const UpdateTaskProvider: FC<IUpdateTaskProvider> = ({ children }) => {
 							<Button
 								ref={createButtonRef}
 								type="submit"
-								disabled={!title.length || !description.length}
+								disabled={!title.length && !description.length}
 								onClick={submitHandler}
 							>
 								Изменить

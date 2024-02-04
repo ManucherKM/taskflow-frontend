@@ -27,19 +27,18 @@ export const useStageStore = create<IStageStore>(() => ({
 	},
 	async update(id, target) {
 		try {
-			const { data } = await axios.patch<{ success?: boolean }>(
+			const { data } = await axios.patch<IStage>(
 				EStageStoreApiRoutes.main + '/' + id,
 				target,
 			)
 
-			if (!data?.success) {
-				return false
+			if (!data) {
+				return
 			}
 
-			return true
+			return data
 		} catch (e) {
 			console.error(e)
-			return false
 		}
 	},
 	async remove(id) {

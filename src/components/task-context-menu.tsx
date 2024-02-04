@@ -18,9 +18,14 @@ import {
 export interface ITaskContextMenu {
 	children: ReactNode
 	task: ITask
+	stageId: string
 }
 
-export const TaskContextMenu: FC<ITaskContextMenu> = ({ children, task }) => {
+export const TaskContextMenu: FC<ITaskContextMenu> = ({
+	children,
+	task,
+	stageId,
+}) => {
 	const remove = useTaskStore(store => store.remove)
 	const duplication = useTaskStore(store => store.duplication)
 	const setIsShowTask = useOpenTaskStore(store => store.setIsShow)
@@ -39,7 +44,7 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({ children, task }) => {
 
 	async function duplicationHandler() {
 		try {
-			const createdTask = await duplication(task._id)
+			const createdTask = await duplication(task._id, stageId)
 
 			if (!createdTask) {
 				toast({

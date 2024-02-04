@@ -14,7 +14,10 @@ export interface IUpdateStageTarget
 export interface IStageStore {
 	duplication: (id: string) => Promise<IStage | boolean>
 
-	update: (id: IStage, target: IUpdateStageTarget) => Promise<boolean>
+	update: (
+		id: IStage,
+		target: IUpdateStageTarget,
+	) => Promise<IStage | undefined>
 
 	remove: (id: string) => Promise<boolean>
 }

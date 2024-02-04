@@ -40,7 +40,7 @@ export const StageBoard: FC<IStageBoard> = ({ stage }) => {
 				{stage.tasks.length !== 0 && (
 					<CardContent className="pb-4">
 						<div className="w-full flex flex-col gap-2">
-							<TaskBoardList tasks={stage.tasks} />
+							<TaskBoardList tasks={stage.tasks} stageId={stage._id} />
 						</div>
 					</CardContent>
 				)}

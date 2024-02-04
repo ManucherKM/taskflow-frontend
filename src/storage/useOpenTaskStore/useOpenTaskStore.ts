@@ -9,7 +9,7 @@ const defaultStore = {
 	task: null,
 } as IOpenTaskStore
 
-export const useOpenTaskStore = create<IOpenTaskStore>((set, get) => ({
+export const useOpenTaskStore = create<IOpenTaskStore>(set => ({
 	...defaultStore,
 	setIsShow(isShow) {
 		set({ isShow })

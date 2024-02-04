@@ -4,6 +4,7 @@ import { EUpdateTaskStoreApiRoutes, type IUpdateTaskStore } from './types'
 
 // Utils
 import { create } from 'zustand'
+import { ITask } from '../useTaskStore/types'
 
 const defaultStore = {
 	isShow: false,
@@ -22,21 +23,20 @@ export const useUpdateTaskStore = create<IUpdateTaskStore>((set, get) => ({
 		try {
 			const taskId = get().taskId
 
-			if (!taskId) return false
+			if (!taskId) return
 
-			const { data } = await axios.patch<{ success: boolean }>(
+			const { data } = await axios.patch<ITask>(
 				EUpdateTaskStoreApiRoutes.update + '/' + taskId,
 				target,
 			)
 
-			if (!data?.success) {
-				return false
+			if (!data) {
+				return
 			}
 
-			return true
+			return data
 		} catch (e) {
 			console.log(e)
-			return false
 		}
 	},
 }))

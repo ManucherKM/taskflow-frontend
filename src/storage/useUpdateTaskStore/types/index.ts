@@ -1,4 +1,5 @@
 import { ICreateTarget } from '@/storage/useCreateTaskStore/types'
+import { ITask } from '@/storage/useTaskStore/types'
 
 export interface IUpdateTarget extends Partial<ICreateTarget> {}
 
@@ -11,7 +12,7 @@ export interface IUpdateTaskStore {
 
 	setTaskId: (target: string) => void
 
-	update: (target: IUpdateTarget) => Promise<boolean>
+	update: (target: IUpdateTarget) => Promise<ITask | undefined>
 }
 
 export enum EUpdateTaskStoreApiRoutes {

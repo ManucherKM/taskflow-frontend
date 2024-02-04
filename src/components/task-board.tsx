@@ -6,11 +6,12 @@ import { Button } from './ui/button'
 
 export interface ITaskBoard {
 	task: ITask
+	stageId: string
 }
 
-export const TaskBoard: FC<ITaskBoard> = ({ task }) => {
+export const TaskBoard: FC<ITaskBoard> = ({ task, stageId }) => {
 	return (
-		<TaskContextMenu task={task}>
+		<TaskContextMenu task={task} stageId={stageId}>
 			<CustomTooltip text="Нажмите на правую кнопку мыши чтобы открыть меню опций задачи">
 				<Button className="justify-start group w-full cursor-grab">
 					{task.title}
