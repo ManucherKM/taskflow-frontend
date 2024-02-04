@@ -36,7 +36,7 @@ export interface IBoardStore {
 
 	create: (target: { name: string }) => Promise<IBoard | undefined>
 
-	update: (id: string, target: IUpdateBoard) => Promise<boolean>
+	update: (id: string, target: IUpdateBoard) => Promise<IBoard | undefined>
 
 	remove: (id: string) => Promise<boolean>
 }

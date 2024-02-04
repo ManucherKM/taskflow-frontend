@@ -5,13 +5,16 @@ import { StageBoard } from './stage-board'
 
 export interface IStageBoardList {
 	stages: IStage[]
+	boardId: string
 }
 
-export const StageBoardList: FC<IStageBoardList> = ({ stages }) => {
+export const StageBoardList: FC<IStageBoardList> = ({ stages, boardId }) => {
 	return (
 		<List
 			arr={stages}
-			callback={stage => <StageBoard key={stage._id} stage={stage} />}
+			callback={stage => (
+				<StageBoard boardId={boardId} key={stage._id} stage={stage} />
+			)}
 		/>
 	)
 }

@@ -8,7 +8,6 @@ import {
 } from './types'
 
 // Utils
-import { changeBoardByTarget } from '@/utils'
 import { create } from 'zustand'
 
 // Default storage object.
@@ -22,7 +21,7 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 	...defaultStore,
 	async getAllBoards() {
 		try {
-			const { data, status } = await axios.post<IBoard[]>(
+			const { data, status } = await axios.get<IBoard[]>(
 				EBoardStoreApiRoutes.all,
 			)
 
@@ -89,23 +88,18 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 
 	async update(id, target) {
 		try {
-			const { data } = await axios.patch<{ success: boolean }>(
+			const { data } = await axios.patch<IBoard>(
 				EBoardStoreApiRoutes.main + '/' + id,
 				target,
 			)
 
-			if (!data?.success) {
-				return false
+			if (!data) {
+				return
 			}
 
-			const boards = changeBoardByTarget(get().boards, id, target)
-
-			set({ boards })
-
-			return true
+			return data
 		} catch (e) {
 			console.error(e)
-			return false
 		}
 	},
 

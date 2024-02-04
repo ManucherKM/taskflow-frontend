@@ -13,11 +13,13 @@ import {
 export interface IStageContextMenu {
 	children: ReactNode
 	stage: IStage
+	boardId: string
 }
 
 export const StageContextMenu: FC<IStageContextMenu> = ({
 	children,
 	stage,
+	boardId,
 }) => {
 	const remove = useStageStore(store => store.remove)
 	const duplication = useStageStore(store => store.duplication)
@@ -28,7 +30,7 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 
 	async function duplicationHandler() {
 		try {
-			const createdStage = await duplication(stage._id)
+			const createdStage = await duplication(stage._id, boardId)
 
 			if (!createdStage) {
 				toast({

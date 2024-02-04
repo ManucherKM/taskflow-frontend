@@ -17,9 +17,10 @@ import { TaskBoardList } from './task-board-list'
 
 export interface IStageBoard {
 	stage: IStage
+	boardId: string
 }
 
-export const StageBoard: FC<IStageBoard> = ({ stage }) => {
+export const StageBoard: FC<IStageBoard> = ({ stage, boardId }) => {
 	const setIsShowCreateTask = useCreateTaskStore(store => store.setIsShow)
 	const setStageIdCreateTask = useCreateTaskStore(store => store.setStageId)
 
@@ -29,7 +30,7 @@ export const StageBoard: FC<IStageBoard> = ({ stage }) => {
 	}
 
 	return (
-		<StageContextMenu stage={stage}>
+		<StageContextMenu stage={stage} boardId={boardId}>
 			<Card className="w-[300px] h-fit cursor-grab">
 				<CustomTooltip text="Нажмите на правую кнопку мыши чтобы открыть меню опций этапа">
 					<CardHeader className="p-4 pb-6">

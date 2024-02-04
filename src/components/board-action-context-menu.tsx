@@ -33,6 +33,10 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 
 	const remove = useBoardStore(store => store.remove)
 
+	const boards = useBoardStore(store => store.boards)
+
+	const setBoards = useBoardStore(store => store.setBoards)
+
 	function openHandler() {
 		navigate(ERoutes.board + '/' + board._id)
 	}
@@ -44,6 +48,8 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 
 	async function favoriteHandler() {
 		try {
+			console.log(board)
+
 			const updatedBoard = await loader(update, board._id, {
 				isFavorite: !board.isFavorite,
 			})
@@ -54,6 +60,16 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 				})
 				return
 			}
+
+			const newBoards = boards.map(board => {
+				if (board._id === updatedBoard._id) {
+					return updatedBoard
+				}
+
+				return board
+			})
+
+			setBoards(newBoards)
 		} catch (e) {
 			console.log(e)
 		}

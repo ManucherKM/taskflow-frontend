@@ -6,12 +6,13 @@ import { EStageStoreApiRoutes, IStage, type IStageStore } from './types'
 import { create } from 'zustand'
 
 export const useStageStore = create<IStageStore>(() => ({
-	async duplication(id) {
+	async duplication(id, boardId) {
 		try {
 			const { data } = await axios.post<IStage>(
 				EStageStoreApiRoutes.duplicate,
 				{
 					id,
+					boardId,
 				},
 			)
 

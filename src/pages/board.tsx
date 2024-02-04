@@ -71,7 +71,9 @@ export const Board: FC = () => {
 			<div className="container">
 				<ScrollArea className="w-full h-[calc(100vh-72px)]">
 					<div className="flex w-max space-x-4 p-4">
-						{!!board && <StageBoardList stages={board.stages} />}
+						{!!board && (
+							<StageBoardList boardId={board._id} stages={board.stages} />
+						)}
 						<Button
 							variant={'ghost'}
 							className="flex gap-2 w-[300px]"

@@ -32,6 +32,10 @@ export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
 
 	const update = useBoardStore(store => store.update)
 
+	const boards = useBoardStore(store => store.boards)
+
+	const setBoards = useBoardStore(store => store.setBoards)
+
 	async function onUpdateSubmit() {
 		if (!id.length) return
 
@@ -45,6 +49,16 @@ export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
 
 				return
 			}
+
+			const newBoards = boards.map(board => {
+				if (board._id === updatedBoard._id) {
+					return updatedBoard
+				}
+
+				return board
+			})
+
+			setBoards(newBoards)
 
 			setIsShow(false)
 		} catch (e) {
