@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/context-menu'
 import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
-import { useBoardStore, useUpdateBoardStore } from '@/storage'
+import { useBoardStore, useUpdateBoardStore, useUserStore } from '@/storage'
 import { IBoard } from '@/storage/useBoardStore/types'
 import { FC, ReactNode } from 'react'
 import { useNavigate } from 'react-router'
@@ -21,6 +21,8 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 	children,
 	board,
 }) => {
+	const user = useUserStore(store => store.user)
+
 	const setIsShow = useUpdateBoardStore(store => store.setIsShow)
 
 	const setId = useUpdateBoardStore(store => store.setId)
@@ -30,6 +32,8 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 	const loader = useLoader()
 
 	const update = useBoardStore(store => store.update)
+
+	const leave = useBoardStore(store => store.leave)
 
 	const remove = useBoardStore(store => store.remove)
 
@@ -75,6 +79,29 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 		}
 	}
 
+	async function leaveHandler() {
+		try {
+			const savedBoard = await loader(leave, board._id)
+
+			if (!savedBoard) {
+				toast({
+					title: 'Не удалось покинуть доску',
+				})
+				return
+			}
+
+			const newBoards = boards.filter(board => board._id !== savedBoard._id)
+
+			setBoards(newBoards)
+
+			toast({
+				title: 'Доска успешно покинута',
+			})
+		} catch (e) {
+			console.log(e)
+		}
+	}
+
 	async function removeHandler() {
 		try {
 			const isSuccess = await loader(remove, board._id)
@@ -106,9 +133,19 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 					{board.isFavorite ? 'Убрать из избранного' : ' В избранное'}
 				</ContextMenuItem>
 
-				<ContextMenuItem inset onClick={removeHandler} className="text-red-400">
-					Удалить
+				<ContextMenuItem inset onClick={leaveHandler} className="text-red-400">
+					Покинуть
 				</ContextMenuItem>
+
+				{!!user && board.admins.includes(user._id) && (
+					<ContextMenuItem
+						inset
+						onClick={removeHandler}
+						className="text-red-400"
+					>
+						Удалить
+					</ContextMenuItem>
+				)}
 			</ContextMenuContent>
 		</ContextMenu>
 	)

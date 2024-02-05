@@ -7,7 +7,7 @@ import { NavbarContextMenu, SearchBoard } from '.'
 import { Logo } from './logo'
 import { Search } from './search'
 import { TypographyP } from './typography-p'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Avatar, AvatarFallback } from './ui/avatar'
 
 export const NavBar: FC = () => {
 	const [searchQuery, setSearchQuery] = useState<string>('')
@@ -61,7 +61,7 @@ export const NavBar: FC = () => {
 						</TypographyP>
 						<NavbarContextMenu>
 							<Avatar className="cursor-pointer hover:opacity-80">
-								<AvatarImage src={user?.avatar} />
+								{/* <AvatarImage src={user?.avatar} /> */}
 								<AvatarFallback>CN</AvatarFallback>
 							</Avatar>
 						</NavbarContextMenu>

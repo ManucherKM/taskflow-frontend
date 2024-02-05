@@ -3,9 +3,9 @@ interface IUrl {
 }
 
 export interface IUser {
+	_id: string
 	firstName?: string
 	lastName?: string
-	avatar?: string
 	email: string
 	userName: string
 	bio?: string

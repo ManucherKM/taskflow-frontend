@@ -61,6 +61,25 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 		}
 	},
 
+	async leave(boardId) {
+		try {
+			const { data } = await axios.post<IBoard | undefined>(
+				EBoardStoreApiRoutes.leave,
+				{
+					boardId,
+				},
+			)
+
+			if (!data) {
+				return
+			}
+
+			return data
+		} catch (e) {
+			console.error(e)
+		}
+	},
+
 	setBoards(target) {
 		set({ boards: target })
 	},
