@@ -14,6 +14,7 @@ import {
 } from '.'
 import { CustomTooltip } from './custom-tooltip'
 import { StageContextMenu } from './stage-context-menu'
+import { StrictModeDroppable } from './strict-mode-droppable '
 import { TaskBoardList } from './task-board-list'
 
 export interface IStageBoard extends HTMLAttributes<HTMLDivElement> {
@@ -50,13 +51,28 @@ export const StageBoard: FC<IStageBoard> = ({
 					</CardHeader>
 				</CustomTooltip>
 
-				{stage.tasks.length !== 0 && (
-					<CardContent className="pb-4">
-						<div className="w-full flex flex-col gap-2">
-							<TaskBoardList tasks={stage.tasks} stageId={stage._id} />
+				<StrictModeDroppable
+					key={stage._id}
+					droppableId={stage._id}
+					direction="vertical"
+					type="ROW"
+				>
+					{(provided, snapshot) => (
+						<div
+							ref={provided.innerRef}
+							key={stage._id}
+							{...provided.droppableProps}
+						>
+							<CardContent className="pb-4">
+								<div className="w-full flex flex-col">
+									<TaskBoardList tasks={stage.tasks} stageId={stage._id} />
+									{provided.placeholder}
+								</div>
+							</CardContent>
 						</div>
-					</CardContent>
-				)}
+					)}
+				</StrictModeDroppable>
+
 				<CardFooter className="p-4 pt-0">
 					<Button
 						variant={'ghost'}
