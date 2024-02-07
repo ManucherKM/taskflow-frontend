@@ -18,7 +18,9 @@ import { TaskBoardList } from './task-board-list'
 
 export interface IStageBoard extends HTMLAttributes<HTMLDivElement> {
 	stage: IStage
+	stages: IStage[]
 	boardId: string
+	onChangeStages: (stages: IStage[]) => void
 	disableEvents: boolean
 }
 
@@ -26,6 +28,8 @@ export const StageBoard: FC<IStageBoard> = ({
 	stage,
 	boardId,
 	className,
+	stages,
+	onChangeStages,
 	disableEvents,
 	...props
 }) => {
@@ -60,7 +64,12 @@ export const StageBoard: FC<IStageBoard> = ({
 					{stage.tasks.length !== 0 && (
 						<CardContent className="pb-4">
 							<div className="w-full flex flex-col gap-2">
-								<TaskBoardList tasks={stage.tasks} stageId={stage._id} />
+								<TaskBoardList
+									onChangeStages={onChangeStages}
+									stages={stages}
+									tasks={stage.tasks}
+									stage={stage}
+								/>
 							</div>
 						</CardContent>
 					)}

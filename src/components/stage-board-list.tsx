@@ -40,7 +40,12 @@ export const StageBoardList: FC<IStageBoardList> = ({
 		e.preventDefault()
 		;(e.target as HTMLDivElement).style.removeProperty('opacity')
 
-		if (!startStage) {
+		if (
+			!startStage ||
+			stages.findIndex(
+				pred => pred._id === (e.target as HTMLDivElement).dataset.id,
+			) === -1
+		) {
 			return
 		}
 
@@ -64,13 +69,15 @@ export const StageBoardList: FC<IStageBoardList> = ({
 			arr={stages}
 			callback={stage => (
 				<StageBoard
+					stages={stages}
 					onDragEnd={dragEndHandler}
 					onDragStart={e => dragStartHandler(e, stage)}
 					onDragOver={dragOverHandler}
 					onDragLeave={dragLeaveHandler}
 					onDrop={e => dropHandler(e, stage)}
+					onChangeStages={onChangeStages}
 					draggable={true}
-					disableEvents={!!stage}
+					disableEvents={!!startStage}
 					data-id={stage._id}
 					boardId={boardId}
 					key={stage._id}
