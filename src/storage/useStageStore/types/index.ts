@@ -15,7 +15,7 @@ export interface IStageStore {
 	duplication: (id: string, boardId: string) => Promise<IStage | boolean>
 
 	update: (
-		id: IStage,
+		id: string,
 		target: IUpdateStageTarget,
 	) => Promise<IStage | undefined>
 

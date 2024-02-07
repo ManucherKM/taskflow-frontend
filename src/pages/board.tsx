@@ -11,7 +11,6 @@ import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
 import { useBoardStore, useCreateStageStore } from '@/storage'
 import { IDeepBoard } from '@/storage/useBoardStore/types'
-import { IStage } from '@/storage/useStageStore/types'
 import { useEffect, type FC } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
@@ -37,31 +36,6 @@ export const Board: FC = () => {
 	function createStageHandler() {
 		setBoardId(id as string)
 		setIsShowCreateStage(true)
-	}
-
-	async function changeStageHanler(stages: IStage[]) {
-		setBoard({ ...board, stages: stages })
-
-		try {
-			const stageIds = stages.map(stage => stage._id)
-
-			const updatedBoard = await loader(update, id as string, {
-				stages: stageIds,
-			})
-
-			if (!updatedBoard) {
-				toast({
-					title: 'Не удалось обновить доску',
-				})
-				return
-			}
-
-			toast({
-				title: 'Доска успешно обновлена',
-			})
-		} catch (e) {
-			console.log(e)
-		}
 	}
 
 	useEffect(() => {
@@ -100,11 +74,7 @@ export const Board: FC = () => {
 				<ScrollArea className="w-full h-[calc(100vh-72px)]">
 					<div className="flex w-max space-x-4 p-4">
 						{!!board && (
-							<StageBoardList
-								boardId={board._id}
-								stages={board.stages}
-								onChangeStages={changeStageHanler}
-							/>
+							<StageBoardList boardId={board._id} stages={board.stages} />
 						)}
 						<Button
 							variant={'ghost'}

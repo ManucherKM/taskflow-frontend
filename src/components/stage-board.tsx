@@ -18,19 +18,13 @@ import { TaskBoardList } from './task-board-list'
 
 export interface IStageBoard extends HTMLAttributes<HTMLDivElement> {
 	stage: IStage
-	stages: IStage[]
 	boardId: string
-	onChangeStages: (stages: IStage[]) => void
-	disableEvents: boolean
 }
 
 export const StageBoard: FC<IStageBoard> = ({
 	stage,
 	boardId,
 	className,
-	stages,
-	onChangeStages,
-	disableEvents,
 	...props
 }) => {
 	const setIsShowCreateTask = useCreateTaskStore(store => store.setIsShow)
@@ -50,40 +44,29 @@ export const StageBoard: FC<IStageBoard> = ({
 				])}
 				{...props}
 			>
-				<div
-					className={
-						disableEvents ? 'pointer-events-none' : 'pointer-events-auto'
-					}
-				>
-					<CustomTooltip text="Нажмите на правую кнопку мыши чтобы открыть меню опций этапа">
-						<CardHeader className="p-4 pb-6">
-							<CardTitle>{stage.name}</CardTitle>
-						</CardHeader>
-					</CustomTooltip>
+				<CustomTooltip text="Нажмите на правую кнопку мыши чтобы открыть меню опций этапа">
+					<CardHeader className="p-4 pb-6">
+						<CardTitle>{stage.name}</CardTitle>
+					</CardHeader>
+				</CustomTooltip>
 
-					{stage.tasks.length !== 0 && (
-						<CardContent className="pb-4">
-							<div className="w-full flex flex-col gap-2">
-								<TaskBoardList
-									onChangeStages={onChangeStages}
-									stages={stages}
-									tasks={stage.tasks}
-									stage={stage}
-								/>
-							</div>
-						</CardContent>
-					)}
-					<CardFooter className="p-4 pt-0">
-						<Button
-							variant={'ghost'}
-							className="flex gap-2 w-full"
-							onClick={taskCreateHandler}
-						>
-							<Icons.plus />
-							Создать новую задачу
-						</Button>
-					</CardFooter>
-				</div>
+				{stage.tasks.length !== 0 && (
+					<CardContent className="pb-4">
+						<div className="w-full flex flex-col gap-2">
+							<TaskBoardList tasks={stage.tasks} stageId={stage._id} />
+						</div>
+					</CardContent>
+				)}
+				<CardFooter className="p-4 pt-0">
+					<Button
+						variant={'ghost'}
+						className="flex gap-2 w-full"
+						onClick={taskCreateHandler}
+					>
+						<Icons.plus />
+						Создать новую задачу
+					</Button>
+				</CardFooter>
 			</Card>
 		</StageContextMenu>
 	)
