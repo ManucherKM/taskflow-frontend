@@ -35,6 +35,7 @@ import { useDisplayStore } from '@/storage'
 import { EFont } from '@/storage/useDisplayStore/types'
 import { changeFirstLetterToUppercase } from '@/utils'
 import { ChangeEvent } from 'react'
+import { MiniBoard } from './mini-board'
 import { buttonVariants } from './ui/button'
 import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 
@@ -52,6 +53,7 @@ const languages = [
 
 const displayFormSchema = z.object({
 	mode: z.enum(['light', 'dark']),
+	theme: z.enum(['zinc', 'rose', 'blue', 'green', 'orange', 'violet']),
 	font: z.enum(['sans', 'mono', 'serif']),
 	language: z.string(),
 })
@@ -69,6 +71,7 @@ export function DisplayForm() {
 		mode: theme as 'light' | 'dark',
 		font: font,
 		language: 'ru',
+		theme: 'zinc',
 	}
 
 	const form = useForm<DisplayFormValues>({
@@ -77,8 +80,12 @@ export function DisplayForm() {
 		defaultValues,
 	})
 
-	function changeThemeHandler(e: string) {
+	function changeThemeModeHandler(e: string) {
 		setTheme(e as Theme)
+	}
+
+	function changeThemeHandler(e: string) {
+		console.log(e)
 	}
 
 	function changeFontHandler(e: ChangeEvent<HTMLSelectElement>) {
@@ -202,7 +209,7 @@ export function DisplayForm() {
 							<RadioGroup
 								onValueChange={e => {
 									field.onChange(e)
-									changeThemeHandler(e)
+									changeThemeModeHandler(e)
 								}}
 								defaultValue={field.value}
 								className="grid max-w-md grid-cols-2 gap-8 pt-2"
@@ -212,22 +219,11 @@ export function DisplayForm() {
 										<FormControl>
 											<RadioGroupItem value="light" className="sr-only" />
 										</FormControl>
-										<div className="items-center rounded-md border-2 border-muted p-1 hover:border-accent">
-											<div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
-												<div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
-													<div className="h-2 w-[80px] rounded-lg bg-[#ecedef]" />
-													<div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-												</div>
-												<div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
-													<div className="h-4 w-4 rounded-full bg-[#ecedef]" />
-													<div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-												</div>
-												<div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
-													<div className="h-4 w-4 rounded-full bg-[#ecedef]" />
-													<div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-												</div>
-											</div>
-										</div>
+										<MiniBoard
+											bg="bg-[#ecedef]"
+											modal="bg-white"
+											skeleton="bg-[#ecedef]"
+										/>
 										<span className="block w-full p-2 text-center font-normal">
 											Светлый
 										</span>
@@ -238,24 +234,131 @@ export function DisplayForm() {
 										<FormControl>
 											<RadioGroupItem value="dark" className="sr-only" />
 										</FormControl>
-										<div className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground">
-											<div className="space-y-2 rounded-sm bg-slate-950 p-2">
-												<div className="space-y-2 rounded-md bg-slate-800 p-2 shadow-sm">
-													<div className="h-2 w-[80px] rounded-lg bg-slate-400" />
-													<div className="h-2 w-[100px] rounded-lg bg-slate-400" />
-												</div>
-												<div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-													<div className="h-4 w-4 rounded-full bg-slate-400" />
-													<div className="h-2 w-[100px] rounded-lg bg-slate-400" />
-												</div>
-												<div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-													<div className="h-4 w-4 rounded-full bg-slate-400" />
-													<div className="h-2 w-[100px] rounded-lg bg-slate-400" />
-												</div>
-											</div>
-										</div>
+										<MiniBoard
+											bg="bg-slate-950"
+											modal="bg-slate-800"
+											skeleton="bg-slate-400"
+										/>
 										<span className="block w-full p-2 text-center font-normal">
 											Темный
+										</span>
+									</FormLabel>
+								</FormItem>
+							</RadioGroup>
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="theme"
+					render={({ field }) => (
+						<FormItem className="space-y-1">
+							<FormLabel>Тема</FormLabel>
+							<FormDescription>
+								Выберите тему для информационной панели.
+							</FormDescription>
+							<FormMessage />
+							<RadioGroup
+								onValueChange={e => {
+									field.onChange(e)
+									changeThemeHandler(e)
+								}}
+								defaultValue={field.value}
+								className="grid max-w-md grid-cols-2 gap-8 pt-2"
+							>
+								<FormItem>
+									<FormLabel className="[&:has([data-state=checked])>div]:border-primary">
+										<FormControl>
+											<RadioGroupItem value="zinc" className="sr-only" />
+										</FormControl>
+										<MiniBoard
+											bg="bg-background"
+											modal="bg-transperent"
+											modalBorder="border"
+											skeleton="bg-accent"
+										/>
+										<span className="block  w-full p-2 text-center font-normal">
+											Серый
+										</span>
+									</FormLabel>
+								</FormItem>
+								<FormItem>
+									<FormLabel className="[&:has([data-state=checked])>div]:border-primary">
+										<FormControl>
+											<RadioGroupItem value="rose" className="sr-only" />
+										</FormControl>
+										<MiniBoard
+											bg="bg-background"
+											modal="bg-card"
+											modalBorder="border"
+											skeleton="bg-[#e11d48]"
+										/>
+										<span className="block w-full p-2 text-center font-normal">
+											Алый
+										</span>
+									</FormLabel>
+								</FormItem>
+								<FormItem>
+									<FormLabel className="[&:has([data-state=checked])>div]:border-primary">
+										<FormControl>
+											<RadioGroupItem value="blue" className="sr-only" />
+										</FormControl>
+										<MiniBoard
+											bg="bg-background"
+											modal="bg-card"
+											modalBorder="border"
+											skeleton="bg-[#2563eb]"
+										/>
+										<span className="block w-full p-2 text-center font-normal">
+											Мягкий синий
+										</span>
+									</FormLabel>
+								</FormItem>
+								<FormItem>
+									<FormLabel className="[&:has([data-state=checked])>div]:border-primary">
+										<FormControl>
+											<RadioGroupItem value="orange" className="sr-only" />
+										</FormControl>
+										<MiniBoard
+											bg="bg-background"
+											modal="bg-card"
+											modalBorder="border"
+											skeleton="bg-[#f97316]"
+										/>
+										<span className="block w-full p-2 text-center font-normal">
+											Оранжевый
+										</span>
+									</FormLabel>
+								</FormItem>
+								<FormItem>
+									<FormLabel className="[&:has([data-state=checked])>div]:border-primary">
+										<FormControl>
+											<RadioGroupItem value="green" className="sr-only" />
+										</FormControl>
+										<MiniBoard
+											bg="bg-background"
+											modal="bg-card"
+											modalBorder="border"
+											skeleton="bg-[#16a34a]"
+										/>
+										<span className="block w-full p-2 text-center font-normal">
+											Зеленый
+										</span>
+									</FormLabel>
+								</FormItem>
+								<FormItem>
+									<FormLabel className="[&:has([data-state=checked])>div]:border-primary">
+										<FormControl>
+											<RadioGroupItem value="violet" className="sr-only" />
+										</FormControl>
+										<MiniBoard
+											bg="bg-background"
+											modal="bg-card"
+											modalBorder="border"
+											skeleton="bg-[#7c3aed]"
+										/>
+										<span className="block w-full p-2 text-center font-normal">
+											Фиолетовый
 										</span>
 									</FormLabel>
 								</FormItem>

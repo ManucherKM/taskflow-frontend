@@ -61,7 +61,7 @@ export const Board: FC = () => {
 
 		const fetchBoard = async () => {
 			try {
-				const board = await loader(getDeepBoard, id)
+				const board = await getDeepBoard(id)
 
 				if (!board) {
 					toast({
@@ -80,6 +80,10 @@ export const Board: FC = () => {
 			}
 		}
 
+		// setInterval(() => {
+		// 	fetchBoard()
+		// }, 5000)
+
 		fetchBoard()
 	}, [])
 	return (
@@ -91,7 +95,7 @@ export const Board: FC = () => {
 					</Button>
 				</CustomTooltip>
 			</NavBar>
-			{/* <NavbarDashboard/> */}
+
 			<div className="container mt-5">
 				<ScrollArea className="w-full h-[calc(100vh-93px)]">
 					<div className="flex w-max space-x-4 p-4">
