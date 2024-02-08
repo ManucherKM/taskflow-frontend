@@ -67,7 +67,7 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 						{boards.map(board => (
 							<Link
 								key={board._id}
-								to={ERoutes.board + '/' + board._id}
+								to={ERoutes.dashboard + '/' + board._id}
 								className="flex flex-col"
 							>
 								<div

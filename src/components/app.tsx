@@ -21,6 +21,7 @@ import {
 	UpdateBoardProvider,
 } from '.'
 import { FontProvider } from './font-provider'
+import { InviteUserToBoardProvider } from './invite-user-to-board-provider'
 import { OpenTaskProvider } from './task-open-provider'
 import { UpdateStageProvider } from './update-stage-provider'
 import { UpdateTaskProvider } from './update-task-provider'
@@ -40,23 +41,25 @@ export const App: FC = () => {
 						<LoaderProvider>
 							<ToasterProvider>
 								<MultipleBoardActionsProvider>
-									<UpdateStageProvider>
-										<UpdateBoardProvider>
-											<CreateStageProvider>
-												<CreateTaskProvider>
-													<OpenTaskProvider>
-														<UpdateTaskProvider>
-															<LogoutProvider>
-																<InitProvider>
-																	<AppRouter />
-																</InitProvider>
-															</LogoutProvider>
-														</UpdateTaskProvider>
-													</OpenTaskProvider>
-												</CreateTaskProvider>
-											</CreateStageProvider>
-										</UpdateBoardProvider>
-									</UpdateStageProvider>
+									<InviteUserToBoardProvider>
+										<UpdateStageProvider>
+											<UpdateBoardProvider>
+												<CreateStageProvider>
+													<CreateTaskProvider>
+														<OpenTaskProvider>
+															<UpdateTaskProvider>
+																<LogoutProvider>
+																	<InitProvider>
+																		<AppRouter />
+																	</InitProvider>
+																</LogoutProvider>
+															</UpdateTaskProvider>
+														</OpenTaskProvider>
+													</CreateTaskProvider>
+												</CreateStageProvider>
+											</UpdateBoardProvider>
+										</UpdateStageProvider>
+									</InviteUserToBoardProvider>
 								</MultipleBoardActionsProvider>
 							</ToasterProvider>
 						</LoaderProvider>

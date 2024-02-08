@@ -6,10 +6,15 @@ import {
 	ScrollBar,
 	toast,
 } from '@/components'
+import { CustomTooltip } from '@/components/custom-tooltip'
 import { StageBoardList } from '@/components/stage-board-list'
 import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
-import { useBoardStore, useCreateStageStore } from '@/storage'
+import {
+	useBoardStore,
+	useCreateStageStore,
+	useInviteUserToBoardStore,
+} from '@/storage'
 import { IDeepBoard } from '@/storage/useBoardStore/types'
 import { useEffect, type FC } from 'react'
 import { useNavigate, useParams } from 'react-router'
@@ -29,6 +34,11 @@ export const Board: FC = () => {
 
 	const getDeepBoard = useBoardStore(store => store.getDeepBoard)
 
+	const setIsShowInviteUser = useInviteUserToBoardStore(
+		store => store.setIsShow,
+	)
+	const setBoardInviteUser = useInviteUserToBoardStore(store => store.setBoard)
+
 	const setIsShowCreateStage = useCreateStageStore(store => store.setIsShow)
 
 	const setBoardId = useCreateStageStore(store => store.setBoardId)
@@ -36,6 +46,11 @@ export const Board: FC = () => {
 	function createStageHandler() {
 		setBoardId(id as string)
 		setIsShowCreateStage(true)
+	}
+
+	function inviteUserHandler() {
+		setBoardInviteUser(board)
+		setIsShowInviteUser(true)
 	}
 
 	useEffect(() => {
@@ -69,9 +84,16 @@ export const Board: FC = () => {
 	}, [])
 	return (
 		<>
-			<NavBar />
-			<div className="container">
-				<ScrollArea className="w-full h-[calc(100vh-72px)]">
+			<NavBar>
+				<CustomTooltip text="Пригласить в доску">
+					<Button variant={'ghost'} size={'icon'} onClick={inviteUserHandler}>
+						<Icons.userPlus />
+					</Button>
+				</CustomTooltip>
+			</NavBar>
+			{/* <NavbarDashboard/> */}
+			<div className="container mt-5">
+				<ScrollArea className="w-full h-[calc(100vh-93px)]">
 					<div className="flex w-max space-x-4 p-4">
 						{!!board && (
 							<StageBoardList boardId={board._id} stages={board.stages} />

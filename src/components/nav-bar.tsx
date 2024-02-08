@@ -1,15 +1,20 @@
 import { ERoutes } from '@/config/routes'
 import { useOutsideClick } from '@/hooks'
 import { useUserStore } from '@/storage'
-import { useEffect, useRef, useState, type FC } from 'react'
+import { ReactNode, useEffect, useRef, useState, type FC } from 'react'
 import { Link } from 'react-router-dom'
 import { NavbarContextMenu, SearchBoard } from '.'
+import { CustomTooltip } from './custom-tooltip'
 import { Logo } from './logo'
 import { Search } from './search'
 import { TypographyP } from './typography-p'
 import { Avatar, AvatarFallback } from './ui/avatar'
 
-export const NavBar: FC = () => {
+export interface INavBar {
+	children?: ReactNode
+}
+
+export const NavBar: FC<INavBar> = ({ children }) => {
 	const [searchQuery, setSearchQuery] = useState<string>('')
 	const [isShowSearchBoard, setIsShowSearchBoard] = useState<boolean>(false)
 	const searchBoardRef = useRef<HTMLDivElement | null>(null)
@@ -35,13 +40,16 @@ export const NavBar: FC = () => {
 
 	return (
 		<nav>
-			<div className="container">
+			<div className="container border-b">
 				<div className="py-4 flex justify-between items-center">
-					<Link to={ERoutes.home} className="hover:opacity-80">
-						<Logo />
-					</Link>
+					<CustomTooltip text="На главную">
+						<Link to={ERoutes.home} className="hover:opacity-80">
+							<Logo />
+						</Link>
+					</CustomTooltip>
 
 					<div className="flex gap-2 items-center">
+						{children}
 						<SearchBoard
 							ref={searchBoardRef}
 							searchComponent={

@@ -42,7 +42,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 	const setBoards = useBoardStore(store => store.setBoards)
 
 	function openHandler() {
-		navigate(ERoutes.board + '/' + board._id)
+		navigate(ERoutes.dashboard + '/' + board._id)
 	}
 
 	function changeHandler() {

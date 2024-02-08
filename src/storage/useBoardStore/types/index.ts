@@ -38,6 +38,8 @@ export interface IBoardStore {
 
 	update: (id: string, target: IUpdateBoard) => Promise<IBoard | undefined>
 
+	inviteToDashboard: (boardId: string) => Promise<IBoard | undefined>
+
 	leave: (boardId: string) => Promise<IBoard | undefined>
 
 	remove: (id: string) => Promise<boolean>
@@ -49,4 +51,5 @@ export enum EBoardStoreApiRoutes {
 	main = '/api/board',
 	deep = '/api/board/id',
 	leave = '/api/board/leave',
+	inviteToDashboard = '/api/board/invite',
 }

@@ -50,7 +50,7 @@ export const CreateBoardProvider: FC<ICreateBoardProvider> = ({ children }) => {
 
 			setIsShow(false)
 
-			navigate(ERoutes.board + '/' + createdBoard._id)
+			navigate(ERoutes.dashboard + '/' + createdBoard._id)
 		} catch (e) {
 			console.error(e)
 		}

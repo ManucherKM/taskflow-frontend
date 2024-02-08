@@ -58,7 +58,7 @@ export const Home: FC = () => {
 					</div>
 				</div>
 			) : (
-				<div className="w-full h-[calc(100vh-72px)] flex flex-col justify-center items-center gap-2">
+				<div className="w-full h-[calc(100vh-73px)] flex flex-col justify-center items-center gap-2">
 					<BoardsNotFound />
 				</div>
 			)}

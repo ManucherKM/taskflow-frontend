@@ -159,4 +159,20 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 			console.error(e)
 		}
 	},
+
+	async inviteToDashboard(boardId) {
+		try {
+			const { data } = await axios.get<IBoard | undefined>(
+				EBoardStoreApiRoutes.inviteToDashboard + '/' + boardId,
+			)
+
+			if (!data) {
+				return
+			}
+
+			return data
+		} catch (e) {
+			console.error(e)
+		}
+	},
 }))

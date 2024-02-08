@@ -9,6 +9,7 @@ import {
 	CheckYourEmail,
 	Display,
 	Home,
+	InviteUserToBoard,
 	Login,
 	PrivacyPolicy,
 	Profile,
@@ -58,13 +59,15 @@ export enum ERoutes {
 
 	display = '/setting/display',
 
+	inviteUserToBoard = '/invite/dashboard',
+
 	/** `AccountConfirm` page route. */
 	accountConfirm = '/account-confirm',
 
 	/** `CheckYourEmail` page route. */
 	checkYourEmail = '/check-your-email',
 
-	board = '/dashboard',
+	dashboard = '/dashboard',
 }
 
 /** Public Routes */
@@ -104,6 +107,10 @@ export const publicRoutes: IRoute[] = [
 		path: ERoutes.termsOfUse,
 		component: TermsOfUse,
 	},
+	{
+		path: ERoutes.inviteUserToBoard + '/:id',
+		component: InviteUserToBoard,
+	},
 ]
 
 /** Private Routes */
@@ -121,7 +128,7 @@ export const privateRoutes: IRoute[] = [
 		component: Home,
 	},
 	{
-		path: ERoutes.board + '/:id',
+		path: ERoutes.dashboard + '/:id',
 		component: Board,
 	},
 	{
