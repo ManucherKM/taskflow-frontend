@@ -11,7 +11,7 @@ import { ToasterProvider } from './toaster-provider'
 import { AnimatePresence } from 'framer-motion'
 
 // Styles
-import '@/assets/styles/global.css'
+import '@/assets/styles/global.scss'
 import {
 	CreateStageProvider,
 	CreateTaskProvider,
@@ -23,6 +23,7 @@ import {
 import { FontProvider } from './font-provider'
 import { InviteUserToBoardProvider } from './invite-user-to-board-provider'
 import { OpenTaskProvider } from './task-open-provider'
+import { ThemeColorProvider } from './theme-color-provider'
 import { UpdateStageProvider } from './update-stage-provider'
 import { UpdateTaskProvider } from './update-task-provider'
 
@@ -34,8 +35,8 @@ import { UpdateTaskProvider } from './update-task-provider'
  */
 export const App: FC = () => {
 	return (
-		<div>
-			<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+			<ThemeColorProvider>
 				<AnimatePresence mode="wait">
 					<FontProvider>
 						<LoaderProvider>
@@ -65,7 +66,7 @@ export const App: FC = () => {
 						</LoaderProvider>
 					</FontProvider>
 				</AnimatePresence>
-			</ThemeProvider>
-		</div>
+			</ThemeColorProvider>
+		</ThemeProvider>
 	)
 }

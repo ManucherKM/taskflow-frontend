@@ -31,8 +31,9 @@ import {
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 
-import { useDisplayStore } from '@/storage'
+import { useDisplayStore, useThemeColorStore } from '@/storage'
 import { EFont } from '@/storage/useDisplayStore/types'
+import { TThemeColor } from '@/storage/useThemeColorStore/types'
 import { changeFirstLetterToUppercase } from '@/utils'
 import { ChangeEvent } from 'react'
 import { MiniBoard } from './mini-board'
@@ -53,7 +54,7 @@ const languages = [
 
 const displayFormSchema = z.object({
 	mode: z.enum(['light', 'dark']),
-	theme: z.enum(['zinc', 'rose', 'blue', 'green', 'orange', 'violet']),
+	theme: z.enum(['zinc', 'rose', 'blue', 'green', 'orange']),
 	font: z.enum(['sans', 'mono', 'serif']),
 	language: z.string(),
 })
@@ -64,6 +65,8 @@ export function DisplayForm() {
 	const setFont = useDisplayStore(store => store.setFont)
 
 	const font = useDisplayStore(store => store.font)
+
+	const setThemeColor = useThemeColorStore(store => store.setTheme)
 
 	const { setTheme, theme } = useTheme()
 
@@ -85,7 +88,7 @@ export function DisplayForm() {
 	}
 
 	function changeThemeHandler(e: string) {
-		console.log(e)
+		setThemeColor(e as TThemeColor)
 	}
 
 	function changeFontHandler(e: ChangeEvent<HTMLSelectElement>) {
@@ -343,22 +346,6 @@ export function DisplayForm() {
 										/>
 										<span className="block w-full p-2 text-center font-normal">
 											Зеленый
-										</span>
-									</FormLabel>
-								</FormItem>
-								<FormItem>
-									<FormLabel className="[&:has([data-state=checked])>div]:border-primary">
-										<FormControl>
-											<RadioGroupItem value="violet" className="sr-only" />
-										</FormControl>
-										<MiniBoard
-											bg="bg-background"
-											modal="bg-card"
-											modalBorder="border"
-											skeleton="bg-[#7c3aed]"
-										/>
-										<span className="block w-full p-2 text-center font-normal">
-											Фиолетовый
 										</span>
 									</FormLabel>
 								</FormItem>
