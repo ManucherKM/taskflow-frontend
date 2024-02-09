@@ -1,12 +1,21 @@
-import { Button, TypographyH1, TypographyP } from '@/components'
-import { ERoutes } from '@/config/routes'
+// Types
 import type { FC } from 'react'
+
+// Components
+import { Button, TypographyH1, TypographyP } from '@/components'
+
+// Utils
+import { ERoutes } from '@/config/routes'
 import { useNavigate } from 'react-router'
 
+/** A component that informs the user that they need to confirm their account. */
 export const CheckYourEmail: FC = () => {
+	// Get the function to redirect the user from the hook.
 	const navigate = useNavigate()
 
+	// Handler function redirects the user to the page with authorization.
 	function clickHandler() {
+		// Redirect the user to the authorization page.
 		navigate(ERoutes.login)
 	}
 

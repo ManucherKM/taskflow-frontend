@@ -5,8 +5,8 @@ import type { FC } from 'react'
 import {
 	Account,
 	AccountConfirm,
-	Board,
 	CheckYourEmail,
+	Dashboard,
 	Display,
 	Home,
 	InviteUserToBoard,
@@ -129,7 +129,7 @@ export const privateRoutes: IRoute[] = [
 	},
 	{
 		path: ERoutes.dashboard + '/:id',
-		component: Board,
+		component: Dashboard,
 	},
 	{
 		path: ERoutes.profile,

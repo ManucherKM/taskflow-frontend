@@ -1,12 +1,14 @@
-import { useLoader } from '@/hooks'
+import { useLoader, useOutsideClick } from '@/hooks'
 import { useBoardStore } from '@/storage'
 import { useMultipleBoardActionStore } from '@/storage/useMultipleBoardActionsStore/useMultipleBoardActionsStore'
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useEffect, useRef } from 'react'
 import { Button, TypographyP, toast } from '.'
 
 import { motion } from 'framer-motion'
 
 export const MultipleBoardActions = () => {
+	const setIsShow = useMultipleBoardActionStore(store => store.setIsShow)
+
 	const selectedBoards = useMultipleBoardActionStore(
 		store => store.selectedBoards,
 	)
@@ -15,11 +17,15 @@ export const MultipleBoardActions = () => {
 		store => store.setSelectedBoards,
 	)
 
-	const loader = useLoader()
-
 	const remove = useMultipleBoardActionStore(store => store.remove)
 
 	const getAllBoards = useBoardStore(store => store.getAllBoards)
+
+	const loader = useLoader()
+
+	const containerRef = useRef<HTMLDivElement | null>(null)
+
+	const isClickNodeContain = useOutsideClick(containerRef)
 
 	async function removeHandler() {
 		try {
@@ -44,11 +50,22 @@ export const MultipleBoardActions = () => {
 			}
 		} catch (e) {
 			console.log(e)
+		} finally {
+			setIsShow(false)
 		}
 	}
 
+	useEffect(() => {
+		if (isClickNodeContain === null) return
+
+		if (!isClickNodeContain) {
+			setIsShow(false)
+			setSelectedBoards([])
+		}
+	}, [isClickNodeContain])
 	return (
 		<motion.div
+			ref={containerRef}
 			initial={{ y: '-100px' }}
 			animate={{ y: '0' }}
 			exit={{ y: '-100px' }}
@@ -73,12 +90,11 @@ export interface IMultipleBoardActionsProvider {
 export const MultipleBoardActionsProvider: FC<
 	IMultipleBoardActionsProvider
 > = ({ children }) => {
-	const selectedBoards = useMultipleBoardActionStore(
-		store => store.selectedBoards,
-	)
+	const isShow = useMultipleBoardActionStore(store => store.isShow)
+
 	return (
 		<>
-			{selectedBoards.length > 1 && <MultipleBoardActions />}
+			{isShow && <MultipleBoardActions />}
 			{children}
 		</>
 	)

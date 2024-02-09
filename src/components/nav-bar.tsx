@@ -18,25 +18,15 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 	const [searchQuery, setSearchQuery] = useState<string>('')
 	const [isShowSearchBoard, setIsShowSearchBoard] = useState<boolean>(false)
 	const searchBoardRef = useRef<HTMLDivElement | null>(null)
-	const [isContain, clickHandler] = useOutsideClick(searchBoardRef)
+	const isClickNodeContain = useOutsideClick(searchBoardRef)
 
 	const user = useUserStore(store => store.user)
 
 	useEffect(() => {
-		if (!isShowSearchBoard) return
-
-		window.addEventListener('click', clickHandler)
-
-		return () => {
-			window.removeEventListener('click', clickHandler)
-		}
-	}, [isShowSearchBoard])
-
-	useEffect(() => {
-		if (!isContain) {
+		if (!isClickNodeContain) {
 			setIsShowSearchBoard(false)
 		}
-	}, [isContain])
+	}, [isClickNodeContain])
 
 	return (
 		<nav>
@@ -61,7 +51,7 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 								/>
 							}
 							query={searchQuery}
-							isShow={isShowSearchBoard && isContain}
+							isShow={isShowSearchBoard && isClickNodeContain}
 						/>
 
 						<TypographyP className="w-24 overflow-hidden text-ellipsis !mt-0 ml-2">

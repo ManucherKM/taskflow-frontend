@@ -1,3 +1,7 @@
+// Types
+import type { FC } from 'react'
+
+// Components
 import {
 	NavBarBack,
 	TypographyH2,
@@ -5,8 +9,8 @@ import {
 	TypographyP,
 	Ul,
 } from '@/components'
-import type { FC } from 'react'
 
+/** A component for application usage policy. */
 export const TermsOfUse: FC = () => {
 	return (
 		<>

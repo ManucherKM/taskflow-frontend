@@ -34,7 +34,7 @@ import { cn } from '@/lib/utils'
 import { useDisplayStore, useThemeColorStore } from '@/storage'
 import { EFont } from '@/storage/useDisplayStore/types'
 import { TThemeColor } from '@/storage/useThemeColorStore/types'
-import { changeFirstLetterToUppercase } from '@/utils'
+import { changeFirstLetterToUpperCase } from '@/utils'
 import { ChangeEvent } from 'react'
 import { MiniBoard } from './mini-board'
 import { buttonVariants } from './ui/button'
@@ -118,13 +118,13 @@ export function DisplayForm() {
 										}}
 									>
 										<option value={EFont.sans}>
-											{changeFirstLetterToUppercase(EFont.sans)}
+											{changeFirstLetterToUpperCase(EFont.sans)}
 										</option>
 										<option value={EFont.mono}>
-											{changeFirstLetterToUppercase(EFont.mono)}
+											{changeFirstLetterToUpperCase(EFont.mono)}
 										</option>
 										<option value={EFont.serif}>
-											{changeFirstLetterToUppercase(EFont.serif)}
+											{changeFirstLetterToUpperCase(EFont.serif)}
 										</option>
 									</select>
 								</FormControl>

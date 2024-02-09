@@ -1,6 +1,10 @@
-import { NavBarBack, RestoreAccountPasswordForm, SlideLeft } from '@/components'
+// Types
 import type { FC } from 'react'
 
+// Components
+import { NavBarBack, RestoreAccountPasswordForm, SlideLeft } from '@/components'
+
+/** A component for changing a user's password. */
 export const RestoreAccountPassword: FC = () => {
 	return (
 		<div className="overflow-hidden">

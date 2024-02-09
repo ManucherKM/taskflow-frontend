@@ -11,6 +11,7 @@ import { create } from 'zustand'
 
 // Default storage object.
 const defaultStore = {
+	isShow: false,
 	selectedBoards: [] as IBoard[],
 } as IMultipleBoardActionsStore
 
@@ -21,6 +22,10 @@ export const useMultipleBoardActionStore = create<IMultipleBoardActionsStore>(
 		setSelectedBoards(target) {
 			set({ selectedBoards: target })
 		},
+		setIsShow(isShow) {
+			set({ isShow })
+		},
+
 		async remove(target) {
 			try {
 				const promises = []

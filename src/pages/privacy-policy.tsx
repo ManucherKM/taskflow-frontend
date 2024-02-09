@@ -1,3 +1,7 @@
+// Types
+import type { FC } from 'react'
+
+// Components
 import {
 	NavBarBack,
 	TypographyH2,
@@ -5,8 +9,8 @@ import {
 	TypographyP,
 	Ul,
 } from '@/components'
-import type { FC } from 'react'
 
+/** A component with the application's privacy policy. */
 export const PrivacyPolicy: FC = () => {
 	return (
 		<>

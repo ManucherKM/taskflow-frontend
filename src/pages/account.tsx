@@ -1,7 +1,11 @@
-import { AccountForm, LayoutUserSetting } from '@/components'
-import { Separator } from '@radix-ui/react-context-menu'
+// Types
 import type { FC } from 'react'
 
+// Components
+import { AccountForm, LayoutUserSetting } from '@/components'
+import { Separator } from '@radix-ui/react-context-menu'
+
+/** Component for editing application settings. */
 export const Account: FC = () => {
 	return (
 		<LayoutUserSetting>

@@ -5,9 +5,9 @@ import { BoardCard } from './board-card'
 import { List } from './list'
 
 export interface IBoardCardList {
-	activeBoards: string[]
+	activeBoards: IBoard[]
 	boards: IBoard[]
-	setActiveBoards: Dispatch<SetStateAction<string[]>>
+	setActiveBoards: Dispatch<SetStateAction<IBoard[]>>
 	container: HTMLElement | null
 }
 
@@ -24,7 +24,11 @@ export const BoardCardList: FC<IBoardCardList> = ({
 
 			if (!boardId) return
 
-			setActiveBoards(prev => [...prev, boardId])
+			const foundBoard = boards.find(pred => pred._id === boardId)
+
+			if (!foundBoard) return
+
+			setActiveBoards(prev => [...prev, foundBoard])
 		})
 
 		// Iterate through the files that were deleted.
@@ -33,7 +37,7 @@ export const BoardCardList: FC<IBoardCardList> = ({
 
 			if (!boardId) return
 
-			setActiveBoards(prev => prev.filter(id => id !== boardId))
+			setActiveBoards(prev => prev.filter(pred => pred._id !== boardId))
 		})
 	}
 
@@ -45,7 +49,7 @@ export const BoardCardList: FC<IBoardCardList> = ({
 					<BoardCard
 						key={board._id}
 						data-id={board._id}
-						isActive={activeBoards.includes(board._id)}
+						isActive={!!activeBoards.find(pred => pred._id === board._id)}
 						board={board}
 						className="board"
 					/>

@@ -1,11 +1,18 @@
+// Types
+import type { FC } from 'react'
+
+// Components
 import { Logo, UserLoginForm, buttonVariants } from '@/components'
+import { Link } from 'react-router-dom'
+
+// Utils
 import { ERoutes } from '@/config/routes'
 import { useRandomMotivationalPhrase } from '@/hooks'
 import { cn } from '@/lib/utils'
-import type { FC } from 'react'
-import { Link } from 'react-router-dom'
 
+/** Component for user authorization. */
 export const Login: FC = () => {
+	// We get a motivational phrase and its author.
 	const { author, phrase } = useRandomMotivationalPhrase()
 
 	return (
