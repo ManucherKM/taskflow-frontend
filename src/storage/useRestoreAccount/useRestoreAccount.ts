@@ -1,6 +1,5 @@
 // Types
 import type {
-	IResponseChangePassword,
 	IResponseCreateOtp,
 	IResponseVerificationOtp,
 	IRestoreAccountStore,
@@ -10,6 +9,7 @@ import type {
 import axios from '@/config/axios'
 import { create } from 'zustand'
 import { useAuthStore } from '../useAuthStore/useAuthStore'
+import { IUser } from '../useUserStore/types'
 import { ERestoreAccountApiRoutes } from './types'
 
 // Default storage object.
@@ -99,7 +99,7 @@ export const useRestoreAccount = create<IRestoreAccountStore>((set, get) => ({
 			const setToken = useAuthStore.getState().setToken
 
 			// We send a request to change the password.
-			const { data } = await axios.patch<IResponseChangePassword>(
+			const { data } = await axios.patch<IUser>(
 				ERestoreAccountApiRoutes.changePassword,
 				{
 					password,
@@ -107,7 +107,7 @@ export const useRestoreAccount = create<IRestoreAccountStore>((set, get) => ({
 			)
 
 			// If the request is unsuccessful.
-			if (!data?.success) {
+			if (!data) {
 				// Return false.
 				return false
 			}

@@ -10,12 +10,6 @@ export interface IResponseVerificationOtp {
 	accessToken: string
 }
 
-/** Interface for server response to password changes. */
-export interface IResponseChangePassword {
-	/** The result of the request. */
-	success: string
-}
-
 /** Restore account store interface */
 export interface IRestoreAccountStore {
 	/** Email to restore your account. */
