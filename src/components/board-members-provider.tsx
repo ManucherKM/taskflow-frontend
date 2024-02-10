@@ -40,6 +40,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 	const isShow = useBoardMembersStore(store => store.isShow)
 	const setIsShow = useBoardMembersStore(store => store.setIsShow)
 	const board = useBoardMembersStore(store => store.board)
+	const setBoardMemebers = useBoardMembersStore(store => store.setBoard)
 	const user = useUserStore(store => store.user)
 
 	const setActiveBoard = useBoardStore(store => store.setActiveBoard)
@@ -135,6 +136,10 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 
 		fetchUsers()
 	}, [board])
+
+	useEffect(() => {
+		setBoardMemebers(activeBoard)
+	}, [activeBoard])
 
 	return (
 		<>
