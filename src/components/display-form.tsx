@@ -279,6 +279,7 @@ export function DisplayForm() {
 											modal="bg-transperent"
 											modalBorder="border"
 											skeleton="bg-accent"
+											className="zinc"
 										/>
 										<span className="block  w-full p-2 text-center font-normal">
 											Серый
@@ -295,6 +296,7 @@ export function DisplayForm() {
 											modal="bg-card"
 											modalBorder="border"
 											skeleton="bg-[#e11d48]"
+											className="rose"
 										/>
 										<span className="block w-full p-2 text-center font-normal">
 											Алый
@@ -311,6 +313,7 @@ export function DisplayForm() {
 											modal="bg-card"
 											modalBorder="border"
 											skeleton="bg-[#2563eb]"
+											className="blue"
 										/>
 										<span className="block w-full p-2 text-center font-normal">
 											Мягкий синий
@@ -327,6 +330,7 @@ export function DisplayForm() {
 											modal="bg-card"
 											modalBorder="border"
 											skeleton="bg-[#f97316]"
+											className="orange"
 										/>
 										<span className="block w-full p-2 text-center font-normal">
 											Оранжевый
@@ -343,6 +347,7 @@ export function DisplayForm() {
 											modal="bg-card"
 											modalBorder="border"
 											skeleton="bg-[#16a34a]"
+											className="green"
 										/>
 										<span className="block w-full p-2 text-center font-normal">
 											Зеленый

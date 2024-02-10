@@ -1,4 +1,5 @@
 export * from './useAuthStore/useAuthStore'
+export * from './useBoardMembersStore/useBoardMembersStore'
 export * from './useBoardStore/useBoardStore'
 export * from './useCreateBoardStore/useCreateBoardStore'
 export * from './useCreateStageStore/useCreateStageStore'

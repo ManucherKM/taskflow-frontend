@@ -16,6 +16,7 @@ import {
 
 // Storage
 import {
+	useBoardMembersStore,
 	useBoardStore,
 	useCreateStageStore,
 	useInviteUserToBoardStore,
@@ -39,7 +40,11 @@ export const Dashboard: FC = () => {
 	const setActiveBoard = useBoardStore(store => store.setActiveBoard)
 
 	// Value for an active board.
-	const activeBoard = useBoardStore(store => store.activeBoard) as IDeepBoard
+	const activeBoard = useBoardStore(store => store.activeBoard)
+
+	const setIsShowBoardMembers = useBoardMembersStore(store => store.setIsShow)
+
+	const setBoardBoardMembers = useBoardMembersStore(store => store.setBoard)
 
 	// Get the function to redirect the user from the hook.
 	const navigate = useNavigate()
@@ -76,10 +81,19 @@ export const Dashboard: FC = () => {
 	// Function handler for inviting the user.
 	function inviteUserHandler() {
 		// Modify the board in the repository to invite the user.
-		setBoardInviteUser(activeBoard)
+		setBoardInviteUser(activeBoard as IDeepBoard)
 
 		// Show the user a modal window to invite the user.
 		setIsShowInviteUser(true)
+	}
+
+	function boardMembersHandler() {
+		if (!activeBoard) {
+			return
+		}
+
+		setIsShowBoardMembers(true)
+		setBoardBoardMembers(activeBoard)
 	}
 
 	// An effect that will work once when rendering a component.
@@ -130,9 +144,17 @@ export const Dashboard: FC = () => {
 		// Call the function to get the full board data.
 		fetchBoard()
 	}, [])
+
+	if (!activeBoard) {
+		return <></>
+	}
+
 	return (
 		<>
 			<NavBar>
+				<Button variant={'ghost'} size={'icon'} onClick={boardMembersHandler}>
+					<Icons.users />
+				</Button>
 				<CustomTooltip text="Пригласить в доску">
 					<Button variant={'ghost'} size={'icon'} onClick={inviteUserHandler}>
 						<Icons.userPlus />

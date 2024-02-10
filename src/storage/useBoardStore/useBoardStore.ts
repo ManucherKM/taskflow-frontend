@@ -9,6 +9,7 @@ import {
 
 // Utils
 import { create } from 'zustand'
+import { IUser } from '../useUserStore/types'
 
 // Default storage object.
 const defaultStore = {
@@ -198,6 +199,27 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 
 			// If the board is not found.
 			if (!data) {
+				// Complete the function.
+				return
+			}
+
+			// Return the board
+			return data
+		} catch (e) {
+			// Show the error in the console.
+			console.error(e)
+		}
+	},
+
+	async getBoardUsers(boardId) {
+		try {
+			// We get the user list
+			const { data } = await axios.get<IUser[] | undefined>(
+				EBoardStoreApiRoutes.members + '/' + boardId,
+			)
+
+			// If the user list is not found.
+			if (typeof data === 'undefined') {
 				// Complete the function.
 				return
 			}

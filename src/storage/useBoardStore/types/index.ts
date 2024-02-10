@@ -1,5 +1,6 @@
 // Types
 import { IStage } from '@/storage/useStageStore/types'
+import { IUser } from '@/storage/useUserStore/types'
 
 /** User board interface */
 export interface IBoard {
@@ -116,6 +117,14 @@ export interface IBoardStore {
 	inviteToDashboard: (boardId: string) => Promise<IBoard | undefined>
 
 	/**
+	 * Function to get board users.
+	 *
+	 * @param boardId Board identifier
+	 * @returns User list or nothing
+	 */
+	getBoardUsers: (boardId: string) => Promise<IUser[] | undefined>
+
+	/**
 	 * Function for leaving the board.
 	 *
 	 * @param boardId Board identifier
@@ -151,4 +160,7 @@ export enum EBoardStoreApiRoutes {
 
 	/** Route for the board invitation. */
 	inviteToDashboard = '/api/board/invite',
+
+	/** Route for the get board members. */
+	members = '/api/board/users',
 }

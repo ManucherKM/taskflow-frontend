@@ -20,6 +20,7 @@ import {
 	MultipleBoardActionsProvider,
 	UpdateBoardProvider,
 } from '.'
+import { BoardMembersProvider } from './board-members-provider'
 import { FontProvider } from './font-provider'
 import { InviteUserToBoardProvider } from './invite-user-to-board-provider'
 import { OpenTaskProvider } from './task-open-provider'
@@ -46,17 +47,19 @@ export const App: FC = () => {
 										<UpdateStageProvider>
 											<UpdateBoardProvider>
 												<CreateStageProvider>
-													<CreateTaskProvider>
-														<OpenTaskProvider>
-															<UpdateTaskProvider>
-																<LogoutProvider>
-																	<InitProvider>
-																		<AppRouter />
-																	</InitProvider>
-																</LogoutProvider>
-															</UpdateTaskProvider>
-														</OpenTaskProvider>
-													</CreateTaskProvider>
+													<BoardMembersProvider>
+														<CreateTaskProvider>
+															<OpenTaskProvider>
+																<UpdateTaskProvider>
+																	<LogoutProvider>
+																		<InitProvider>
+																			<AppRouter />
+																		</InitProvider>
+																	</LogoutProvider>
+																</UpdateTaskProvider>
+															</OpenTaskProvider>
+														</CreateTaskProvider>
+													</BoardMembersProvider>
 												</CreateStageProvider>
 											</UpdateBoardProvider>
 										</UpdateStageProvider>

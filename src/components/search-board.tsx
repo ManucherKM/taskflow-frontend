@@ -8,7 +8,7 @@ import { formatDateDDMMYYYY, getAvatarFallback } from '@/utils'
 import { Link } from 'react-router-dom'
 import { TypographyP, toast } from '.'
 import { Icons } from './icons'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Avatar, AvatarFallback } from './ui/avatar'
 import { ScrollArea } from './ui/scroll-area'
 
 export interface ISearchBoard {
@@ -75,7 +75,7 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 									className="flex space-x-4 cursor-pointer hover:bg-accent p-3 rounded-sm"
 								>
 									<Avatar>
-										<AvatarImage src="https://github.com/vercel.png" />
+										{/* <AvatarImage src="https://github.com/vercel.png" /> */}
 										<AvatarFallback>
 											{getAvatarFallback(board.name)}
 										</AvatarFallback>
