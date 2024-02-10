@@ -36,24 +36,22 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 			console.error(e)
 		}
 	},
-	setActiveBoard(target) {
-		set({ activeBoard: target })
+	setActiveBoard(activeBoard) {
+		set({ activeBoard })
 	},
 
-	async getDeepBoard(id) {
+	async getDeepBoard(boardId) {
 		try {
 			const { data, status } = await axios.post<IDeepBoard>(
 				EBoardStoreApiRoutes.deep,
 				{
-					id,
+					boardId,
 				},
 			)
 
 			if (status >= 400) {
 				return
 			}
-
-			console.log()
 
 			return data
 		} catch (e) {
@@ -80,15 +78,15 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 		}
 	},
 
-	setBoards(target) {
-		set({ boards: target })
+	setBoards(boards) {
+		set({ boards })
 	},
 
-	async create(target) {
+	async create(createDto) {
 		try {
 			const { data } = await axios.post<IBoard>(
 				EBoardStoreApiRoutes.main,
-				target,
+				createDto,
 			)
 
 			if (!data) {
@@ -105,11 +103,11 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 		}
 	},
 
-	async update(id, target) {
+	async update(boardId, updateDto) {
 		try {
 			const { data } = await axios.patch<IBoard>(
-				EBoardStoreApiRoutes.main + '/' + id,
-				target,
+				EBoardStoreApiRoutes.main + '/' + boardId,
+				updateDto,
 			)
 
 			if (!data) {
@@ -122,17 +120,17 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 		}
 	},
 
-	async remove(id) {
+	async remove(boardId) {
 		try {
 			const { data } = await axios.delete<{ success: boolean }>(
-				EBoardStoreApiRoutes.main + '/' + id,
+				EBoardStoreApiRoutes.main + '/' + boardId,
 			)
 
 			if (!data?.success) {
 				return false
 			}
 
-			const boards = get().boards.filter(b => b._id !== id)
+			const boards = get().boards.filter(b => b._id !== boardId)
 
 			set({ boards })
 
@@ -143,11 +141,11 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 		}
 	},
 
-	async getAllByName(target) {
+	async getAllByName(name) {
 		try {
 			const { data, status } = await axios.post<IBoard[]>(
 				EBoardStoreApiRoutes.name,
-				target,
+				{ name },
 			)
 
 			if (status >= 400) {

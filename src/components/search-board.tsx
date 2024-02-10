@@ -29,7 +29,7 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 
 		const fetchBoards = async () => {
 			try {
-				const boards = await findBoards({ name: query })
+				const boards = await findBoards(query)
 
 				if (typeof boards === 'undefined') {
 					toast({

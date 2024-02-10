@@ -146,10 +146,10 @@ export interface IAuthStore {
 
 /** Routes for api requests to the authorization store. */
 export enum EAuthStoreApiRoutes {
-	/** Root for authorization using email. */
+	/** Route for authorization using email. */
 	loginWithEmail = '/api/auth/login/email',
 
-	/** Root for authorization using user name. */
+	/** Route for authorization using user name. */
 	loginWithUserName = '/api/auth/login/username',
 
 	/** Route for user registration. */
@@ -158,7 +158,7 @@ export enum EAuthStoreApiRoutes {
 	/** Route to obtain a new user access token. */
 	getNewAccessToken = 'api/jwt/token',
 
-	/** Root to check the username for existence. */
+	/** Route to check the username for existence. */
 	checkUserName = 'api/auth/username',
 
 	/** Route for logging out of the user account. */
