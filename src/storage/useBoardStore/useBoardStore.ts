@@ -16,7 +16,7 @@ const defaultStore = {
 	activeBoard: null,
 } as IBoardStore
 
-/** With this hook you can access shared storage. */
+/** With this hook, you can access the board's storage. */
 export const useBoardStore = create<IBoardStore>((set, get) => ({
 	...defaultStore,
 	async getAllBoards() {
@@ -35,9 +35,6 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 		} catch (e) {
 			console.error(e)
 		}
-	},
-	setActiveBoard(activeBoard) {
-		set({ activeBoard })
 	},
 
 	async getDeepBoard(boardId) {
@@ -76,10 +73,6 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 		} catch (e) {
 			console.error(e)
 		}
-	},
-
-	setBoards(boards) {
-		set({ boards })
 	},
 
 	async create(createDto) {
@@ -172,5 +165,13 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 		} catch (e) {
 			console.error(e)
 		}
+	},
+
+	setBoards(boards) {
+		set({ boards })
+	},
+
+	setActiveBoard(activeBoard) {
+		set({ activeBoard })
 	},
 }))
