@@ -46,11 +46,8 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 	async getDeepBoard(boardId) {
 		try {
 			// We get the board.
-			const { data, status } = await axios.post<IDeepBoard>(
-				EBoardStoreApiRoutes.deep,
-				{
-					boardId,
-				},
+			const { data, status } = await axios.get<IDeepBoard>(
+				EBoardStoreApiRoutes.deep + '/' + boardId,
 			)
 
 			// If the server response status is above 400

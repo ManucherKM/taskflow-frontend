@@ -144,7 +144,7 @@ export enum EBoardStoreApiRoutes {
 	main = '/api/board',
 
 	/** Route for complete information about the board. */
-	deep = '/api/board/id',
+	deep = '/api/board/deep',
 
 	/** Route to get off the board. */
 	leave = '/api/board/leave',
