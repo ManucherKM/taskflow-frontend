@@ -133,6 +133,24 @@ export interface IBoardStore {
 	leave: (boardId: string) => Promise<IBoard | undefined>
 
 	/**
+	 * Function for remove board admin.
+	 *
+	 * @param userId User identifier
+	 * @param boardId Board identifier
+	 * @returns A modified board or nothing.
+	 */
+	removeAdmin: (userId: string, boardId: string) => Promise<IBoard | undefined>
+
+	/**
+	 * Function for add board admin.
+	 *
+	 * @param userId User identifier
+	 * @param boardId Board identifier
+	 * @returns A modified board or nothing.
+	 */
+	addAdmin: (userId: string, boardId: string) => Promise<IBoard | undefined>
+
+	/**
 	 * Function for removing the board.
 	 *
 	 * @param boardId Board identifier
@@ -163,4 +181,10 @@ export enum EBoardStoreApiRoutes {
 
 	/** Route for the get board members. */
 	members = '/api/board/users',
+
+	/** Route for remove board admin */
+	removeAdmin = '/api/board/admin/remove',
+
+	/** Route for add board admin */
+	addAdmin = '/api/board/admin/add',
 }

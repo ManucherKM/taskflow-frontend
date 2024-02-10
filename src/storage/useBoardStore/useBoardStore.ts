@@ -232,6 +232,45 @@ export const useBoardStore = create<IBoardStore>((set, get) => ({
 		}
 	},
 
+	async removeAdmin(userId, boardId) {
+		try {
+			const { data } = await axios.post<IBoard | undefined>(
+				EBoardStoreApiRoutes.removeAdmin + '/' + boardId,
+				{
+					removeId: userId,
+				},
+			)
+
+			if (!data) {
+				return
+			}
+
+			return data
+		} catch (e) {
+			// Show the error in the console.
+			console.error(e)
+		}
+	},
+	async addAdmin(userId, boardId) {
+		try {
+			const { data } = await axios.post<IBoard | undefined>(
+				EBoardStoreApiRoutes.addAdmin + '/' + boardId,
+				{
+					addId: userId,
+				},
+			)
+
+			if (!data) {
+				return
+			}
+
+			return data
+		} catch (e) {
+			// Show the error in the console.
+			console.error(e)
+		}
+	},
+
 	setBoards(boards) {
 		// Changing the boards in the store.
 		set({ boards })

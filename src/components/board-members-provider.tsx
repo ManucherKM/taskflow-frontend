@@ -8,10 +8,12 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog'
-import { useBoardMembersStore, useBoardStore } from '@/storage'
+import { useBoardMembersStore, useBoardStore, useUserStore } from '@/storage'
 import { IUser } from '@/storage/useUserStore/types'
 import { Button, toast } from '.'
 
+import { useLoader } from '@/hooks'
+import { IDeepBoard } from '@/storage/useBoardStore/types'
 import { getAvatarFallback } from '@/utils'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 import {
@@ -38,11 +40,71 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 	const isShow = useBoardMembersStore(store => store.isShow)
 	const setIsShow = useBoardMembersStore(store => store.setIsShow)
 	const board = useBoardMembersStore(store => store.board)
+	const user = useUserStore(store => store.user)
+
+	const setActiveBoard = useBoardStore(store => store.setActiveBoard)
+	const activeBoard = useBoardStore(store => store.activeBoard) as IDeepBoard
 
 	const getBoardUsers = useBoardStore(store => store.getBoardUsers)
+	const removeAdmin = useBoardStore(store => store.removeAdmin)
+	const addAdmin = useBoardStore(store => store.addAdmin)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const [users, setUsers] = useState<IUser[]>([])
+
+	const loader = useLoader()
+
+	async function removeAdminHandler(removeId: string) {
+		if (!board) {
+			return
+		}
+
+		try {
+			const savedBoard = await loader(removeAdmin, removeId, board._id)
+
+			if (!savedBoard) {
+				toast({
+					title: 'Не удалось сменить роль',
+				})
+
+				return
+			}
+
+			setActiveBoard({ ...activeBoard, admins: savedBoard.admins })
+
+			toast({
+				title: 'Роль успешно изменена',
+			})
+		} catch (e) {
+			console.log(e)
+		}
+	}
+
+	async function addAdminHandler(addId: string) {
+		if (!board) {
+			return
+		}
+
+		try {
+			const savedBoard = await loader(addAdmin, addId, board._id)
+
+			if (!savedBoard) {
+				toast({
+					title: 'Не удалось сменить роль',
+				})
+
+				return
+			}
+
+			setActiveBoard({ ...activeBoard, admins: savedBoard.admins })
+
+			toast({
+				title: 'Роль успешно изменена',
+			})
+		} catch (e) {
+			console.log(e)
+		}
+	}
 
 	useEffect(() => {
 		if (!board) {
@@ -84,7 +146,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 							Приглашайте других пользователей для совместной работы.
 						</DialogDescription>
 					</DialogHeader>
-					<div className="relative">
+					<div className="relative my-4">
 						{isLoading && (
 							<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center  z-20">
 								<Icons.spinner className="animate-spin" />
@@ -93,61 +155,86 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 						{users.length !== 0 && (
 							<List
 								arr={users}
-								callback={user => (
+								callback={currUser => (
 									<div
-										key={user._id}
+										key={currUser._id}
 										className="flex items-center justify-between space-x-4"
 									>
 										<div className="flex items-center space-x-4">
 											<Avatar className="h-10 w-10">
 												<AvatarFallback>
-													{getAvatarFallback(user.firstName || 'NF')}
+													{getAvatarFallback(currUser.firstName || 'NF')}
 												</AvatarFallback>
 											</Avatar>
 											<div>
-												<p className="text-sm font-medium leading-none">
-													{!!user?.firstName || user?.lastName
-														? user.firstName + ' ' + user.lastName
-														: user.userName}
-												</p>
+												<div className="flex justify-between items-center">
+													<p className="text-sm font-medium leading-none">
+														{!!currUser?.firstName || currUser?.lastName
+															? currUser.firstName + ' ' + currUser.lastName
+															: currUser.userName}
+													</p>
+													{board?.admins.includes(currUser._id) && (
+														<span className="text-sm text-muted-foreground underline">
+															admin
+														</span>
+													)}
+												</div>
 												<p className="text-sm text-muted-foreground">
-													{user.email}
+													{currUser.email}
 												</p>
 											</div>
 										</div>
-										<Popover>
-											<PopoverTrigger asChild>
-												<Button variant="outline" size="sm" className="ml-auto">
-													{board?.admins.includes(user._id)
-														? 'Админ'
-														: 'Участник'}
-													<ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
-												</Button>
-											</PopoverTrigger>
-											<PopoverContent className="p-0" align="end">
-												<Command>
-													<CommandInput placeholder="Выберите новую роль..." />
-													<CommandList>
-														<CommandEmpty>Роль не найдена.</CommandEmpty>
-														<CommandGroup>
-															<CommandItem className="teamaspace-y-1 flex flex-col items-start px-4 py-2">
-																<p>Админ</p>
-																<p className="text-sm text-muted-foreground">
-																	Имеет полный контроль над доской
-																</p>
-															</CommandItem>
-															<CommandItem className="teamaspace-y-1 flex flex-col items-start px-4 py-2">
-																<p>Участник</p>
-																<p className="text-sm text-muted-foreground">
-																	Может в ограниченой форме взаимодейтвовать с
-																	доской.
-																</p>
-															</CommandItem>
-														</CommandGroup>
-													</CommandList>
-												</Command>
-											</PopoverContent>
-										</Popover>
+										{user && board?.admins.includes(user._id) && (
+											<Popover>
+												<PopoverTrigger asChild>
+													<Button
+														variant="outline"
+														size="sm"
+														className="ml-auto"
+													>
+														{board?.admins.includes(currUser._id)
+															? 'Админ'
+															: 'Участник'}
+														<ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
+													</Button>
+												</PopoverTrigger>
+												<PopoverContent className="p-0" align="end">
+													<Command>
+														<CommandInput placeholder="Выберите новую роль..." />
+														<CommandList>
+															<CommandEmpty>Роль не найдена.</CommandEmpty>
+															<CommandGroup>
+																<CommandItem className="teamaspace-y-1 flex flex-col items-start px-4 py-2">
+																	<div
+																		onClick={() =>
+																			addAdminHandler(currUser._id)
+																		}
+																	>
+																		<p>Админ</p>
+																		<p className="text-sm text-muted-foreground">
+																			Имеет полный контроль над доской
+																		</p>
+																	</div>
+																</CommandItem>
+																<CommandItem className="teamaspace-y-1 flex flex-col items-start px-4 py-2">
+																	<div
+																		onClick={() =>
+																			removeAdminHandler(currUser._id)
+																		}
+																	>
+																		<p>Участник</p>
+																		<p className="text-sm text-muted-foreground">
+																			Может в ограниченой форме взаимодейтвовать
+																			с доской.
+																		</p>
+																	</div>
+																</CommandItem>
+															</CommandGroup>
+														</CommandList>
+													</Command>
+												</PopoverContent>
+											</Popover>
+										)}
 									</div>
 								)}
 							/>
