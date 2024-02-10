@@ -18,7 +18,7 @@ export const BoardCard: FC<IBoardCard> = ({
 	return (
 		<SlideLeft>
 			<BoardActionContextMenu board={board}>
-				<div className="max-w-52 cursor-pointer transition-all">
+				<div className="cursor-pointer transition-all">
 					<AspectRatio
 						ratio={16 / 9}
 						className={cn([

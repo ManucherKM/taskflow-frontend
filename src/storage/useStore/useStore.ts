@@ -16,8 +16,4 @@ export const useStore = create<IStore>(set => ({
 		// Changing the loading state.
 		set({ isLoading: target })
 	},
-	reset() {
-		// Reset the storage to its original state.
-		set(defaultStore)
-	},
 }))

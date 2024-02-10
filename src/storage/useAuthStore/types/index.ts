@@ -1,4 +1,4 @@
-/** The interface of parameters that the `login` function accepts. */
+/** Interface of data returned from the server during authorization using email. */
 export interface ILoginWithEmailTarget {
 	/** Email. */
 	email: string
@@ -7,6 +7,10 @@ export interface ILoginWithEmailTarget {
 	password: string
 }
 
+/**
+ * Interface of data returned from the server during authorization using
+ * username.
+ */
 export interface ILoginWithUserNameTarget {
 	/** User name. */
 	userName: string
@@ -15,10 +19,7 @@ export interface ILoginWithUserNameTarget {
 	password: string
 }
 
-/**
- * The interface of parameters returned by the server when using the `login`
- * function.
- */
+/** Interface, the data returned by the server during authorization. */
 export interface ILoginResponse {
 	/** User access token. */
 	accessToken: string
@@ -45,10 +46,7 @@ export interface IRegistrationTarget {
 	avatar?: string
 }
 
-/**
- * The interface of parameters returned by the server when using the
- * `registration` function.
- */
+/** Interface, the data returned by the server during registration. */
 export interface IRegistrationResponse {
 	/** The result of the request. */
 	success: boolean
@@ -71,25 +69,54 @@ export type Token = string | null
 
 /** Interface to the authorization store. */
 export interface IAuthStore {
-	regInfo: null | Partial<IRegistrationTarget>
+	/** A field for storing user information for multi-step authorization. */
+	regInfo: Partial<IRegistrationTarget> | null
 
-	token: null | string
-
-	loginWithEmail: (loginDto: ILoginWithEmailTarget) => Promise<boolean>
-
-	loginWithUserName: (loginDto: ILoginWithUserNameTarget) => Promise<boolean>
+	/** User Access Token. */
+	token: Token
 
 	/**
 	 * User registration function.
 	 *
-	 * @param registrationDto Parameters required to send a request to the API.
+	 * @param registrationDto Parameters required for registration.
+	 * @returns The importance of registration success.
 	 */
 	registration: (registrationDto: IRegistrationTarget) => Promise<boolean>
 
-	/** Function to get a new access token. */
-	getNewAccessToken: () => Promise<boolean>
+	/**
+	 * Function for user authorization using email.
+	 *
+	 * @param loginDto Object with data required for authorization.
+	 * @returns Access token or nothing.
+	 */
+	loginWithEmail: (
+		loginDto: ILoginWithEmailTarget,
+	) => Promise<string | undefined>
 
-	checkUserName: (target: string) => Promise<boolean>
+	/**
+	 * Function for user authorization using user name.
+	 *
+	 * @param loginDto Object with data required for authorization.
+	 * @returns Access token or nothing.
+	 */
+	loginWithUserName: (
+		loginDto: ILoginWithUserNameTarget,
+	) => Promise<string | undefined>
+
+	/**
+	 * Function to get a new access token.
+	 *
+	 * @returns Access token or nothing.
+	 */
+	getNewAccessToken: () => Promise<string | undefined>
+
+	/**
+	 * Function to check the username for existence.
+	 *
+	 * @param userName User name to be checked
+	 * @returns The result of user verification.
+	 */
+	checkUserName: (userName: string) => Promise<boolean | undefined>
 
 	/**
 	 * Function to change the user's access token.
@@ -98,9 +125,19 @@ export interface IAuthStore {
 	 */
 	setToken: (token: Token) => void
 
-	setRegInfo: (target: Partial<IRegistrationTarget>) => void
+	/**
+	 * Function for changing the user registration data..
+	 *
+	 * @param regInfo The value to be added/replaced in the user's registration
+	 *   information.
+	 */
+	setRegInfo: (regInfo: Partial<IRegistrationTarget>) => void
 
-	/** Function for logging out of a user account. */
+	/**
+	 * Function for logging out of a user account.
+	 *
+	 * @returns Account logout success
+	 */
 	logout: () => Promise<boolean>
 
 	/** Function to reset the storage to its initial state. */
@@ -109,8 +146,10 @@ export interface IAuthStore {
 
 /** Routes for api requests to the authorization store. */
 export enum EAuthStoreApiRoutes {
+	/** Root for authorization using email. */
 	loginWithEmail = '/api/auth/login/email',
 
+	/** Root for authorization using user name. */
 	loginWithUserName = '/api/auth/login/username',
 
 	/** Route for user registration. */
@@ -119,6 +158,7 @@ export enum EAuthStoreApiRoutes {
 	/** Route to obtain a new user access token. */
 	getNewAccessToken = 'api/jwt/token',
 
+	/** Root to check the username for existence. */
 	checkUserName = 'api/auth/username',
 
 	/** Route for logging out of the user account. */

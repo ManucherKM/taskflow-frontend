@@ -14,14 +14,13 @@ import { history } from '@/config/history'
 import { ERoutes } from '@/config/routes'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { useStore } from '..'
 import { EAuthStoreApiRoutes } from './types'
 
 // The URL where the web application is hosted.
 const CLIENT_URL = env.get('CLIENT_URL').required().asString()
 
 // Default storage object.
-const defaultAuthStore = {
+const defaultStore = {
 	token: null,
 	regInfo: null,
 }
@@ -30,7 +29,15 @@ const defaultAuthStore = {
 export const useAuthStore = create(
 	persist<IAuthStore>(
 		(set, get) => ({
-			...defaultAuthStore,
+			...defaultStore,
+			setToken(token) {
+				// We change the token.
+				set({ token })
+			},
+			setRegInfo(target) {
+				// Add non-existent fields and replace existing ones from the passed data.
+				set(prev => ({ regInfo: { ...(prev.regInfo || {}), ...target } }))
+			},
 			async loginWithEmail(loginDto) {
 				try {
 					// We send a request for user authorization to the API.
@@ -42,20 +49,17 @@ export const useAuthStore = create(
 					// Check if the access token has arrived.
 					if (!data?.accessToken) {
 						// If there is no token, return false.
-						return false
+						return
 					}
 
 					// We change the state of the token in the storage.
 					set({ token: data.accessToken })
 
-					// Return true.
-					return true
+					// Return the access token.
+					return data.accessToken
 				} catch (e) {
 					// We show the error in the console.
 					console.error(e)
-
-					// Return false.
-					return false
 				}
 			},
 			async loginWithUserName(loginDto) {
@@ -69,23 +73,19 @@ export const useAuthStore = create(
 					// Check if the access token has arrived.
 					if (!data?.accessToken) {
 						// If there is no token, return false.
-						return false
+						return
 					}
 
 					// We change the state of the token in the storage.
 					set({ token: data.accessToken })
 
 					// Return true.
-					return true
+					return data.accessToken
 				} catch (e) {
 					// We show the error in the console.
 					console.error(e)
-
-					// Return false.
-					return false
 				}
 			},
-
 			async registration(registrationDto) {
 				try {
 					// We send a request for user registration to the API.
@@ -112,7 +112,7 @@ export const useAuthStore = create(
 			},
 			async logout() {
 				try {
-					// send a request to log out of your account to the API.
+					// Send a request to log out of your account to the API.
 					const { data } = await axios.get<ILogoutResponse>(
 						EAuthStoreApiRoutes.logout,
 					)
@@ -122,9 +122,6 @@ export const useAuthStore = create(
 						// Return false.
 						return false
 					}
-
-					// Reset the shared storage.
-					useStore.getState().reset()
 
 					// We reset the auth-store storage.
 					get().reset()
@@ -140,7 +137,7 @@ export const useAuthStore = create(
 			},
 			async getNewAccessToken() {
 				try {
-					// send a request to receive an access token.
+					// Send a request to receive an access token.
 					const { data } = await axios.post<IGetNewAccessTokenResponse>(
 						EAuthStoreApiRoutes.getNewAccessToken,
 					)
@@ -148,14 +145,14 @@ export const useAuthStore = create(
 					// Check whether the access token was received from the API.
 					if (!data.accessToken) {
 						// If not, return false.
-						return false
+						return
 					}
 
 					// We change the state of the token in the storage.
 					set({ token: data.accessToken })
 
-					// Return true.
-					return true
+					// Return access token.
+					return data.accessToken
 				} catch (e) {
 					// We show the error in the console.
 					console.error(e)
@@ -165,36 +162,26 @@ export const useAuthStore = create(
 
 					// Redirecting the user to the login page.
 					history.push(CLIENT_URL + ERoutes.login)
-
-					// Return false.
-					return false
 				}
 			},
-
 			async checkUserName(target) {
 				try {
+					// Send a request to verify the user name.
 					const { data } = await axios.post<{ exist: boolean }>(
 						EAuthStoreApiRoutes.checkUserName,
 						{ userName: target },
 					)
 
+					// Return the result
 					return data?.exist
 				} catch (e) {
+					// We show the error in the console.
 					console.error(e)
-
-					return false
 				}
-			},
-			setToken(token) {
-				// We change the token.
-				set({ token })
-			},
-			setRegInfo(target) {
-				set(prev => ({ regInfo: { ...(prev.regInfo || {}), ...target } }))
 			},
 			reset() {
 				// We reset the storage to its original state.
-				set(defaultAuthStore)
+				set(defaultStore)
 			},
 		}),
 		{ name: 'auth-store' },

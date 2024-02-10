@@ -51,7 +51,7 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 								/>
 							}
 							query={searchQuery}
-							isShow={isShowSearchBoard && isClickNodeContain}
+							isShow={isShowSearchBoard && !!isClickNodeContain}
 						/>
 
 						<TypographyP className="w-24 overflow-hidden text-ellipsis !mt-0 ml-2">

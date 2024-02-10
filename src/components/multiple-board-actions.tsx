@@ -75,7 +75,7 @@ export const MultipleBoardActions = () => {
 			<TypographyP>Выбранно: {selectedBoards.length}</TypographyP>
 
 			<div>
-				<Button variant={'ghost'} onMouseDown={removeHandler}>
+				<Button variant={'ghost'} onClick={removeHandler}>
 					Удалить
 				</Button>
 			</div>
