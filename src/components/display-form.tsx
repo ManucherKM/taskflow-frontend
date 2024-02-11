@@ -36,6 +36,7 @@ import { EFont } from '@/storage/useDisplayStore/types'
 import { TThemeColor } from '@/storage/useThemeColorStore/types'
 import { changeFirstLetterToUpperCase } from '@/utils'
 import { ChangeEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { MiniBoard } from './mini-board'
 import { buttonVariants } from './ui/button'
 import { RadioGroup, RadioGroupItem } from './ui/radio-group'
@@ -62,6 +63,8 @@ const displayFormSchema = z.object({
 type DisplayFormValues = z.infer<typeof displayFormSchema>
 
 export function DisplayForm() {
+	const { t } = useTranslation()
+
 	const setFont = useDisplayStore(store => store.setFont)
 
 	const font = useDisplayStore(store => store.font)
@@ -103,7 +106,7 @@ export function DisplayForm() {
 					name="font"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Шрифт</FormLabel>
+							<FormLabel>{t('font')}</FormLabel>
 							<div className="relative w-max">
 								<FormControl>
 									<select
@@ -131,7 +134,7 @@ export function DisplayForm() {
 								<ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
 							</div>
 							<FormDescription>
-								Установите шрифт, который вы хотите использовать в приложении.
+								{t('set_the_font_you_want_to_use_in_the_application')}
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
@@ -143,7 +146,7 @@ export function DisplayForm() {
 					name="language"
 					render={({ field }) => (
 						<FormItem className="flex flex-col">
-							<FormLabel>Язык</FormLabel>
+							<FormLabel>{t('language')}</FormLabel>
 							<Popover>
 								<PopoverTrigger asChild>
 									<FormControl>
@@ -159,15 +162,15 @@ export function DisplayForm() {
 												? languages.find(
 														language => language.value === field.value,
 													)?.label
-												: 'Выбрать язык'}
+												: t('select_language')}
 											<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 										</Button>
 									</FormControl>
 								</PopoverTrigger>
 								<PopoverContent className="w-[200px] p-0">
 									<Command>
-										<CommandInput placeholder="Выбрать язык..." />
-										<CommandEmpty>Язык не найден.</CommandEmpty>
+										<CommandInput placeholder={t('select_language') + '...'} />
+										<CommandEmpty>{t('language_not_found')}</CommandEmpty>
 										<CommandGroup>
 											{languages.map(language => (
 												<CommandItem
@@ -193,7 +196,7 @@ export function DisplayForm() {
 								</PopoverContent>
 							</Popover>
 							<FormDescription>
-								Это язык, который будет использоваться в приложении.
+								{t('this_is_the_language_that_will_be_used_in_the_application')}
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
@@ -204,9 +207,9 @@ export function DisplayForm() {
 					name="mode"
 					render={({ field }) => (
 						<FormItem className="space-y-1">
-							<FormLabel>Режим</FormLabel>
+							<FormLabel>{t('mode')}</FormLabel>
 							<FormDescription>
-								Выберите режим для информационной панели.
+								{t('select_the_mode_for_the_information_panel')}
 							</FormDescription>
 							<FormMessage />
 							<RadioGroup
@@ -228,7 +231,7 @@ export function DisplayForm() {
 											skeleton="bg-[#ecedef]"
 										/>
 										<span className="block w-full p-2 text-center font-normal">
-											Светлый
+											{t('bright')}
 										</span>
 									</FormLabel>
 								</FormItem>
@@ -243,7 +246,7 @@ export function DisplayForm() {
 											skeleton="bg-slate-400"
 										/>
 										<span className="block w-full p-2 text-center font-normal">
-											Темный
+											{t('dark')}
 										</span>
 									</FormLabel>
 								</FormItem>
@@ -256,9 +259,9 @@ export function DisplayForm() {
 					name="theme"
 					render={({ field }) => (
 						<FormItem className="space-y-1">
-							<FormLabel>Тема</FormLabel>
+							<FormLabel>{t('theme')}</FormLabel>
 							<FormDescription>
-								Выберите тему для информационной панели.
+								{t('select_a_theme_for_the_dashboard')}
 							</FormDescription>
 							<FormMessage />
 							<RadioGroup
@@ -282,7 +285,7 @@ export function DisplayForm() {
 											className="zinc"
 										/>
 										<span className="block  w-full p-2 text-center font-normal">
-											Серый
+											{t('gray')}
 										</span>
 									</FormLabel>
 								</FormItem>
@@ -299,7 +302,7 @@ export function DisplayForm() {
 											className="rose"
 										/>
 										<span className="block w-full p-2 text-center font-normal">
-											Алый
+											{t('scarlet')}
 										</span>
 									</FormLabel>
 								</FormItem>
@@ -316,7 +319,7 @@ export function DisplayForm() {
 											className="blue"
 										/>
 										<span className="block w-full p-2 text-center font-normal">
-											Мягкий синий
+											{t('blue')}
 										</span>
 									</FormLabel>
 								</FormItem>
@@ -333,7 +336,7 @@ export function DisplayForm() {
 											className="orange"
 										/>
 										<span className="block w-full p-2 text-center font-normal">
-											Оранжевый
+											{t('orange')}
 										</span>
 									</FormLabel>
 								</FormItem>
@@ -350,7 +353,7 @@ export function DisplayForm() {
 											className="green"
 										/>
 										<span className="block w-full p-2 text-center font-normal">
-											Зеленый
+											{t('green')}
 										</span>
 									</FormLabel>
 								</FormItem>

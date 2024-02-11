@@ -3,9 +3,12 @@ import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
 import { useRestoreAccount } from '@/storage'
 import { useEffect, useState, type FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 
 export const RestoreAccountOTPForm: FC = () => {
+	const { t } = useTranslation()
+
 	const [otp, setOtp] = useState<number>(0)
 
 	const loader = useLoader()
@@ -20,7 +23,7 @@ export const RestoreAccountOTPForm: FC = () => {
 
 			if (!isSuccess) {
 				toast({
-					title: 'Неверный одноразовый код',
+					title: t('invalid_one_time_code'),
 				})
 				return
 			}
@@ -38,7 +41,7 @@ export const RestoreAccountOTPForm: FC = () => {
 	}, [otp])
 	return (
 		<div className="w-full flex flex-col justify-center items-center h-[calc(100vh-56px)] gap-6">
-			<TypographyH3>Введите одноразовый код</TypographyH3>
+			<TypographyH3>{t('enter_the_one_time_code')}</TypographyH3>
 
 			<Otp length={6} onOtpChange={setOtp} otp={otp} />
 		</div>

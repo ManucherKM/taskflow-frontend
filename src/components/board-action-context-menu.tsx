@@ -9,6 +9,7 @@ import { useLoader } from '@/hooks'
 import { useBoardStore, useUpdateBoardStore, useUserStore } from '@/storage'
 import { IBoard } from '@/storage/useBoardStore/types'
 import { FC, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { toast } from '.'
 
@@ -21,6 +22,8 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 	children,
 	board,
 }) => {
+	const { t } = useTranslation()
+
 	const user = useUserStore(store => store.user)
 
 	const setIsShow = useUpdateBoardStore(store => store.setIsShow)
@@ -60,7 +63,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 
 			if (!updatedBoard) {
 				toast({
-					title: 'Не удалось обновить доску',
+					title: t('failed_to_update_the_board'),
 				})
 				return
 			}
@@ -85,7 +88,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 
 			if (!savedBoard) {
 				toast({
-					title: 'Не удалось покинуть доску',
+					title: t('failed_to_leave_the_board'),
 				})
 				return
 			}
@@ -95,7 +98,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 			setBoards(newBoards)
 
 			toast({
-				title: 'Доска успешно покинута',
+				title: t('the_board_has_been_successfully_abandoned'),
 			})
 		} catch (e) {
 			console.log(e)
@@ -108,7 +111,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 
 			if (!isSuccess) {
 				toast({
-					title: 'Не удалось удалить доску',
+					title: t('failed_to_remove_the_board'),
 				})
 				return
 			}
@@ -122,19 +125,19 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 			<ContextMenuTrigger>{children}</ContextMenuTrigger>
 			<ContextMenuContent className="w-64">
 				<ContextMenuItem inset onClick={openHandler}>
-					Открыть
+					{t('open')}
 				</ContextMenuItem>
 
 				<ContextMenuItem inset onClick={changeHandler}>
-					Редактировать
+					{t('edit')}
 				</ContextMenuItem>
 
 				<ContextMenuItem inset onClick={favoriteHandler}>
-					{board.isFavorite ? 'Убрать из избранного' : ' В избранное'}
+					{board.isFavorite ? t('unfavorite') : t('into_favorites')}
 				</ContextMenuItem>
 
 				<ContextMenuItem inset onClick={leaveHandler} className="text-red-400">
-					Покинуть
+					{t('leave')}
 				</ContextMenuItem>
 
 				{!!user && board.admins.includes(user._id) && (
@@ -143,7 +146,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 						onClick={removeHandler}
 						className="text-red-400"
 					>
-						Удалить
+						{t('delete')}
 					</ContextMenuItem>
 				)}
 			</ContextMenuContent>

@@ -1,3 +1,4 @@
+import { i18next } from '@/locales'
 import { getRandomInt } from '@/utils'
 
 export interface IPhrase {
@@ -7,57 +8,68 @@ export interface IPhrase {
 
 const phrases: IPhrase[] = [
 	{
-		phrase:
-			'Установка целей - это первый шаг в превращении невидимого в видимое.',
-		author: 'Тони Роббинс',
+		phrase: i18next.t(
+			'setting_goals_is_the_first_step_in_turning_the_invisible_into_the_visible',
+		),
+		author: i18next.t('tony_robbins'),
 	},
 	{
-		phrase:
-			'Дисциплина - это выбор между тем, что вы хотите сейчас, и тем, что вы хотите больше всего',
-		author: 'Августа Ф. Кантра',
+		phrase: i18next.t(
+			'discipline_is_a_choice_between_what_you_want_now_and_what_you_want_the_most',
+		),
+		author: i18next.t('augusta_f_kantra'),
 	},
 	{
-		phrase:
-			'Планы - это только благие намерения, если они немедленно не выродятся в тяжелую работу',
-		author: 'Питер Друкер',
+		phrase: i18next.t(
+			'plans_are_only_good_intentions_if_they_dont_immediately_translate_into_hard_work',
+		),
+		author: i18next.t('peter_drucker'),
 	},
 	{
-		phrase: 'Будущее зависит от того, что вы делаете сегодня.',
-		author: 'Махатма Ганди',
+		phrase: i18next.t('the_future_depends_on_what_you_do_today'),
+		author: i18next.t('mahatma_gandhi'),
 	},
 	{
-		phrase:
-			'Если вы работаете очень усердно, и вы добры, произойдут удивительные вещи.',
-		author: "Конан О'Брайен",
+		phrase: i18next.t(
+			'if_you_work_very_hard_and_you_are_kind_amazing_things_will_happen',
+		),
+		author: i18next.t('conan_o_brien'),
 	},
 	{
-		phrase:
-			'Вы не обязаны побеждать. Вы обязаны продолжать пытаться делать все возможное каждый день.',
-		author: 'Мэриан Райт Эдельман',
+		phrase: i18next.t(
+			'you_dont_have_to_win_you_have_an_obligation_to_keep_trying_to_do_your_best_every_day',
+		),
+		author: i18next.t('marian_wright_edelman'),
 	},
 	{
-		phrase:
-			'Когда вы живете ради сильной цели, то тяжелая работа - это не вариант. Это необходимость.',
-		author: 'Стив Павелина',
+		phrase: i18next.t(
+			'when_you_live_for_a_strong_purpose_hard_work_is_not_an_option_its_a_necessity',
+		),
+		author: i18next.t('steve_pavelina'),
 	},
 	{
-		phrase:
-			'Счастье - это настоящее чувство удовлетворения, которое исходит от тяжелой работы',
-		author: 'Джозеф Роланд Барбера',
+		phrase: i18next.t(
+			'happiness_is_a_real_sense_of_fulfillment_that_comes_from_hard_work',
+		),
+		author: i18next.t('joseph_roland_barbera'),
 	},
 	{
-		phrase:
-			'Это настоящий секрет жизни быть полностью вовлеченным в то, что вы делаете здесь и сейчас. Вместо того, чтобы называть это работой, поймите, что это игра.',
-		author: 'Алан Уилсон Уоттс',
+		phrase: i18next.t(
+			'this_is_the_real_secret_to_life_being_fully_engaged_in_what_you_are_doing_in_the_here_and_now_instead_of_calling_it_work_realize_that_it_is_play',
+		),
+		author: i18next.t('alan_wilson_watts'),
 	},
 	{
-		phrase: 'Успех - это сумма небольших усилий, повторяющихся изо дня в день',
-		author: 'Роберт Кольер',
+		phrase: i18next.t(
+			'success_is_the_sum_of_small_efforts_repeated_day_in_and_day_out',
+		),
+		author: i18next.t('robert_collier'),
 	},
 	{
-		phrase:
-			'Единственное, что стоит между вами и возмутительным успехом, - это непрерывный прогресс',
-		author: 'Дэн Вальдшмидт',
+		phrase: i18next.t(
+			'the_only_thing_standing_between_you_and_outrageous_success_is_continued_progress',
+		),
+		author: i18next.t('dan_waldschmidt'),
 	},
 ]
 

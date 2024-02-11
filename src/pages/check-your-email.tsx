@@ -6,10 +6,13 @@ import { Button, TypographyH1, TypographyP } from '@/components'
 
 // Utils
 import { ERoutes } from '@/config/routes'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 
 /** A component that informs the user that they need to confirm their account. */
 export const CheckYourEmail: FC = () => {
+	const { t } = useTranslation()
+
 	// Get the function to redirect the user from the hook.
 	const navigate = useNavigate()
 
@@ -21,14 +24,14 @@ export const CheckYourEmail: FC = () => {
 
 	return (
 		<div className="container flex flex-col justify-center items-center h-screen">
-			<TypographyH1>Проверьте свою почту</TypographyH1>
+			<TypographyH1>{t('check_your_e_mail')}</TypographyH1>
 			<TypographyP className="max-w-[500px] w-full text-center">
-				Чтобы пользоваться нашим сервисом вы должны подтвердить свою учетную
-				запись. На указанную вами почту была отправлена ссылка с активацией
-				учетной записи.
+				{t(
+					'to_use_our_service_you_must_confirm_your_account_a_link_to_activate_your_account_was_sent_to_the_e_mail_address_you_specified',
+				)}
 			</TypographyP>
 			<Button onClick={clickHandler} className="mt-3">
-				Активировал
+				{t('activated')}
 			</Button>
 		</div>
 	)

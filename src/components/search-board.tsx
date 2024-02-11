@@ -5,6 +5,7 @@ import { useDelayForType } from '@/hooks'
 import { useBoardStore } from '@/storage'
 import { IBoard } from '@/storage/useBoardStore/types'
 import { formatDateDDMMYYYY, getAvatarFallback } from '@/utils'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { TypographyP, toast } from '.'
 import { Icons } from './icons'
@@ -19,6 +20,8 @@ export interface ISearchBoard {
 
 export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 	({ query, searchComponent, isShow }, ref) => {
+		const { t } = useTranslation()
+
 		const delayForType = useDelayForType()
 
 		const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -33,7 +36,7 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 
 				if (typeof boards === 'undefined') {
 					toast({
-						title: 'Не удалось найти рабочее пространство',
+						title: t('failed_to_find_a_workspace'),
 					})
 					return
 				}
@@ -86,7 +89,7 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 										</p>
 										<div className="flex items-center pt-2">
 											<span className="text-xs text-muted-foreground">
-												Создан{' '}
+												{t('created')}{' '}
 												{formatDateDDMMYYYY(new Date(board.createdAt)).join(
 													'.',
 												)}
@@ -101,7 +104,7 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 							<div className="w-full h-[280px] flex flex-col justify-center items-center">
 								<Icons.zoomCancel className="w-10 h-10" />
 								<TypographyP className="!mt-0">
-									Не найдено совпадений
+									{t('no_matches_found')}
 								</TypographyP>
 							</div>
 						)}

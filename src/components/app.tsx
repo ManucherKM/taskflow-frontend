@@ -8,10 +8,12 @@ import { ThemeProvider } from './theme-provider'
 import { ToasterProvider } from './toaster-provider'
 
 // Utils
+import { i18next } from '@/locales'
 import { AnimatePresence } from 'framer-motion'
 
 // Styles
 import '@/assets/styles/global.scss'
+import { I18nextProvider } from 'react-i18next'
 import {
 	CreateStageProvider,
 	CreateTaskProvider,
@@ -38,37 +40,39 @@ export const App: FC = () => {
 	return (
 		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 			<ThemeColorProvider>
-				<AnimatePresence mode="wait">
-					<FontProvider>
-						<LoaderProvider>
-							<ToasterProvider>
-								<MultipleBoardActionsProvider>
-									<InviteUserToBoardProvider>
-										<UpdateStageProvider>
-											<UpdateBoardProvider>
-												<CreateStageProvider>
-													<BoardMembersProvider>
-														<CreateTaskProvider>
-															<OpenTaskProvider>
-																<UpdateTaskProvider>
-																	<LogoutProvider>
-																		<InitProvider>
-																			<AppRouter />
-																		</InitProvider>
-																	</LogoutProvider>
-																</UpdateTaskProvider>
-															</OpenTaskProvider>
-														</CreateTaskProvider>
-													</BoardMembersProvider>
-												</CreateStageProvider>
-											</UpdateBoardProvider>
-										</UpdateStageProvider>
-									</InviteUserToBoardProvider>
-								</MultipleBoardActionsProvider>
-							</ToasterProvider>
-						</LoaderProvider>
-					</FontProvider>
-				</AnimatePresence>
+				<I18nextProvider i18n={i18next}>
+					<AnimatePresence mode="wait">
+						<FontProvider>
+							<LoaderProvider>
+								<ToasterProvider>
+									<MultipleBoardActionsProvider>
+										<InviteUserToBoardProvider>
+											<UpdateStageProvider>
+												<UpdateBoardProvider>
+													<CreateStageProvider>
+														<BoardMembersProvider>
+															<CreateTaskProvider>
+																<OpenTaskProvider>
+																	<UpdateTaskProvider>
+																		<LogoutProvider>
+																			<InitProvider>
+																				<AppRouter />
+																			</InitProvider>
+																		</LogoutProvider>
+																	</UpdateTaskProvider>
+																</OpenTaskProvider>
+															</CreateTaskProvider>
+														</BoardMembersProvider>
+													</CreateStageProvider>
+												</UpdateBoardProvider>
+											</UpdateStageProvider>
+										</InviteUserToBoardProvider>
+									</MultipleBoardActionsProvider>
+								</ToasterProvider>
+							</LoaderProvider>
+						</FontProvider>
+					</AnimatePresence>
+				</I18nextProvider>
 			</ThemeColorProvider>
 		</ThemeProvider>
 	)

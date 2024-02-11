@@ -2,6 +2,7 @@ import { useBoardStore, useStageStore, useUpdateStageStore } from '@/storage'
 import { IDeepBoard } from '@/storage/useBoardStore/types'
 import { IStage } from '@/storage/useStageStore/types'
 import { type FC, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from '.'
 import {
 	ContextMenu,
@@ -21,6 +22,8 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 	stage,
 	boardId,
 }) => {
+	const { t } = useTranslation()
+
 	const remove = useStageStore(store => store.remove)
 	const duplication = useStageStore(store => store.duplication)
 	const setIsShowUpdate = useUpdateStageStore(store => store.setIsShow)
@@ -34,7 +37,7 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 
 			if (!createdStage) {
 				toast({
-					title: 'Не удалось дублировать этап',
+					title: t('failed_to_duplicate_a_step'),
 				})
 				return
 			}
@@ -55,7 +58,7 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 			setActiveBoard(newBoard)
 
 			toast({
-				title: 'Этап успешно дублирован',
+				title: t('stage_successfully_duplicated'),
 			})
 		} catch (e) {
 			console.log(e)
@@ -73,7 +76,7 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 
 			if (!isSuccess) {
 				toast({
-					title: 'Не удалось удалить этап',
+					title: t('failed_to_delete_a_step'),
 				})
 				return
 			}
@@ -87,7 +90,7 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 			setActiveBoard(newBoard)
 
 			toast({
-				title: 'Этап успешно удален',
+				title: t('stage_successfully_deleted'),
 			})
 		} catch (e) {
 			console.log(e)
@@ -99,11 +102,11 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 			<ContextMenuTrigger>{children}</ContextMenuTrigger>
 			<ContextMenuContent>
 				<ContextMenuItem onClick={duplicationHandler}>
-					Дублировать
+					{t('duplicate')}
 				</ContextMenuItem>
-				<ContextMenuItem onClick={updateHandler}>Изменить</ContextMenuItem>
+				<ContextMenuItem onClick={updateHandler}>{t('modify')}</ContextMenuItem>
 				<ContextMenuItem className="text-red-400" onClick={removeHandler}>
-					Удалить
+					{t('delete')}
 				</ContextMenuItem>
 			</ContextMenuContent>
 		</ContextMenu>

@@ -13,10 +13,12 @@ import {
 import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
 import { cn } from '@/lib/utils'
+import { i18next } from '@/locales'
 import { useAuthStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MouseEvent, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import * as z from 'zod'
@@ -26,19 +28,23 @@ const FormSchema = z.object({
 	userName: z
 		.string()
 		.min(2, {
-			message: 'Имя пользователя должно состоять минимум из 2 символов.',
+			message: i18next.t('the_username_must_be_at_least_2_characters_long'),
 		})
 		.max(30, {
-			message: 'Имя пользователя не должно превышать 30 символов.',
+			message: i18next.t('the_username_must_not_exceed_30_characters'),
 		}),
 	password: z.string().min(8, {
-		message: 'Пароль должен иметь не менее 8 символов и не более 32.',
+		message: i18next.t(
+			'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
+		),
 	}),
 })
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserNameForm({ className, ...props }: UserNameFormProps) {
+	const { t } = useTranslation()
+
 	const nameInputRef = useRef<HTMLInputElement | null>(null)
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
 	const loginButtonRef = useRef<HTMLButtonElement | null>(null)
@@ -62,7 +68,7 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 
 			if (!isSuccess) {
 				toast({
-					title: 'Неверное имя пользователя или пароль',
+					title: t('invalid_user_name_or_password'),
 				})
 				return
 			}
@@ -91,7 +97,7 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 							name="userName"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Имя пользователя</FormLabel>
+									<FormLabel>{t('username')}</FormLabel>
 									<FormControl>
 										<Input
 											placeholder="mypersonalname"
@@ -117,7 +123,7 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 							name="password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Пароль</FormLabel>
+									<FormLabel>{t('password')}</FormLabel>
 									<FormControl>
 										<Input
 											placeholder="MyPassword1!?"
@@ -141,7 +147,7 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 						<div className="w-full flex justify-end !mt-2">
 							<Link to={ERoutes.restoreAccountEmail}>
 								<TypographyP className="text-xs hover:underline text-muted-foreground">
-									Забыли пароль?
+									{t('forgot_your_password')}
 								</TypographyP>
 							</Link>
 						</div>
@@ -153,7 +159,7 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 							disabled={!form.formState.isDirty || !form.formState.isValid}
 							className="w-full"
 						>
-							Войти
+							{t('sign_in')}
 						</Button>
 					</form>
 				</Form>

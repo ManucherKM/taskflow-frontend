@@ -10,12 +10,14 @@ import {
 import { useOpenTaskStore } from '@/storage'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { useEffect, useRef, type FC, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export interface IOpenTaskProvider {
 	children: ReactNode
 }
 
 export const OpenTaskProvider: FC<IOpenTaskProvider> = ({ children }) => {
+	const { t } = useTranslation()
 	const isShow = useOpenTaskStore(store => store.isShow)
 	const setIsShow = useOpenTaskStore(store => store.setIsShow)
 	const task = useOpenTaskStore(store => store.task)
@@ -32,16 +34,16 @@ export const OpenTaskProvider: FC<IOpenTaskProvider> = ({ children }) => {
 			<Dialog open={isShow} onOpenChange={setIsShow}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>{task?.title || 'Не найдено'}</DialogTitle>
+						<DialogTitle>{task?.title || t('not_found')}</DialogTitle>
 						<DialogDescription className="!mt-6 text-justify">
-							{task?.description || 'Не найдено'}
+							{task?.description || t('not_found')}
 						</DialogDescription>
 					</DialogHeader>
 
 					<DialogFooter>
 						<DialogClose asChild>
 							<Button ref={closeButtonRef} type="button">
-								Закрыть
+								{t('close')}
 							</Button>
 						</DialogClose>
 					</DialogFooter>

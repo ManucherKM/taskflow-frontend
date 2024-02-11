@@ -1,5 +1,6 @@
 import { Separator } from '@radix-ui/react-context-menu'
 import { FC, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavBar } from '.'
 import { SidebarNav } from './sidebar-nav'
 
@@ -8,16 +9,17 @@ export interface ILayoutUserSetting {
 }
 
 export const LayoutUserSetting: FC<ILayoutUserSetting> = ({ children }) => {
+	const { t } = useTranslation()
+
 	return (
 		<>
 			<NavBar />
 
 			<div className="hidden space-y-6 p-10 pb-16 md:block">
 				<div className="space-y-0.5">
-					<h2 className="text-2xl font-bold tracking-tight">Настройки</h2>
+					<h2 className="text-2xl font-bold tracking-tight">{t('settings')}</h2>
 					<p className="text-muted-foreground">
-						Управляйте настройками своей учетной записи и устанавливайте
-						настройки электронной почты.
+						{t('manage_your_account_settings_and_set_your_email_preferences')}
 					</p>
 				</div>
 				<Separator className="my-6" />

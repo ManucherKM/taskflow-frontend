@@ -2,6 +2,7 @@ import { ERoutes } from '@/config/routes'
 import { useOutsideClick } from '@/hooks'
 import { useUserStore } from '@/storage'
 import { ReactNode, useEffect, useRef, useState, type FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { NavbarContextMenu, SearchBoard } from '.'
 import { CustomTooltip } from './custom-tooltip'
@@ -15,6 +16,8 @@ export interface INavBar {
 }
 
 export const NavBar: FC<INavBar> = ({ children }) => {
+	const { t } = useTranslation()
+
 	const [searchQuery, setSearchQuery] = useState<string>('')
 	const [isShowSearchBoard, setIsShowSearchBoard] = useState<boolean>(false)
 	const searchBoardRef = useRef<HTMLDivElement | null>(null)
@@ -32,7 +35,7 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 		<nav>
 			<div className="container border-b">
 				<div className="py-4 flex justify-between items-center">
-					<CustomTooltip text="На главную">
+					<CustomTooltip text={t('home')}>
 						<Link to={ERoutes.home} className="hover:opacity-80">
 							<Logo />
 						</Link>
@@ -45,7 +48,7 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 							searchComponent={
 								<Search
 									type="text"
-									placeholder="Найти доску"
+									placeholder={t('find_the_board')}
 									onChange={e => setSearchQuery(e.target.value)}
 									onFocus={() => setIsShowSearchBoard(true)}
 								/>

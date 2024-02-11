@@ -16,6 +16,7 @@ import { useLoader } from '@/hooks'
 import { IDeepBoard } from '@/storage/useBoardStore/types'
 import { getAvatarFallback } from '@/utils'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 import {
 	Avatar,
 	AvatarFallback,
@@ -37,6 +38,8 @@ export interface IBoardMembersProvider {
 export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 	children,
 }) => {
+	const { t } = useTranslation()
+
 	const isShow = useBoardMembersStore(store => store.isShow)
 	const setIsShow = useBoardMembersStore(store => store.setIsShow)
 	const board = useBoardMembersStore(store => store.board)
@@ -65,7 +68,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 
 			if (!savedBoard) {
 				toast({
-					title: 'Не удалось сменить роль',
+					title: t('failed_to_change_roles'),
 				})
 
 				return
@@ -74,7 +77,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 			setActiveBoard({ ...activeBoard, admins: savedBoard.admins })
 
 			toast({
-				title: 'Роль успешно изменена',
+				title: t('role_successfully_changed'),
 			})
 		} catch (e) {
 			console.log(e)
@@ -91,7 +94,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 
 			if (!savedBoard) {
 				toast({
-					title: 'Не удалось сменить роль',
+					title: t('failed_to_change_roles'),
 				})
 
 				return
@@ -100,7 +103,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 			setActiveBoard({ ...activeBoard, admins: savedBoard.admins })
 
 			toast({
-				title: 'Роль успешно изменена',
+				title: t('role_successfully_changed'),
 			})
 		} catch (e) {
 			console.log(e)
@@ -120,7 +123,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 
 				if (typeof foundUsers === 'undefined') {
 					toast({
-						title: 'Не удалось получить список участников доски',
+						title: t('failed_to_retrieve_the_list_of_board_members'),
 					})
 
 					return
@@ -146,9 +149,9 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 			<Dialog open={isShow} onOpenChange={setIsShow}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Участники доски</DialogTitle>
+						<DialogTitle>{t('board_members')}</DialogTitle>
 						<DialogDescription className="!mt-5">
-							Приглашайте других пользователей для совместной работы.
+							{t('invite_other_users_to_collaborate')}
 						</DialogDescription>
 					</DialogHeader>
 					<div className="relative my-4">
@@ -198,16 +201,18 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 														className="ml-auto"
 													>
 														{board?.admins.includes(currUser._id)
-															? 'Админ'
-															: 'Участник'}
+															? t('admin')
+															: t('member')}
 														<ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
 													</Button>
 												</PopoverTrigger>
 												<PopoverContent className="p-0" align="end">
 													<Command>
-														<CommandInput placeholder="Выберите новую роль..." />
+														<CommandInput
+															placeholder={t('select_a_new_role') + '...'}
+														/>
 														<CommandList>
-															<CommandEmpty>Роль не найдена.</CommandEmpty>
+															<CommandEmpty>{t('role_not_found')}</CommandEmpty>
 															<CommandGroup>
 																<CommandItem className="teamaspace-y-1 flex flex-col items-start px-4 py-2">
 																	<div
@@ -215,9 +220,9 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 																			addAdminHandler(currUser._id)
 																		}
 																	>
-																		<p>Админ</p>
+																		<p>{t('admin')}</p>
 																		<p className="text-sm text-muted-foreground">
-																			Имеет полный контроль над доской
+																			{t('has_full_control_of_the_board')}
 																		</p>
 																	</div>
 																</CommandItem>
@@ -227,10 +232,11 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 																			removeAdminHandler(currUser._id)
 																		}
 																	>
-																		<p>Участник</p>
+																		<p>{t('member')}</p>
 																		<p className="text-sm text-muted-foreground">
-																			Может в ограниченой форме взаимодейтвовать
-																			с доской.
+																			{t(
+																				'can_interact_with_the_board_in_a_limited_way',
+																			)}
 																		</p>
 																	</div>
 																</CommandItem>
@@ -252,7 +258,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 							onClick={() => setIsShow(false)}
 							autoFocus
 						>
-							Закрыть
+							{t('close')}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

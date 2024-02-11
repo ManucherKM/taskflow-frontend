@@ -25,6 +25,7 @@ import {
 // Utils
 import { ERoutes } from '@/config/routes'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router'
 
 /**
@@ -35,6 +36,8 @@ import { useNavigate, useParams } from 'react-router'
 export const Dashboard: FC = () => {
 	// Get the board identifier from the URL parameters.
 	const { id } = useParams()
+
+	const { t } = useTranslation()
 
 	// Function for changing the active board.
 	const setActiveBoard = useBoardStore(store => store.setActiveBoard)
@@ -117,8 +120,8 @@ export const Dashboard: FC = () => {
 				if (!board) {
 					// Showing the user a notification.
 					toast({
-						title: 'Не удалось получить доску',
-						description: 'Возможно данной доски не существует',
+						title: t('failed_to_get_the_board'),
+						description: t('maybe_this_board_doesnt_exist'),
 					})
 
 					// Redirect the user to the home page.
@@ -155,7 +158,7 @@ export const Dashboard: FC = () => {
 				<Button variant={'ghost'} size={'icon'} onClick={boardMembersHandler}>
 					<Icons.users />
 				</Button>
-				<CustomTooltip text="Пригласить в доску">
+				<CustomTooltip text={t('invite_to_the_board')}>
 					<Button variant={'ghost'} size={'icon'} onClick={inviteUserHandler}>
 						<Icons.userPlus />
 					</Button>
@@ -177,7 +180,7 @@ export const Dashboard: FC = () => {
 							onClick={createStageHandler}
 						>
 							<Icons.plus />
-							Создать новый этап
+							{t('create_a_new_stage')}
 						</Button>
 					</div>
 					<ScrollBar orientation="horizontal" />

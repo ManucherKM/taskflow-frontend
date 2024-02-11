@@ -14,6 +14,7 @@ import { useBoardStore, useCreateStageStore } from '@/storage'
 import { IDeepBoard } from '@/storage/useBoardStore/types'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { MouseEvent, useRef, useState, type FC, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from './ui/use-toast'
 
 export interface ICreateStageProvider {
@@ -21,6 +22,8 @@ export interface ICreateStageProvider {
 }
 
 export const CreateStageProvider: FC<ICreateStageProvider> = ({ children }) => {
+	const { t } = useTranslation()
+
 	const isShow = useCreateStageStore(store => store.isShow)
 	const setIsShow = useCreateStageStore(store => store.setIsShow)
 	const boardId = useCreateStageStore(store => store.boardId)
@@ -43,7 +46,7 @@ export const CreateStageProvider: FC<ICreateStageProvider> = ({ children }) => {
 
 			if (!createdStage) {
 				toast({
-					title: 'Не удалось создать этап',
+					title: t('failed_to_create_a_stage'),
 				})
 
 				return
@@ -72,20 +75,20 @@ export const CreateStageProvider: FC<ICreateStageProvider> = ({ children }) => {
 			<Dialog open={isShow} onOpenChange={setIsShow}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Создать этап</DialogTitle>
+						<DialogTitle>{t('create_a_stage')}</DialogTitle>
 						<DialogDescription>
-							Заполните форму чтобы создать этап.
+							{t('fill_out_the_form_to_create_a_stage')}
 						</DialogDescription>
 					</DialogHeader>
 					<div className="flex flex-col gap-6 py-4">
 						<Label htmlFor="name">
-							Название
+							{t('title')}
 							<Input
 								id="name"
 								value={name}
 								onChange={e => setName(e.target.value)}
 								className="w-full mt-2"
-								placeholder="В планах..."
+								placeholder={t('the_plan_is_to') + '...'}
 								onKeyDown={e => {
 									if (e.key === 'Enter') {
 										createButtonRef.current?.click()
@@ -102,7 +105,7 @@ export const CreateStageProvider: FC<ICreateStageProvider> = ({ children }) => {
 								disabled={!name.length}
 								onClick={submitHandler}
 							>
-								Создать
+								{t('create')}
 							</Button>
 						</DialogClose>
 					</DialogFooter>

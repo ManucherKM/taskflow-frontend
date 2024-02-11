@@ -14,6 +14,7 @@ import { useLoader } from '@/hooks'
 import { useBoardStore, useCraeteBoardStore } from '@/storage'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { MouseEvent, useRef, useState, type FC, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { toast } from './ui/use-toast'
 
@@ -22,6 +23,8 @@ export interface ICreateBoardProvider {
 }
 
 export const CreateBoardProvider: FC<ICreateBoardProvider> = ({ children }) => {
+	const { t } = useTranslation()
+
 	const isShow = useCraeteBoardStore(store => store.isShow)
 
 	const setIsShow = useCraeteBoardStore(store => store.setIsShow)
@@ -42,7 +45,7 @@ export const CreateBoardProvider: FC<ICreateBoardProvider> = ({ children }) => {
 
 			if (!createdBoard) {
 				toast({
-					title: 'Не удалось создать доску',
+					title: t('failed_to_create_a_board'),
 				})
 
 				return
@@ -66,20 +69,20 @@ export const CreateBoardProvider: FC<ICreateBoardProvider> = ({ children }) => {
 			<Dialog open={isShow} onOpenChange={setIsShow}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Новая доска</DialogTitle>
+						<DialogTitle>{t('new_board')}</DialogTitle>
 						<DialogDescription>
-							Заполните форму чтобы создать новую доску.
+							{t('fill_out_the_form_to_create_a_new_board')}
 						</DialogDescription>
 					</DialogHeader>
 					<div className="flex flex-col gap-6 py-4">
 						<Label htmlFor="name">
-							Название
+							{t('title')}
 							<Input
 								id="name"
 								value={name}
 								onChange={e => setName(e.target.value)}
 								className="w-full mt-2"
-								placeholder="Горящие арбузы"
+								placeholder={t('work')}
 								onKeyDown={e => {
 									if (e.key === 'Enter') {
 										createButtonRef.current?.click()
@@ -96,7 +99,7 @@ export const CreateBoardProvider: FC<ICreateBoardProvider> = ({ children }) => {
 								disabled={!name.length}
 								onClick={submitHandler}
 							>
-								Создать
+								{t('create')}
 							</Button>
 						</DialogClose>
 					</DialogFooter>

@@ -5,12 +5,14 @@ import {
 } from '@/components/ui/popover'
 import { useLoader } from '@/hooks'
 import { cn } from '@/lib/utils'
+import { i18next } from '@/locales'
 import { useUserStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { Calendar } from '.'
 import { Button } from './ui/button'
@@ -31,37 +33,38 @@ const profileFormSchema = z.object({
 	firstName: z
 		.string()
 		.min(2, {
-			message: 'Имя должно содержать хотя бы 2 символа',
+			message: i18next.t('the_name_must_contain_at_least_2_characters'),
 		})
 		.max(30, {
-			message: 'Имя должно быть не более 30 символов',
+			message: i18next.t('the_name_should_be_no_more_than_30_characters'),
 		})
 		.optional(),
 	lastName: z
 		.string()
 		.min(2, {
-			message: 'Фамилия должна содержать хотя бы 2 символа',
+			message: i18next.t('last_name_must_contain_at_least_2_characters'),
 		})
 		.max(30, {
-			message: 'Фамилия должна содержать не более 30 символов',
+			message: i18next.t('last_name_must_contain_no_more_than_30_characters'),
 		})
 		.optional(),
 	bio: z
 		.string()
 		.min(4, {
-			message: 'Биография должна содержать не менее 4 символов',
+			message: i18next.t('the_biography_must_be_at_least_4_characters_long'),
 		})
 		.max(160, {
-			message: 'Биография должна содержать не более 160 символов',
+			message: i18next.t('the_biography_should_be_no_more_than_160_characters'),
 		})
 		.optional(),
 
 	birthday: z.date().optional(),
-
 	urls: z
 		.array(
 			z.object({
-				value: z.string().url({ message: 'Пожалуйста введите валидный URL' }),
+				value: z
+					.string()
+					.url({ message: i18next.t('please_enter_a_valid_url') }),
 			}),
 		)
 		.optional(),
@@ -70,6 +73,8 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 export function ProfileForm() {
+	const { t } = useTranslation()
+
 	const user = useUserStore(store => store.user)
 
 	const update = useUserStore(store => store.update)
@@ -103,7 +108,7 @@ export function ProfileForm() {
 
 			if (!isSuccess) {
 				toast({
-					title: 'Не удалось обновить профиль',
+					title: t('failed_to_update_profile'),
 				})
 				return
 			}
@@ -139,12 +144,12 @@ export function ProfileForm() {
 					name="firstName"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Имя</FormLabel>
+							<FormLabel>{t('firstname')}</FormLabel>
 							<FormControl>
 								<Input placeholder="taskflowteam" {...field} />
 							</FormControl>
 							<FormDescription>
-								Это ваше общедоступное отображаемое имя.
+								{t('this_is_your_public_display_name')}
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
@@ -156,12 +161,12 @@ export function ProfileForm() {
 					name="lastName"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Фамилия</FormLabel>
+							<FormLabel>{t('surname')}</FormLabel>
 							<FormControl>
 								<Input placeholder="taskflowteam" {...field} />
 							</FormControl>
 							<FormDescription>
-								Это ваша общедоступная отображаемая фамилия.
+								{t('this_is_your_publicly_available_displayed_last_name')}
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
@@ -173,7 +178,7 @@ export function ProfileForm() {
 					name="birthday"
 					render={({ field }) => (
 						<FormItem className="flex flex-col">
-							<FormLabel>День рождения</FormLabel>
+							<FormLabel>{t('birthday')}</FormLabel>
 							<Popover>
 								<PopoverTrigger asChild>
 									<FormControl>
@@ -187,7 +192,7 @@ export function ProfileForm() {
 											{field.value ? (
 												format(field.value, 'PPP')
 											) : (
-												<span>Выбрать дату</span>
+												<span>{t('select_a_date')}</span>
 											)}
 											<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
 										</Button>
@@ -206,7 +211,7 @@ export function ProfileForm() {
 								</PopoverContent>
 							</Popover>
 							<FormDescription>
-								Дата рождения используется для расчета вашего возраста.
+								{t('your_date_of_birth_is_usedto_calculate_your_age')}
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
@@ -218,16 +223,16 @@ export function ProfileForm() {
 					name="bio"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Биография</FormLabel>
+							<FormLabel>{t('biography')}</FormLabel>
 							<FormControl>
 								<Textarea
-									placeholder="Расскажи нам немного о себе"
+									placeholder={t('tell_us_a_little_bit_about_yourself')}
 									className="resize-none"
 									{...field}
 								/>
 							</FormControl>
 							<FormDescription>
-								Вы можете <span>@упоминать</span> других пользователей.
+								{t('you_can')} <span>{t('mention')}</span> {t('of_other_users')}
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
@@ -242,11 +247,12 @@ export function ProfileForm() {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel className={cn(index !== 0 && 'sr-only')}>
-										Ссылки
+										{t('references')}
 									</FormLabel>
 									<FormDescription className={cn(index !== 0 && 'sr-only')}>
-										Добавляйте полезные ссылки. Это может быть ссылка на
-										веб-сайт, резюме, социальные сети и так далее.
+										{t(
+											'add_useful_links_this_can_be_a_link_to_a_website_resume_social_media_and_so_on',
+										)}
 									</FormDescription>
 									<FormControl>
 										<Input {...field} />
@@ -259,10 +265,11 @@ export function ProfileForm() {
 
 					{fields.length === 0 && (
 						<>
-							<FormLabel>Ссылки</FormLabel>
+							<FormLabel> {t('references')}</FormLabel>
 							<FormDescription className="mt-2">
-								Добавляйте полезные ссылки. Это может быть ссылка на веб-сайт,
-								резюме, социальные сети и так далее.
+								{t(
+									'add_useful_links_this_can_be_a_link_to_a_website_resume_social_media_and_so_on',
+								)}
 							</FormDescription>
 						</>
 					)}
@@ -273,7 +280,7 @@ export function ProfileForm() {
 						className="mt-2"
 						onClick={() => append({ value: '' })}
 					>
-						Добавить
+						{t('add')}
 					</Button>
 
 					{fields.length !== 0 && (
@@ -284,7 +291,7 @@ export function ProfileForm() {
 							className="mt-2 ml-2 border-red-400 text-red-400 hover:text-red-400"
 							onClick={() => remove(-1)}
 						>
-							Удалить
+							{t('delete')}
 						</Button>
 					)}
 				</div>
@@ -293,7 +300,7 @@ export function ProfileForm() {
 					disabled={!form.formState.isDirty || !form.formState.isValid}
 					onClick={submitHandler}
 				>
-					Обновить профиль
+					{t('update_profile')}
 				</Button>
 			</form>
 		</Form>

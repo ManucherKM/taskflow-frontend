@@ -4,17 +4,19 @@ import { ERoutes } from '@/config/routes'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from './ui/button'
 
+import { i18next } from '@/locales'
+
 const sidebarNavItems = [
 	{
-		title: 'Профиль',
+		title: i18next.t('profile'),
 		to: ERoutes.profile,
 	},
 	{
-		title: 'Аккаунт',
+		title: i18next.t('account'),
 		to: ERoutes.account,
 	},
 	{
-		title: 'Приложение',
+		title: i18next.t('application'),
 		to: ERoutes.display,
 	},
 ]

@@ -9,9 +9,12 @@ import { Link } from 'react-router-dom'
 import { ERoutes } from '@/config/routes'
 import { useRandomMotivationalPhrase } from '@/hooks'
 import { cn } from '@/lib/utils'
+import { useTranslation } from 'react-i18next'
 
 /** Component for user authorization. */
 export const Login: FC = () => {
+	const { t } = useTranslation()
+
 	// We get a motivational phrase and its author.
 	const { author, phrase } = useRandomMotivationalPhrase()
 
@@ -24,7 +27,7 @@ export const Login: FC = () => {
 					'absolute right-4 top-4 md:right-8 md:top-8',
 				)}
 			>
-				Создать
+				{t('create')}
 			</Link>
 			<div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
 				<div className="absolute inset-0 bg-input dark:bg-zinc-900" />
@@ -42,27 +45,27 @@ export const Login: FC = () => {
 				<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
 					<div className="flex flex-col space-y-2 text-center">
 						<h1 className="text-2xl font-semibold tracking-tight">
-							Войти в TaskFlow
+							{t('log_in_to_taskflow')}
 						</h1>
 						<p className="text-sm text-muted-foreground">
-							Введи данные учетной записи ниже
+							{t('enter_your_account_information_below')}
 						</p>
 					</div>
 					<UserLoginForm />
 					<p className="px-8 text-center text-sm text-muted-foreground">
-						Продолжая вы соглашаетесь с нашими{' '}
+						{t('by_continuing_you_agree_to_our')}{' '}
 						<Link
 							to={ERoutes.termsOfUse}
 							className="underline underline-offset-4 hover:text-primary"
 						>
-							Условиями использования
+							{t('terms_of_use')}
 						</Link>{' '}
-						и{' '}
+						{t('and')}{' '}
 						<Link
 							to={ERoutes.privacyPolicy}
 							className="underline underline-offset-4 hover:text-primary"
 						>
-							Политикой конфиденциальности
+							{t('privacy_policy')}
 						</Link>
 						.
 					</p>

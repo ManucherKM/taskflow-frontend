@@ -3,6 +3,7 @@ import { IDeepBoard } from '@/storage/useBoardStore/types'
 import { IStage } from '@/storage/useStageStore/types'
 import { type FC } from 'react'
 import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd'
+import { useTranslation } from 'react-i18next'
 import { List, toast } from '.'
 import { StageBoard } from './stage-board'
 import { StrictModeDroppable } from './strict-mode-droppable '
@@ -15,6 +16,8 @@ export interface IStageBoardList {
 export type TDragType = 'ROW' | 'STAGE' | null
 
 export const StageBoardList: FC<IStageBoardList> = ({ stages, boardId }) => {
+	const { t } = useTranslation()
+
 	const setBoard = useBoardStore(store => store.setActiveBoard)
 	const board = useBoardStore(store => store.activeBoard) as IDeepBoard
 
@@ -50,13 +53,13 @@ export const StageBoardList: FC<IStageBoardList> = ({ stages, boardId }) => {
 
 				if (!updatedBoard) {
 					toast({
-						title: 'Не удалось изменить порядок этапов',
+						title: t('it_was_not_possible_to_change_the_order_of_the_stages'),
 					})
 					return
 				}
 
 				toast({
-					title: 'Порядок успешно изменен',
+					title: t('the_order_has_been_successfully_changed'),
 				})
 			} catch (e) {
 				console.log(e)
@@ -118,13 +121,13 @@ export const StageBoardList: FC<IStageBoardList> = ({ stages, boardId }) => {
 
 					if (!updatedSourceStage || !updatedDestStage) {
 						toast({
-							title: 'Не удалось изменить порядок задач',
+							title: t('failed_to_change_the_order_of_tasks'),
 						})
 						return
 					}
 
 					toast({
-						title: 'Порядок успешно изменен',
+						title: t('the_order_has_been_successfully_changed'),
 					})
 				} catch (e) {
 					console.log(e)
@@ -163,13 +166,13 @@ export const StageBoardList: FC<IStageBoardList> = ({ stages, boardId }) => {
 
 					if (!updatedStage) {
 						toast({
-							title: 'Не удалось изменить порядок задач',
+							title: t('failed_to_change_the_order_of_tasks'),
 						})
 						return
 					}
 
 					toast({
-						title: 'Порядок успешно изменен',
+						title: t('the_order_has_been_successfully_changed'),
 					})
 				} catch (e) {
 					console.log(e)

@@ -14,9 +14,11 @@ import {
 import { Input } from '@/components/ui/input'
 import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
+import { i18next } from '@/locales'
 import { useAuthStore } from '@/storage'
 import { IRegistrationTarget } from '@/storage/useAuthStore/types'
 import { FC, FormEvent, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { useToast } from '../ui/use-toast'
 
@@ -24,10 +26,10 @@ const FormSchema = z.object({
 	firstName: z
 		.string()
 		.min(2, {
-			message: 'Имя должно содержать хотя бы 2 символа',
+			message: i18next.t('the_name_must_contain_at_least_2_characters'),
 		})
 		.max(30, {
-			message: 'Имя должно быть не более 30 символов',
+			message: i18next.t('the_name_should_be_no_more_than_30_characters'),
 		})
 		.optional()
 		.or(z.literal('')),
@@ -35,10 +37,10 @@ const FormSchema = z.object({
 	lastName: z
 		.string()
 		.min(2, {
-			message: 'Фамилия должна содержать хотя бы 2 символа',
+			message: i18next.t('last_name_must_contain_at_least_2_characters'),
 		})
 		.max(30, {
-			message: 'Фамилия должна содержать не более 30 символов',
+			message: i18next.t('last_name_must_contain_no_more_than_30_characters'),
 		})
 		.optional()
 		.or(z.literal('')),
@@ -49,6 +51,8 @@ export interface UserOtherForm {
 }
 
 export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
+	const { t } = useTranslation()
+
 	const firstNameInputRef = useRef<HTMLInputElement | null>(null)
 	const lastNameInputRef = useRef<HTMLInputElement | null>(null)
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
@@ -72,8 +76,8 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 
 			if (!isSuccess) {
 				toast({
-					title: 'Не удалось создать аккаунт.',
-					description: 'Похоже что вы указали некорректные данные.',
+					title: t('failed_to_create_an_account'),
+					description: t('it_looks_like_you_entered_incorrect_data'),
 				})
 				return
 			}
@@ -103,11 +107,11 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>
-								Имя <span className="text-red-400">*</span>
+								{t('firstname')} <span className="text-red-400">*</span>
 							</FormLabel>
 							<FormControl>
 								<Input
-									placeholder="Иван"
+									placeholder={t('ivan')}
 									{...field}
 									ref={e => {
 										field.ref(e)
@@ -131,11 +135,11 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>
-								Фамилия <span className="text-red-400">*</span>
+								{t('surname')} <span className="text-red-400">*</span>
 							</FormLabel>
 							<FormControl>
 								<Input
-									placeholder="Иванов"
+									placeholder={t('ivanov')}
 									{...field}
 									ref={e => {
 										field.ref(e)
@@ -155,10 +159,10 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 
 				<div className="w-full flex justify-between">
 					<Button onClick={onPrev} variant={'outline'} type="button">
-						Назад
+						{t('back')}
 					</Button>
 					<Button ref={nextButtonRef} onClick={nextHandler} type="button">
-						Создать
+						{t('create')}
 					</Button>
 				</div>
 			</form>

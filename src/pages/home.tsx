@@ -10,9 +10,12 @@ import { useBoardStore, useMultipleBoardActionStore } from '@/storage'
 
 // Utils
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 /** Component with the user's homepage. */
 export const Home: FC = () => {
+	const { t } = useTranslation()
+
 	// State for user-selected boards.
 	const [selectedBoards, setSelectedBoards] = useState<IBoard[]>([])
 
@@ -59,13 +62,12 @@ export const Home: FC = () => {
 	return (
 		<>
 			<NavBar />
-
 			{boards.length !== 0 && (
 				<div ref={containerBoardsRef} className="container">
 					<div className="mt-10 flex flex-col gap-10 select-none">
 						{favoriteBoards.length !== 0 && (
 							<BoardCardWrapper
-								title="Избранное"
+								title={t('favorites')}
 								container={containerBoardsRef.current}
 								activeBoards={selectedBoards}
 								boards={favoriteBoards}
@@ -75,7 +77,7 @@ export const Home: FC = () => {
 
 						{notFavoriteBoards.length !== 0 && (
 							<BoardCardWrapper
-								title="Рабочее пространство"
+								title={t('workspace')}
 								container={containerBoardsRef.current}
 								activeBoards={selectedBoards}
 								boards={notFavoriteBoards}

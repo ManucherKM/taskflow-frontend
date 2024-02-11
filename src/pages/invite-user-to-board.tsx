@@ -11,12 +11,15 @@ import { useBoardStore } from '@/storage'
 import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router'
 
 /** A component to add a user to an invited board. */
 export const InviteUserToBoard: FC = () => {
 	// Get the board identifier from the URL parameters.
 	const { id } = useParams()
+
+	const { t } = useTranslation()
 
 	// Function to add a user to an invited board.
 	const inviteToDashboard = useBoardStore(store => store.inviteToDashboard)
@@ -40,7 +43,7 @@ export const InviteUserToBoard: FC = () => {
 			if (!updatedBoard) {
 				// Show a notification to the user
 				toast({
-					title: 'Не удалось присоединиться к доске',
+					title: t('failed_to_join_the_board'),
 				})
 
 				// Redirect the user to the home page.
@@ -52,7 +55,7 @@ export const InviteUserToBoard: FC = () => {
 
 			// Show a notification to the user
 			toast({
-				title: 'Присоединение к доске прошло успешно',
+				title: t('joining_the_board_was_successful'),
 			})
 
 			// Redirecting the user to a page with a whiteboard.
@@ -71,10 +74,11 @@ export const InviteUserToBoard: FC = () => {
 
 	return (
 		<div className="container flex flex-col justify-center items-center h-screen">
-			<TypographyH1>Присоединение к доске</TypographyH1>
+			<TypographyH1>{t('joining_the_board')}</TypographyH1>
 			<TypographyP className="max-w-md text-center">
-				Присоединение к доске может занять какое-то время. Во время этого
-				процесса приложение должно быть открыто.
+				{t(
+					'joining_the_board_may_take_some_time_during_this_process_the_application_must_be_open',
+				)}
 			</TypographyP>
 		</div>
 	)

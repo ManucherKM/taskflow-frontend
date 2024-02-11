@@ -5,8 +5,11 @@ import { FC, ReactNode, useEffect, useRef } from 'react'
 import { Button, TypographyP, toast } from '.'
 
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 export const MultipleBoardActions = () => {
+	const { t } = useTranslation()
+
 	const setIsShow = useMultipleBoardActionStore(store => store.setIsShow)
 
 	const selectedBoards = useMultipleBoardActionStore(
@@ -33,7 +36,7 @@ export const MultipleBoardActions = () => {
 
 			if (!isSuccess) {
 				toast({
-					title: 'Не удалось удалить выбранные доски',
+					title: t('failed_to_delete_selected_boards'),
 				})
 				return
 			}
@@ -44,7 +47,7 @@ export const MultipleBoardActions = () => {
 
 			if (!fetchedBoards) {
 				toast({
-					title: 'Не удалось получить список досок',
+					title: t('failed_to_get_the_list_of_boards'),
 				})
 				return
 			}
@@ -72,11 +75,13 @@ export const MultipleBoardActions = () => {
 			transition={{ duration: '0.4', type: 'spring', bounce: 0.4 }}
 			className="fixed w-full flex justify-between items-center p-4 bg-background border-b z-50"
 		>
-			<TypographyP>Выбранно: {selectedBoards.length}</TypographyP>
+			<TypographyP>
+				{t('chosen')} {selectedBoards.length}
+			</TypographyP>
 
 			<div>
 				<Button variant={'ghost'} onClick={removeHandler}>
-					Удалить
+					{t('delete')}
 				</Button>
 			</div>
 		</motion.div>

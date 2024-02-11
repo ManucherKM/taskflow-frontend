@@ -1,6 +1,7 @@
 import { useLoader } from '@/hooks'
 import { useAuthStore, useBoardStore, useUserStore } from '@/storage'
 import { useEffect, type FC, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from './ui/use-toast'
 
 export interface IInitProvider {
@@ -8,6 +9,8 @@ export interface IInitProvider {
 }
 
 export const InitProvider: FC<IInitProvider> = ({ children }) => {
+	const { t } = useTranslation()
+
 	const token = useAuthStore(store => store.token)
 	const getUser = useUserStore(store => store.getUser)
 	const loader = useLoader()
@@ -22,7 +25,7 @@ export const InitProvider: FC<IInitProvider> = ({ children }) => {
 
 				if (!fetchedBoards) {
 					toast({
-						title: 'Не удалось получить список досок',
+						title: t('failed_to_get_the_list_of_boards'),
 					})
 				}
 
@@ -30,7 +33,7 @@ export const InitProvider: FC<IInitProvider> = ({ children }) => {
 
 				if (!fetchedUser) {
 					toast({
-						title: 'Не удалось получить информацию об аккаунте',
+						title: t('failed_to_retrieve_account_information'),
 					})
 				}
 			} catch (e) {

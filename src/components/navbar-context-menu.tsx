@@ -11,6 +11,7 @@ import {
 import { ERoutes } from '@/config/routes'
 import { useCraeteBoardStore, useLogoutStore } from '@/storage'
 import type { FC, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 
 export interface INavbarContextMenu {
@@ -18,6 +19,8 @@ export interface INavbarContextMenu {
 }
 
 export const NavbarContextMenu: FC<INavbarContextMenu> = ({ children }) => {
+	const { t } = useTranslation()
+
 	const navigation = useNavigate()
 	const setIsShowCreateBoard = useCraeteBoardStore(store => store.setIsShow)
 	const setIsShowLogout = useLogoutStore(store => store.setIsShow)
@@ -47,39 +50,39 @@ export const NavbarContextMenu: FC<INavbarContextMenu> = ({ children }) => {
 			<ContextMenuTrigger>{children}</ContextMenuTrigger>
 			<ContextMenuContent className="w-64">
 				<ContextMenuItem inset onClick={backHandler}>
-					Назад
+					{t('back')}
 				</ContextMenuItem>
 				<ContextMenuItem inset onClick={nextHandler}>
-					Вперед
+					{t('forward')}
 				</ContextMenuItem>
 				<ContextMenuItem inset onClick={reloadPageHandler}>
-					Перезагрузить
+					{t('reload')}
 				</ContextMenuItem>
 				<ContextMenuSeparator />
 				<ContextMenuSub>
-					<ContextMenuSubTrigger inset>Настройки</ContextMenuSubTrigger>
+					<ContextMenuSubTrigger inset>{t('settings')}</ContextMenuSubTrigger>
 					<ContextMenuSubContent className="w-48">
 						<ContextMenuItem onClick={() => navigation(ERoutes.profile)}>
-							Профиль
+							{t('profile')}
 						</ContextMenuItem>
 						<ContextMenuItem onClick={() => navigation(ERoutes.account)}>
-							Аккаунт
+							{t('account')}
 						</ContextMenuItem>
 						<ContextMenuItem onClick={() => navigation(ERoutes.display)}>
-							Интерфейс
+							{t('interface')}
 						</ContextMenuItem>
 					</ContextMenuSubContent>
 				</ContextMenuSub>
 				<ContextMenuSeparator />
 				<ContextMenuItem inset onClick={newBoardHandler}>
-					Новая доска
+					{t('new_board')}
 				</ContextMenuItem>
 				<ContextMenuItem
 					inset
 					onClick={logoutHandler}
 					className="text-red-400 !hover:text-red-600"
 				>
-					Выйти
+					{t('get_out')}
 				</ContextMenuItem>
 			</ContextMenuContent>
 		</ContextMenu>

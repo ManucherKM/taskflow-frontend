@@ -6,6 +6,7 @@ import { Button, TypographyH1, TypographyP } from '@/components'
 
 // Utils
 import { ERoutes } from '@/config/routes'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 
 /**
@@ -13,6 +14,8 @@ import { useNavigate } from 'react-router'
  * confirmed.
  */
 export const AccountConfirm: FC = () => {
+	const { t } = useTranslation()
+
 	// Get the function to redirect the user from the hook.
 	const navigate = useNavigate()
 
@@ -24,10 +27,10 @@ export const AccountConfirm: FC = () => {
 
 	return (
 		<div className="container flex flex-col justify-center items-center h-screen">
-			<TypographyH1>Поздравляем!</TypographyH1>
-			<TypographyP>Учетная запись успешно подтверждена</TypographyP>
+			<TypographyH1>{t('congratulations')}</TypographyH1>
+			<TypographyP>{t('account_successfully_confirmed')}</TypographyP>
 			<Button onClick={clickHandler} className="mt-3">
-				Авторизация
+				{t('authorization')}
 			</Button>
 		</div>
 	)

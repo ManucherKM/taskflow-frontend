@@ -3,6 +3,7 @@ import { useCreateTaskStore } from '@/storage'
 import { cn } from '@/lib/utils'
 import { IStage } from '@/storage/useStageStore/types'
 import type { FC, HTMLAttributes } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
 	Button,
 	Card,
@@ -28,6 +29,8 @@ export const StageBoard: FC<IStageBoard> = ({
 	className,
 	...props
 }) => {
+	const { t } = useTranslation()
+
 	const setIsShowCreateTask = useCreateTaskStore(store => store.setIsShow)
 	const setStageIdCreateTask = useCreateTaskStore(store => store.setStageId)
 
@@ -45,7 +48,7 @@ export const StageBoard: FC<IStageBoard> = ({
 				])}
 				{...props}
 			>
-				<CustomTooltip text="Нажмите на правую кнопку мыши чтобы открыть меню опций этапа">
+				<CustomTooltip text={t('right_click_to_open_the_stage_options_menu')}>
 					<CardHeader className="p-4 pb-6">
 						<CardTitle>{stage.name}</CardTitle>
 					</CardHeader>
@@ -80,7 +83,7 @@ export const StageBoard: FC<IStageBoard> = ({
 						onClick={taskCreateHandler}
 					>
 						<Icons.plus />
-						Создать новую задачу
+						{t('create_a_new_task')}
 					</Button>
 				</CardFooter>
 			</Card>

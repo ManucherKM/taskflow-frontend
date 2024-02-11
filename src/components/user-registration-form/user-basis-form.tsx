@@ -12,7 +12,9 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { i18next } from '@/locales'
 import { useAuthStore } from '@/storage'
+import { t } from 'i18next'
 import { FC, FormEvent, useEffect, useRef } from 'react'
 
 const FormSchema = z.object({
@@ -21,11 +23,13 @@ const FormSchema = z.object({
 		.regex(
 			/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
 			{
-				message: 'Введите корректную почту',
+				message: i18next.t('enter_the_correct_email'),
 			},
 		),
 	password: z.string().min(8, {
-		message: 'Пароль должен иметь не менее 8 символов и не более 32.',
+		message: i18next.t(
+			'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
+		),
 	}),
 })
 
@@ -74,7 +78,7 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 					name="email"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Почта</FormLabel>
+							<FormLabel>{t('mail')}</FormLabel>
 							<FormControl>
 								<Input
 									placeholder="name@example.com"
@@ -100,7 +104,7 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 					name="password"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Пароль</FormLabel>
+							<FormLabel>{t('password')}</FormLabel>
 							<FormControl>
 								<Input
 									placeholder="MyPassword123?"
@@ -132,7 +136,7 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 						type="button"
 						ref={nextButtonRef}
 					>
-						Далее
+						{t('next')}
 					</Button>
 				</div>
 			</form>

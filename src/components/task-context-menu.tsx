@@ -7,6 +7,7 @@ import {
 import { IDeepBoard } from '@/storage/useBoardStore/types'
 import { ITask } from '@/storage/useTaskStore/types'
 import type { FC, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from '.'
 import {
 	ContextMenu,
@@ -26,6 +27,8 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({
 	task,
 	stageId,
 }) => {
+	const { t } = useTranslation()
+
 	const remove = useTaskStore(store => store.remove)
 	const duplication = useTaskStore(store => store.duplication)
 	const setIsShowTask = useOpenTaskStore(store => store.setIsShow)
@@ -48,7 +51,7 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({
 
 			if (!createdTask) {
 				toast({
-					title: 'Не удалось дублировать задачу',
+					title: t('failed_to_duplicate_the_task'),
 				})
 				return
 			}
@@ -81,7 +84,7 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({
 			setActiveBoard(newBoard)
 
 			toast({
-				title: 'Задача успешно дублирована',
+				title: t('task_successfully_duplicated'),
 			})
 		} catch (e) {
 			console.log(e)
@@ -99,7 +102,7 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({
 
 			if (!isSuccess) {
 				toast({
-					title: 'Не удалось удалить задачу',
+					title: t('failed_to_delete_task'),
 				})
 				return
 			}
@@ -119,7 +122,7 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({
 			setActiveBoard(newBoard)
 
 			toast({
-				title: 'Задача успешно удалена',
+				title: t('task_successfully_deleted'),
 			})
 		} catch (e) {
 			console.log(e)
@@ -130,13 +133,13 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({
 		<ContextMenu>
 			<ContextMenuTrigger>{children}</ContextMenuTrigger>
 			<ContextMenuContent>
-				<ContextMenuItem onClick={openHandler}>Открыть</ContextMenuItem>
+				<ContextMenuItem onClick={openHandler}>{t('open')}</ContextMenuItem>
 				<ContextMenuItem onClick={duplicationHandler}>
-					Дублировать
+					{t('duplicate')}
 				</ContextMenuItem>
-				<ContextMenuItem onClick={updateHandler}>Изменить</ContextMenuItem>
+				<ContextMenuItem onClick={updateHandler}>{t('modify')}</ContextMenuItem>
 				<ContextMenuItem className="text-red-400" onClick={removeHandler}>
-					Удалить
+					{t('delete')}
 				</ContextMenuItem>
 			</ContextMenuContent>
 		</ContextMenu>

@@ -12,10 +12,12 @@ import { toast } from '@/components/ui/use-toast'
 import { ERoutes } from '@/config/routes'
 import { useLoader } from '@/hooks'
 import { cn } from '@/lib/utils'
+import { i18next } from '@/locales'
 import { useAuthStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MouseEvent, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import * as z from 'zod'
@@ -23,16 +25,20 @@ import { TypographyP } from '../typography-p'
 
 const FormSchema = z.object({
 	email: z.string().email({
-		message: 'Введите корректную почту',
+		message: i18next.t('enter_the_correct_email'),
 	}),
 	password: z.string().min(8, {
-		message: 'Пароль должен иметь не менее 8 символов и не более 32.',
+		message: i18next.t(
+			'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
+		),
 	}),
 })
 
 interface UserEmailFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
+	const { t } = useTranslation()
+
 	const emailInputRef = useRef<HTMLInputElement | null>(null)
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
 	const loginButtonRef = useRef<HTMLButtonElement | null>(null)
@@ -56,7 +62,7 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 
 			if (!isSuccess) {
 				toast({
-					title: 'Неверная почта или пароль',
+					title: t('invalid_e_mail_or_password'),
 				})
 				return
 			}
@@ -84,7 +90,7 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 						name="email"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Почта</FormLabel>
+								<FormLabel>{t('mail')}</FormLabel>
 								<FormControl>
 									<Input
 										placeholder="name@example.com"
@@ -110,7 +116,7 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 						name="password"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Пароль</FormLabel>
+								<FormLabel>{t('password')}</FormLabel>
 								<FormControl>
 									<Input
 										placeholder="MyPassword1!?"
@@ -134,7 +140,7 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 					<div className="w-full flex justify-end !mt-2">
 						<Link to={ERoutes.restoreAccountEmail}>
 							<TypographyP className="text-xs hover:underline text-muted-foreground">
-								Забыли пароль?
+								{t('forgot_your_password')}
 							</TypographyP>
 						</Link>
 					</div>
@@ -146,7 +152,7 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 						disabled={!form.formState.isDirty || !form.formState.isValid}
 						className="w-full"
 					>
-						Войти
+						{t('sign_in')}
 					</Button>
 				</form>
 			</Form>

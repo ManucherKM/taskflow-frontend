@@ -12,6 +12,7 @@ import { ERoutes } from '@/config/routes'
 import { useInviteUserToBoardStore } from '@/storage'
 import { writeTextIntoClipboard } from '@/utils'
 import { useEffect, useState, type FC, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Input, toast } from '.'
 
 const CLIENT_URL = env.get('CLIENT_URL').required().asString()
@@ -23,6 +24,8 @@ export interface IInviteUserToBoardProvider {
 export const InviteUserToBoardProvider: FC<IInviteUserToBoardProvider> = ({
 	children,
 }) => {
+	const { t } = useTranslation()
+
 	const isShow = useInviteUserToBoardStore(store => store.isShow)
 	const setIsShow = useInviteUserToBoardStore(store => store.setIsShow)
 	const board = useInviteUserToBoardStore(store => store.board)
@@ -37,13 +40,13 @@ export const InviteUserToBoardProvider: FC<IInviteUserToBoardProvider> = ({
 
 			if (!isSuccess) {
 				toast({
-					title: 'Не удалось скопировать ссылку в буффер обмена',
+					title: t('failed_to_copy_the_link_to_the_clipboard'),
 				})
 				return
 			}
 
 			toast({
-				title: 'Ссылка успешно скопирована',
+				title: t('the_link_has_been_successfully_copied'),
 			})
 		} catch (e) {
 			console.log(e)
@@ -63,10 +66,13 @@ export const InviteUserToBoardProvider: FC<IInviteUserToBoardProvider> = ({
 			<Dialog open={isShow} onOpenChange={setIsShow}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Пригласить в доску {board?.name}</DialogTitle>
+						<DialogTitle>
+							{t('invite_to_the_board')} {board?.name}
+						</DialogTitle>
 						<DialogDescription className="!mt-5">
-							Чтобы пригласить пользователя в доску ему необходимо
-							авторизоваться в нашем сервисе и затем перейти по ссылке ниже.
+							{t(
+								'to_invite_a_user_to_the_board_he_needs_to_authorize_in_our_service_and_then_follow_the_link_below',
+							)}
 						</DialogDescription>
 					</DialogHeader>
 					<div>
@@ -79,7 +85,7 @@ export const InviteUserToBoardProvider: FC<IInviteUserToBoardProvider> = ({
 							onClick={copyLinkHandler}
 							autoFocus
 						>
-							Скопировать
+							{t('copy')}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

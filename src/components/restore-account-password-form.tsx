@@ -16,13 +16,20 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import * as z from 'zod'
 
+import { i18next } from '@/locales'
+import { useTranslation } from 'react-i18next'
+
 const FormSchema = z.object({
 	password: z.string().min(8, {
-		message: 'Пароль должен иметь не менее 8 символов и не более 32.',
+		message: i18next.t(
+			'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
+		),
 	}),
 })
 
 export const RestoreAccountPasswordForm: FC = () => {
+	const { t } = useTranslation()
+
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
 	const loginButtonRef = useRef<HTMLButtonElement | null>(null)
 	const changePassword = useRestoreAccount(store => store.changePassword)
@@ -44,9 +51,10 @@ export const RestoreAccountPasswordForm: FC = () => {
 
 			if (!isSuccess) {
 				toast({
-					title: 'Не удалось изменить пароль',
-					description:
-						'Попробуйте перезапустить приложение и подвторить снова. Если проблема не исчезнет напишите нам на почту: taskflowteam@gmail.com.',
+					title: t('failed_to_change_the_password'),
+					description: t(
+						'try_restarting_the_application_and_repeating_again_if_the_problem_persists_please_write_to_us_at_taskflowteam_gmail_com',
+					),
 				})
 				return
 			}
@@ -69,7 +77,7 @@ export const RestoreAccountPasswordForm: FC = () => {
 	}, [passwordInputRef.current])
 	return (
 		<div className="flex flex-col gap-6 justify-center items-center h-[calc(100vh-56px)]">
-			<TypographyH3>Изменение пароля</TypographyH3>
+			<TypographyH3>{t('change_password')}</TypographyH3>
 			<Form {...form}>
 				<form
 					onSubmit={e => e.preventDefault()}
@@ -80,7 +88,7 @@ export const RestoreAccountPasswordForm: FC = () => {
 						name="password"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Новый пароль</FormLabel>
+								<FormLabel>{t('new_password')}</FormLabel>
 								<FormControl>
 									<Input
 										placeholder="MyPassword1!?"
@@ -108,7 +116,7 @@ export const RestoreAccountPasswordForm: FC = () => {
 						disabled={!form.formState.isDirty || !form.formState.isValid}
 						className="w-full"
 					>
-						Изменить
+						{t('modify')}
 					</Button>
 				</form>
 			</Form>

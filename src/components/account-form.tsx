@@ -21,18 +21,20 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { useDelayForType, useLoader } from '@/hooks'
+import { i18next } from '@/locales'
 import { useAuthStore, useUserStore } from '@/storage'
 import clsx from 'clsx'
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const accountFormSchema = z.object({
 	userName: z
 		.string()
 		.min(2, {
-			message: 'Имя пользователя должно состоять минимум из 2 символов.',
+			message: i18next.t('the_username_must_be_at_least_2_characters_long'),
 		})
 		.max(30, {
-			message: 'Имя пользователя не должно превышать 30 символов.',
+			message: i18next.t('the_username_must_not_exceed_30_characters'),
 		}),
 	email: z.string().email().optional(),
 })
@@ -42,6 +44,8 @@ type AccountFormValues = z.infer<typeof accountFormSchema>
 // This can come from your database or API.
 
 export function AccountForm() {
+	const { t } = useTranslation()
+
 	const user = useUserStore(store => store.user)
 
 	const checkUserName = useAuthStore(store => store.checkUserName)
@@ -74,7 +78,7 @@ export function AccountForm() {
 
 			if (!isSuccess) {
 				toast({
-					title: 'Не удалось обновить профиль',
+					title: t('failed_to_update_profile'),
 				})
 				return
 			}
@@ -132,7 +136,7 @@ export function AccountForm() {
 										'text-[#7f1d1d]',
 								])}
 							>
-								Имя пользователя
+								{t('username')}
 							</FormLabel>
 							<FormControl>
 								<Input
@@ -154,13 +158,14 @@ export function AccountForm() {
 								field.value !== defaultValues.userName &&
 								!isLoading && (
 									<FormDescription className="text-[#7f1d1d]">
-										Это имя пользователя уже занято
+										{t('this_username_is_already_taken')}
 									</FormDescription>
 								)}
 
 							<FormDescription>
-								Это ваше общедоступное отображаемое имя пользователя. С помощью
-								него вас могу находить другие пользователи.
+								{t(
+									'this_is_your_publicly_available_display_username_its_how_it_allows_other_users_to_find_you',
+								)}
 							</FormDescription>
 
 							<FormMessage />
@@ -172,12 +177,12 @@ export function AccountForm() {
 					name="email"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Почта</FormLabel>
+							<FormLabel>{t('mail')}</FormLabel>
 							{!!field.value && (
 								<Select defaultValue={field.value}>
 									<FormControl>
 										<SelectTrigger>
-											<SelectValue placeholder="Загрузка" />
+											<SelectValue placeholder={t('loading')} />
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>
@@ -198,7 +203,7 @@ export function AccountForm() {
 					{isLoading && (
 						<Icons.spinner className="animate-spin dark:text-black w-4 h-4 mr-1" />
 					)}
-					Сохранить изменения
+					{t('save_changes')}
 				</Button>
 			</form>
 		</Form>

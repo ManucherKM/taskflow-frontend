@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useDelayForType, useLoader } from '@/hooks'
+import { i18next } from '@/locales'
 import { useAuthStore, useStore } from '@/storage'
 import clsx from 'clsx'
 import {
@@ -25,11 +26,12 @@ import {
 	useRef,
 	useState,
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Icons } from '..'
 
 const FormSchema = z.object({
 	userName: z.string().min(2, {
-		message: 'Имя пользователя должно состоять минимум из 2 символов.',
+		message: i18next.t('the_username_must_be_at_least_2_characters_long'),
 	}),
 })
 
@@ -39,6 +41,8 @@ export interface IUserNameForm {
 }
 
 export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
+	const { t } = useTranslation()
+
 	const userNameInputRef = useRef<HTMLInputElement | null>(null)
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
 
@@ -111,7 +115,7 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className={clsx([isExist && 'text-[#7f1d1d]'])}>
-								Имя пользователя
+								{t('username')}
 							</FormLabel>
 							<FormControl>
 								<Input
@@ -133,11 +137,11 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 								/>
 							</FormControl>
 							<FormDescription>
-								Это ваше уникальное имя пользователя
+								{t('this_is_your_unique_username')}
 							</FormDescription>
 							{isExist && (
 								<FormDescription className="text-[#7f1d1d] font-medium">
-									Данное имя пользователя занято
+									{t('this_user_name_is_busy')}
 								</FormDescription>
 							)}
 							<FormMessage />
@@ -147,7 +151,7 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 
 				<div className="w-full flex justify-between">
 					<Button type="button" onClick={onPrev} variant={'outline'}>
-						Назад
+						{t('back')}
 					</Button>
 					<Button
 						onClick={nextHandler}
@@ -158,7 +162,7 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 						{isLoading && (
 							<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 						)}
-						Далее
+						{t('next')}
 					</Button>
 				</div>
 			</form>

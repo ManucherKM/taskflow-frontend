@@ -13,6 +13,7 @@ import { useLoader } from '@/hooks'
 import { useBoardStore, useUpdateBoardStore } from '@/storage'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { MouseEvent, useRef, useState, type FC, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from './ui/use-toast'
 
 export interface IUpdateBoardProvider {
@@ -20,6 +21,8 @@ export interface IUpdateBoardProvider {
 }
 
 export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
+	const { t } = useTranslation()
+
 	const isShow = useUpdateBoardStore(store => store.isShow)
 	const setIsShow = useUpdateBoardStore(store => store.setIsShow)
 	const id = useUpdateBoardStore(store => store.id)
@@ -44,7 +47,7 @@ export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
 
 			if (!updatedBoard) {
 				toast({
-					title: 'Не удалось обновить доску',
+					title: t('failed_to_update_the_board'),
 				})
 
 				return
@@ -76,20 +79,20 @@ export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
 			<Dialog open={isShow} onOpenChange={setIsShow}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Обновить доску</DialogTitle>
+						<DialogTitle>{t('update_the_board')}</DialogTitle>
 						<DialogDescription>
-							Заполните форму чтобы обновить доску.
+							{t('fill_out_the_form_to_update_the_board')}
 						</DialogDescription>
 					</DialogHeader>
 					<div className="flex flex-col gap-6 py-4">
 						<Label htmlFor="name">
-							Название
+							{t('title')}
 							<Input
 								id="name"
 								value={name}
 								onChange={e => setName(e.target.value)}
 								className="w-full mt-2"
-								placeholder="Горящие арбузы"
+								placeholder={t('work')}
 								onKeyDown={e => {
 									if (e.key === 'Enter') {
 										createButtonRef.current?.click()
@@ -106,7 +109,7 @@ export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
 								disabled={!name.length}
 								onClick={submitHandler}
 							>
-								Обновить
+								{t('update')}
 							</Button>
 						</DialogClose>
 					</DialogFooter>
