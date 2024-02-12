@@ -8,7 +8,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { ERoutes } from '@/config/routes'
-import { useLoader } from '@/hooks'
+import { useLoader, useRestoreAccountPasswordFormSchema } from '@/hooks'
 import { useRestoreAccount } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MouseEvent, useEffect, useRef, type FC } from 'react'
@@ -16,19 +16,12 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import * as z from 'zod'
 
-import { i18next } from '@/locales'
 import { useTranslation } from 'react-i18next'
-
-const FormSchema = z.object({
-	password: z.string().min(8, {
-		message: i18next.t(
-			'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
-		),
-	}),
-})
 
 export const RestoreAccountPasswordForm: FC = () => {
 	const { t } = useTranslation()
+
+	const formSchema = useRestoreAccountPasswordFormSchema()
 
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
 	const loginButtonRef = useRef<HTMLButtonElement | null>(null)
@@ -37,15 +30,15 @@ export const RestoreAccountPasswordForm: FC = () => {
 
 	const navigation = useNavigate()
 
-	const form = useForm<z.infer<typeof FormSchema>>({
+	const form = useForm<z.infer<typeof formSchema>>({
 		mode: 'onChange',
-		resolver: zodResolver(FormSchema),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			password: '',
 		},
 	})
 
-	async function onSubmit(data: z.infer<typeof FormSchema>) {
+	async function onSubmit(data: z.infer<typeof formSchema>) {
 		try {
 			const isSuccess = await loader(changePassword, data.password)
 

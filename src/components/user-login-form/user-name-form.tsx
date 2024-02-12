@@ -11,9 +11,8 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { ERoutes } from '@/config/routes'
-import { useLoader } from '@/hooks'
+import { useLoader, useLoginWithNameFormSchema } from '@/hooks'
 import { cn } from '@/lib/utils'
-import { i18next } from '@/locales'
 import { useAuthStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MouseEvent, useEffect, useRef } from 'react'
@@ -24,26 +23,12 @@ import { Link } from 'react-router-dom'
 import * as z from 'zod'
 import { TypographyP } from '../typography-p'
 
-const FormSchema = z.object({
-	userName: z
-		.string()
-		.min(2, {
-			message: i18next.t('the_username_must_be_at_least_2_characters_long'),
-		})
-		.max(30, {
-			message: i18next.t('the_username_must_not_exceed_30_characters'),
-		}),
-	password: z.string().min(8, {
-		message: i18next.t(
-			'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
-		),
-	}),
-})
-
 interface UserNameFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserNameForm({ className, ...props }: UserNameFormProps) {
 	const { t } = useTranslation()
+
+	const formSchema = useLoginWithNameFormSchema()
 
 	const nameInputRef = useRef<HTMLInputElement | null>(null)
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
@@ -53,16 +38,16 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 
 	const navigation = useNavigate()
 
-	const form = useForm<z.infer<typeof FormSchema>>({
+	const form = useForm<z.infer<typeof formSchema>>({
 		mode: 'onChange',
-		resolver: zodResolver(FormSchema),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			userName: '',
 			password: '',
 		},
 	})
 
-	async function onSubmit(data: z.infer<typeof FormSchema>) {
+	async function onSubmit(data: z.infer<typeof formSchema>) {
 		try {
 			const isSuccess = await loader(login, data)
 

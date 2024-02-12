@@ -13,8 +13,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useDelayForType, useLoader } from '@/hooks'
-import { i18next } from '@/locales'
+import { useDelayForType, useLoader, useRegNameFormSchema } from '@/hooks'
 import { useAuthStore, useStore } from '@/storage'
 import clsx from 'clsx'
 import {
@@ -29,12 +28,6 @@ import {
 import { useTranslation } from 'react-i18next'
 import { Icons } from '..'
 
-const FormSchema = z.object({
-	userName: z.string().min(2, {
-		message: i18next.t('the_username_must_be_at_least_2_characters_long'),
-	}),
-})
-
 export interface IUserNameForm {
 	onNext: () => void
 	onPrev: () => void
@@ -42,6 +35,8 @@ export interface IUserNameForm {
 
 export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 	const { t } = useTranslation()
+
+	const formSchema = useRegNameFormSchema()
 
 	const userNameInputRef = useRef<HTMLInputElement | null>(null)
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
@@ -58,9 +53,9 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 
 	const delayForType = useDelayForType()
 
-	const form = useForm<z.infer<typeof FormSchema>>({
+	const form = useForm<z.infer<typeof formSchema>>({
 		mode: 'onChange',
-		resolver: zodResolver(FormSchema),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			userName: '',
 		},
@@ -70,7 +65,7 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 		setIsValid(form.formState.isDirty && form.formState.isValid && !isExist)
 	}, [form.formState.isDirty, form.formState.isValid, isExist])
 
-	function onSubmit(data: z.infer<typeof FormSchema>) {
+	function onSubmit(data: z.infer<typeof formSchema>) {
 		setRegInfo({ userName: data.userName })
 	}
 

@@ -20,31 +20,20 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form'
-import { useDelayForType, useLoader } from '@/hooks'
-import { i18next } from '@/locales'
+import { useAccountFormSchema, useDelayForType, useLoader } from '@/hooks'
 import { useAuthStore, useUserStore } from '@/storage'
 import clsx from 'clsx'
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const accountFormSchema = z.object({
-	userName: z
-		.string()
-		.min(2, {
-			message: i18next.t('the_username_must_be_at_least_2_characters_long'),
-		})
-		.max(30, {
-			message: i18next.t('the_username_must_not_exceed_30_characters'),
-		}),
-	email: z.string().email().optional(),
-})
-
-type AccountFormValues = z.infer<typeof accountFormSchema>
-
 // This can come from your database or API.
 
 export function AccountForm() {
 	const { t } = useTranslation()
+
+	const accountFormSchema = useAccountFormSchema()
+
+	type AccountFormValues = z.infer<typeof accountFormSchema>
 
 	const user = useUserStore(store => store.user)
 

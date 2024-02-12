@@ -13,8 +13,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ERoutes } from '@/config/routes'
-import { useLoader } from '@/hooks'
-import { i18next } from '@/locales'
+import { useLoader, useRegOtherFormSchema } from '@/hooks'
 import { useAuthStore } from '@/storage'
 import { IRegistrationTarget } from '@/storage/useAuthStore/types'
 import { FC, FormEvent, useEffect, useRef } from 'react'
@@ -22,36 +21,14 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { useToast } from '../ui/use-toast'
 
-const FormSchema = z.object({
-	firstName: z
-		.string()
-		.min(2, {
-			message: i18next.t('the_name_must_contain_at_least_2_characters'),
-		})
-		.max(30, {
-			message: i18next.t('the_name_should_be_no_more_than_30_characters'),
-		})
-		.optional()
-		.or(z.literal('')),
-
-	lastName: z
-		.string()
-		.min(2, {
-			message: i18next.t('last_name_must_contain_at_least_2_characters'),
-		})
-		.max(30, {
-			message: i18next.t('last_name_must_contain_no_more_than_30_characters'),
-		})
-		.optional()
-		.or(z.literal('')),
-})
-
 export interface UserOtherForm {
 	onPrev: () => void
 }
 
 export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 	const { t } = useTranslation()
+
+	const formSchema = useRegOtherFormSchema()
 
 	const firstNameInputRef = useRef<HTMLInputElement | null>(null)
 	const lastNameInputRef = useRef<HTMLInputElement | null>(null)
@@ -63,12 +40,12 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 
 	const { toast } = useToast()
 
-	const form = useForm<z.infer<typeof FormSchema>>({
+	const form = useForm<z.infer<typeof formSchema>>({
 		mode: 'onChange',
-		resolver: zodResolver(FormSchema),
+		resolver: zodResolver(formSchema),
 	})
 
-	async function onSubmit(data: z.infer<typeof FormSchema>) {
+	async function onSubmit(data: z.infer<typeof formSchema>) {
 		const totalInfo = { ...regInfo, ...data } as IRegistrationTarget
 
 		try {

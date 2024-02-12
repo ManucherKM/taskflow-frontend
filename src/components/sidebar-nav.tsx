@@ -1,30 +1,16 @@
 import { Link, useLocation } from 'react-router-dom'
 
-import { ERoutes } from '@/config/routes'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from './ui/button'
 
-import { i18next } from '@/locales'
-
-const sidebarNavItems = [
-	{
-		title: i18next.t('profile'),
-		to: ERoutes.profile,
-	},
-	{
-		title: i18next.t('account'),
-		to: ERoutes.account,
-	},
-	{
-		title: i18next.t('application'),
-		to: ERoutes.display,
-	},
-]
+import { useSidebarNavItems } from '@/hooks'
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {}
 
 export function SidebarNav({ className, ...props }: SidebarNavProps) {
 	const { pathname } = useLocation()
+
+	const sidebarNavItems = useSidebarNavItems()
 
 	return (
 		<nav

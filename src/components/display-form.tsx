@@ -31,8 +31,13 @@ import {
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 
-import { useDisplayStore, useThemeColorStore } from '@/storage'
+import {
+	useDisplayStore,
+	useLanguageStore,
+	useThemeColorStore,
+} from '@/storage'
 import { EFont } from '@/storage/useDisplayStore/types'
+import { TLanguage } from '@/storage/useLanguageStore/types'
 import { TThemeColor } from '@/storage/useThemeColorStore/types'
 import { changeFirstLetterToUpperCase } from '@/utils'
 import { ChangeEvent } from 'react'
@@ -43,29 +48,32 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 
 const languages = [
 	{ label: 'English', value: 'en' },
-	{ label: 'French', value: 'fr' },
-	{ label: 'German', value: 'de' },
-	{ label: 'Spanish', value: 'es' },
-	{ label: 'Portuguese', value: 'pt' },
-	{ label: 'Russian', value: 'ru' },
-	{ label: 'Japanese', value: 'ja' },
-	{ label: 'Korean', value: 'ko' },
-	{ label: 'Chinese', value: 'zh' },
+	{ label: 'Français', value: 'fr' },
+	{ label: 'Deutsch', value: 'de' },
+	{ label: 'Español', value: 'es' },
+	{ label: 'Polski', value: 'pl' },
+	{ label: 'Русский', value: 'ru' },
+	{ label: 'Italiano', value: 'it' },
+	{ label: 'Український', value: 'uk' },
+	{ label: 'Türkçe', value: 'tr' },
 ] as const
 
 const displayFormSchema = z.object({
 	mode: z.enum(['light', 'dark']),
 	theme: z.enum(['zinc', 'rose', 'blue', 'green', 'orange']),
 	font: z.enum(['sans', 'mono', 'serif']),
-	language: z.string(),
+	language: z.enum(['en', 'fr', 'de', 'pl', 'tr', 'ru', 'es', 'it', 'uk']),
 })
 
 type DisplayFormValues = z.infer<typeof displayFormSchema>
 
 export function DisplayForm() {
-	const { t } = useTranslation()
+	const { t, i18n } = useTranslation()
 
 	const setFont = useDisplayStore(store => store.setFont)
+
+	const storeLanguage = useLanguageStore(store => store.language)
+	const setStoreLanguage = useLanguageStore(store => store.setLanguage)
 
 	const font = useDisplayStore(store => store.font)
 
@@ -76,7 +84,7 @@ export function DisplayForm() {
 	const defaultValues: Partial<DisplayFormValues> = {
 		mode: theme as 'light' | 'dark',
 		font: font,
-		language: 'ru',
+		language: storeLanguage,
 		theme: 'zinc',
 	}
 
@@ -96,6 +104,11 @@ export function DisplayForm() {
 
 	function changeFontHandler(e: ChangeEvent<HTMLSelectElement>) {
 		setFont(e.target.value as EFont)
+	}
+
+	function changeLanguageHandler(lang: TLanguage) {
+		i18n.changeLanguage(lang)
+		setStoreLanguage(lang)
 	}
 
 	return (
@@ -178,6 +191,7 @@ export function DisplayForm() {
 													key={language.value}
 													onSelect={() => {
 														form.setValue('language', language.value)
+														changeLanguageHandler(language.value)
 													}}
 												>
 													<CheckIcon

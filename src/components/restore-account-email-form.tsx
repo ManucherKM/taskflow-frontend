@@ -11,8 +11,7 @@ import {
 	toast,
 } from '@/components'
 import { ERoutes } from '@/config/routes'
-import { useLoader } from '@/hooks'
-import { i18next } from '@/locales'
+import { useLoader, useRestoreAccountEmailFormSchema } from '@/hooks'
 import { useRestoreAccount } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { FC } from 'react'
@@ -22,19 +21,10 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import * as z from 'zod'
 
-const FormSchema = z.object({
-	email: z
-		.string()
-		.regex(
-			/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
-			{
-				message: i18next.t('enter_the_correct_email'),
-			},
-		),
-})
-
 export const RestoreAccountEmailForm: FC = () => {
 	const { t } = useTranslation()
+
+	const formSchema = useRestoreAccountEmailFormSchema()
 
 	const emailInputRef = useRef<HTMLInputElement | null>(null)
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
@@ -45,15 +35,15 @@ export const RestoreAccountEmailForm: FC = () => {
 
 	const navigation = useNavigate()
 
-	const form = useForm<z.infer<typeof FormSchema>>({
+	const form = useForm<z.infer<typeof formSchema>>({
 		mode: 'onChange',
-		resolver: zodResolver(FormSchema),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			email: '',
 		},
 	})
 
-	async function onSubmit(data: z.infer<typeof FormSchema>) {
+	async function onSubmit(data: z.infer<typeof formSchema>) {
 		try {
 			const isSuccess = await loader(createOtp, data.email)
 

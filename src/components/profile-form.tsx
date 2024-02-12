@@ -3,9 +3,8 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
-import { useLoader } from '@/hooks'
+import { useLoader, useProfileFormSchema } from '@/hooks'
 import { cn } from '@/lib/utils'
-import { i18next } from '@/locales'
 import { useUserStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CalendarIcon } from '@radix-ui/react-icons'
@@ -29,51 +28,12 @@ import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
 import { toast } from './ui/use-toast'
 
-const profileFormSchema = z.object({
-	firstName: z
-		.string()
-		.min(2, {
-			message: i18next.t('the_name_must_contain_at_least_2_characters'),
-		})
-		.max(30, {
-			message: i18next.t('the_name_should_be_no_more_than_30_characters'),
-		})
-		.optional(),
-	lastName: z
-		.string()
-		.min(2, {
-			message: i18next.t('last_name_must_contain_at_least_2_characters'),
-		})
-		.max(30, {
-			message: i18next.t('last_name_must_contain_no_more_than_30_characters'),
-		})
-		.optional(),
-	bio: z
-		.string()
-		.min(4, {
-			message: i18next.t('the_biography_must_be_at_least_4_characters_long'),
-		})
-		.max(160, {
-			message: i18next.t('the_biography_should_be_no_more_than_160_characters'),
-		})
-		.optional(),
-
-	birthday: z.date().optional(),
-	urls: z
-		.array(
-			z.object({
-				value: z
-					.string()
-					.url({ message: i18next.t('please_enter_a_valid_url') }),
-			}),
-		)
-		.optional(),
-})
-
-type ProfileFormValues = z.infer<typeof profileFormSchema>
-
 export function ProfileForm() {
 	const { t } = useTranslation()
+
+	const profileFormSchema = useProfileFormSchema()
+
+	type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 	const user = useUserStore(store => store.user)
 
@@ -104,9 +64,9 @@ export function ProfileForm() {
 
 	async function onSubmit(data: ProfileFormValues) {
 		try {
-			const isSuccess = await loader(update, data)
+			const updatedUser = await loader(update, data)
 
-			if (!isSuccess) {
+			if (!updatedUser) {
 				toast({
 					title: t('failed_to_update_profile'),
 				})
@@ -146,7 +106,7 @@ export function ProfileForm() {
 						<FormItem>
 							<FormLabel>{t('firstname')}</FormLabel>
 							<FormControl>
-								<Input placeholder="taskflowteam" {...field} />
+								<Input placeholder={t('ivan')} {...field} />
 							</FormControl>
 							<FormDescription>
 								{t('this_is_your_public_display_name')}
@@ -163,7 +123,7 @@ export function ProfileForm() {
 						<FormItem>
 							<FormLabel>{t('surname')}</FormLabel>
 							<FormControl>
-								<Input placeholder="taskflowteam" {...field} />
+								<Input placeholder={t('ivanov')} {...field} />
 							</FormControl>
 							<FormDescription>
 								{t('this_is_your_publicly_available_displayed_last_name')}

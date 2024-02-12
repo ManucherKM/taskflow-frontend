@@ -30,12 +30,12 @@ export const useUserStore = create<IUserStore>(set => ({
 
 	async update(target) {
 		try {
-			const { data } = await axios.patch<{ success: boolean }>(
+			const { data } = await axios.patch<IUser>(
 				EUserStoreApiRoutes.getUser,
 				target,
 			)
 
-			if (!data?.success) {
+			if (!data) {
 				return false
 			}
 

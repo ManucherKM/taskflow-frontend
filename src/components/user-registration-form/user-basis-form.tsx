@@ -12,26 +12,10 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { i18next } from '@/locales'
+import { useRegBasisFormSchema } from '@/hooks'
 import { useAuthStore } from '@/storage'
 import { t } from 'i18next'
 import { FC, FormEvent, useEffect, useRef } from 'react'
-
-const FormSchema = z.object({
-	email: z
-		.string()
-		.regex(
-			/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
-			{
-				message: i18next.t('enter_the_correct_email'),
-			},
-		),
-	password: z.string().min(8, {
-		message: i18next.t(
-			'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
-		),
-	}),
-})
 
 export interface IUserBasisForm {
 	onNext: () => void
@@ -42,18 +26,20 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
 
+	const formSchema = useRegBasisFormSchema()
+
 	const setRegInfo = useAuthStore(store => store.setRegInfo)
 
-	const form = useForm<z.infer<typeof FormSchema>>({
+	const form = useForm<z.infer<typeof formSchema>>({
 		mode: 'onChange',
-		resolver: zodResolver(FormSchema),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			email: '',
 			password: '',
 		},
 	})
 
-	function onSubmit(data: z.infer<typeof FormSchema>) {
+	function onSubmit(data: z.infer<typeof formSchema>) {
 		setRegInfo(data)
 	}
 

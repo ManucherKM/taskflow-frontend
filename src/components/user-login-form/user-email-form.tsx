@@ -10,9 +10,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { ERoutes } from '@/config/routes'
-import { useLoader } from '@/hooks'
+import { useLoader, useLoginWithEmailFormSchema } from '@/hooks'
 import { cn } from '@/lib/utils'
-import { i18next } from '@/locales'
 import { useAuthStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MouseEvent, useEffect, useRef } from 'react'
@@ -23,21 +22,12 @@ import { Link } from 'react-router-dom'
 import * as z from 'zod'
 import { TypographyP } from '../typography-p'
 
-const FormSchema = z.object({
-	email: z.string().email({
-		message: i18next.t('enter_the_correct_email'),
-	}),
-	password: z.string().min(8, {
-		message: i18next.t(
-			'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
-		),
-	}),
-})
-
 interface UserEmailFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 	const { t } = useTranslation()
+
+	const formSchema = useLoginWithEmailFormSchema()
 
 	const emailInputRef = useRef<HTMLInputElement | null>(null)
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
@@ -47,16 +37,16 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 
 	const navigation = useNavigate()
 
-	const form = useForm<z.infer<typeof FormSchema>>({
+	const form = useForm<z.infer<typeof formSchema>>({
 		mode: 'onChange',
-		resolver: zodResolver(FormSchema),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			email: '',
 			password: '',
 		},
 	})
 
-	async function onSubmit(data: z.infer<typeof FormSchema>) {
+	async function onSubmit(data: z.infer<typeof formSchema>) {
 		try {
 			const isSuccess = await loader(login, data)
 
