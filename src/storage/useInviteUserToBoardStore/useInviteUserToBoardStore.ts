@@ -10,7 +10,7 @@ const defaultStore = {
 } as IInviteUserToBoardStore
 
 export const useInviteUserToBoardStore = create<IInviteUserToBoardStore>(
-	(set, get) => ({
+	set => ({
 		...defaultStore,
 		setIsShow(isShow) {
 			set({ isShow })

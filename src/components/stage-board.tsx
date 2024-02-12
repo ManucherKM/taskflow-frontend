@@ -60,7 +60,7 @@ export const StageBoard: FC<IStageBoard> = ({
 					direction="vertical"
 					type="ROW"
 				>
-					{(provided, snapshot) => (
+					{provided => (
 						<div
 							ref={provided.innerRef}
 							key={stage._id}

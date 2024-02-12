@@ -1,6 +1,6 @@
-![Banner]()
+![Banner](https://github.com/ManucherKM/taskflow-frontend/assets/91463158/ca5cb756-4fd6-45fa-8d33-a098e93f7ce1)
 
-# 💿 Task flow | in developing.
+# 📋 Task flow | in developing.
 
 ## Languages and Tools
 
@@ -24,4 +24,4 @@
 
 ## Related
 
-[Backend]()
+[Backend](https://github.com/ManucherKM/taskflow-backend)

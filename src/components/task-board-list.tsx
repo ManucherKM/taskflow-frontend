@@ -15,7 +15,7 @@ export const TaskBoardList: FC<ITaskBoardList> = ({ tasks, stageId }) => {
 			arr={tasks}
 			callback={(task, idx) => (
 				<Draggable key={task._id} draggableId={task._id} index={idx}>
-					{(provided, snapshot) => (
+					{provided => (
 						<div
 							ref={provided.innerRef}
 							key={task._id}

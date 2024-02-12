@@ -190,7 +190,7 @@ export const StageBoardList: FC<IStageBoardList> = ({ stages, boardId }) => {
 				type="STAGE"
 				droppableId="stage"
 			>
-				{(provided, snapshot) => (
+				{provided => (
 					<div
 						{...provided.droppableProps}
 						ref={provided.innerRef}
@@ -200,7 +200,7 @@ export const StageBoardList: FC<IStageBoardList> = ({ stages, boardId }) => {
 							arr={stages}
 							callback={(stage, idx) => (
 								<Draggable key={stage._id} draggableId={stage._id} index={idx}>
-									{(provided, snapshot) => (
+									{provided => (
 										<div
 											ref={provided.innerRef}
 											key={stage._id}
