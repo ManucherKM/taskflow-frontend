@@ -140,9 +140,9 @@ export const Dashboard: FC = () => {
 		}
 
 		// Temporary solution.
-		// setInterval(() => {
-		// 	fetchBoard()
-		// }, 5000)
+		setInterval(() => {
+			fetchBoard()
+		}, 5000)
 
 		// Call the function to get the full board data.
 		fetchBoard()
