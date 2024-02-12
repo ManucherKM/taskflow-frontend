@@ -72,6 +72,10 @@ export function ProfileForm() {
 				})
 				return
 			}
+
+			toast({
+				title: t('profile_successfully_modified'),
+			})
 		} catch (e) {
 			console.log(e)
 		}

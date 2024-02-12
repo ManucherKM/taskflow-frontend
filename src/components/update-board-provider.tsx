@@ -64,6 +64,10 @@ export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
 			setBoards(newBoards)
 
 			setIsShow(false)
+
+			toast({
+				title: t('the_board_has_been_successfully_modified'),
+			})
 		} catch (e) {
 			console.error(e)
 		}

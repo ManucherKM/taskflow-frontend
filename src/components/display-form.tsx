@@ -78,6 +78,7 @@ export function DisplayForm() {
 	const font = useDisplayStore(store => store.font)
 
 	const setThemeColor = useThemeColorStore(store => store.setTheme)
+	const themeColor = useThemeColorStore(store => store.theme)
 
 	const { setTheme, theme } = useTheme()
 
@@ -85,7 +86,7 @@ export function DisplayForm() {
 		mode: theme as 'light' | 'dark',
 		font: font,
 		language: storeLanguage,
-		theme: 'zinc',
+		theme: themeColor,
 	}
 
 	const form = useForm<DisplayFormValues>({

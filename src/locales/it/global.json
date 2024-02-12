@@ -264,5 +264,11 @@
 	"additional_terms_and_conditions": "Ulteriori termini e condizioni",
 	"the_app_is_provided_on_a_free_of_charge_basis": "L'applicazione è fornita gratuitamente.",
 	"the_application_may_contain_advertisements": "L'applicazione può contenere pubblicità.",
-	"the_developer_does_not_guarantee_uninterrupted_operation_of_the_application": "Lo Sviluppatore non garantisce il funzionamento ininterrotto dell'Applicazione."
+	"the_developer_does_not_guarantee_uninterrupted_operation_of_the_application": "Lo Sviluppatore non garantisce il funzionamento ininterrotto dell'Applicazione.",
+	"profile_successfully_modified": "Profilo modificato con successo",
+	"account_successfully_changed": "L'account è stato modificato con successo",
+	"failed_to_update_account": "Impossibile aggiornare l'account",
+	"the_board_has_been_successfully_modified": "La scheda è stata modificata con successo",
+	"stage_successfully_changed": "La fase è stata modificata con successo",
+	"the_task_has_been_successfully_modified": "L'attività è stata modificata con successo"
 }

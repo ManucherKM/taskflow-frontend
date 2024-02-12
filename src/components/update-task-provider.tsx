@@ -78,6 +78,10 @@ export const UpdateTaskProvider: FC<IUpdateTaskProvider> = ({ children }) => {
 			setActiveBoard(newBoard)
 
 			setIsShow(false)
+
+			toast({
+				title: t('the_task_has_been_successfully_modified'),
+			})
 		} catch (e) {
 			console.error(e)
 		}

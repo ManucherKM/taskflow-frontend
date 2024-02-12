@@ -264,5 +264,11 @@
 	"additional_terms_and_conditions": "Ek hüküm ve koşullar",
 	"the_app_is_provided_on_a_free_of_charge_basis": "Uygulama ücretsiz olarak sağlanmaktadır.",
 	"the_application_may_contain_advertisements": "Uygulama reklam içerebilir.",
-	"the_developer_does_not_guarantee_uninterrupted_operation_of_the_application": "Geliştirici, Uygulamanın kesintisiz çalışacağını garanti etmez."
+	"the_developer_does_not_guarantee_uninterrupted_operation_of_the_application": "Geliştirici, Uygulamanın kesintisiz çalışacağını garanti etmez.",
+	"profile_successfully_modified": "Profil başarıyla değiştirildi",
+	"account_successfully_changed": "Hesap başarıyla değiştirildi",
+	"failed_to_update_account": "Hesap güncellenemedi",
+	"the_board_has_been_successfully_modified": "Pano başarıyla değiştirildi",
+	"stage_successfully_changed": "Aşama başarıyla değiştirildi",
+	"the_task_has_been_successfully_modified": "Görev başarıyla değiştirildi"
 }

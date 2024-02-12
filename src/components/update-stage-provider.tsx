@@ -73,6 +73,10 @@ export const UpdateStageProvider: FC<IUpdateStageProvider> = ({ children }) => {
 			setActiveBoard(newBoard)
 
 			setIsShow(false)
+
+			toast({
+				title: t('stage_successfully_changed'),
+			})
 		} catch (e) {
 			console.error(e)
 		}

@@ -264,5 +264,11 @@
 	"additional_terms_and_conditions": "Дополнительные условия",
 	"the_app_is_provided_on_a_free_of_charge_basis": "Приложение предоставляется на бесплатной основе.",
 	"the_application_may_contain_advertisements": "Приложение может содержать рекламу.",
-	"the_developer_does_not_guarantee_uninterrupted_operation_of_the_application": "Разработчик не гарантирует бесперебойную работу Приложения."
+	"the_developer_does_not_guarantee_uninterrupted_operation_of_the_application": "Разработчик не гарантирует бесперебойную работу Приложения.",
+	"profile_successfully_modified": "Профиль успешно изменен",
+	"account_successfully_changed": "Аккаунт успешно изменен",
+	"failed_to_update_account": "Не удалось обновить аккаунт",
+	"the_board_has_been_successfully_modified": "Доска успешно изменена",
+	"stage_successfully_changed": "Этап успешно изменен",
+	"the_task_has_been_successfully_modified": "Задача успешно изменена"
 }

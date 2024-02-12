@@ -67,10 +67,14 @@ export function AccountForm() {
 
 			if (!isSuccess) {
 				toast({
-					title: t('failed_to_update_profile'),
+					title: t('failed_to_update_account'),
 				})
 				return
 			}
+
+			toast({
+				title: t('account_successfully_changed'),
+			})
 		} catch (e) {
 			console.log(e)
 		}

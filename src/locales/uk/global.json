@@ -264,5 +264,11 @@
 	"additional_terms_and_conditions": "Додаткові умови",
 	"the_app_is_provided_on_a_free_of_charge_basis": "Додаток надається на безоплатній основі.",
 	"the_application_may_contain_advertisements": "Додаток може містити рекламу.",
-	"the_developer_does_not_guarantee_uninterrupted_operation_of_the_application": "Розробник не гарантує безперебійну роботу Додатка."
+	"the_developer_does_not_guarantee_uninterrupted_operation_of_the_application": "Розробник не гарантує безперебійну роботу Додатка.",
+	"profile_successfully_modified": "Профіль успішно змінено",
+	"account_successfully_changed": "Акаунт успішно змінено",
+	"failed_to_update_account": "Не вдалося оновити акаунт",
+	"the_board_has_been_successfully_modified": "Дошку успішно змінено",
+	"stage_successfully_changed": "Етап успішно змінено",
+	"the_task_has_been_successfully_modified": "Завдання успішно змінено"
 }
