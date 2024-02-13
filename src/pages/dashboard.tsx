@@ -24,7 +24,7 @@ import {
 
 // Utils
 import { ERoutes } from '@/config/routes'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router'
 
@@ -38,6 +38,8 @@ export const Dashboard: FC = () => {
 	const { id } = useParams()
 
 	const { t } = useTranslation()
+
+	const intervalIdRef = useRef<NodeJS.Timeout | null>(null)
 
 	// Function for changing the active board.
 	const setActiveBoard = useBoardStore(store => store.setActiveBoard)
@@ -140,9 +142,11 @@ export const Dashboard: FC = () => {
 		}
 
 		// Temporary solution.
-		setInterval(() => {
-			fetchBoard()
-		}, 5000)
+		if (!intervalIdRef.current) {
+			intervalIdRef.current = setInterval(() => {
+				fetchBoard()
+			}, 5000)
+		}
 
 		// Call the function to get the full board data.
 		fetchBoard()
