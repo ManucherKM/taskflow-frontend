@@ -24,9 +24,6 @@ export interface IBoard {
 
 	/** Date of board creation */
 	createdAt: string
-
-	/** Date the board was last updated. */
-	updatedAt: string
 }
 
 /**
@@ -39,9 +36,7 @@ export interface IDeepBoard extends Omit<IBoard, 'stages'> {
 }
 
 /** Type for board data that can be changed. */
-export type IUpdateBoard = Partial<
-	Omit<IBoard, '_id' | 'createdAt' | 'updatedAt'>
->
+export type IUpdateBoard = Partial<Omit<IBoard, '_id' | 'createdAt'>>
 
 /** Interface for board storage. */
 export interface IBoardStore {

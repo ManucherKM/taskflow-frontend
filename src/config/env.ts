@@ -13,4 +13,6 @@ export const env = from({
 
 	/** The URL where the web application is hosted. */
 	CLIENT_URL: import.meta.env.VITE_CLIENT_URL,
+
+	IS_DEVELOPMENT: import.meta.env.VITE_IS_DEVELOPMENT,
 })

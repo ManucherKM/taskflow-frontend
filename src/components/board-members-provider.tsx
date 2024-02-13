@@ -46,6 +46,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 	const board = useBoardMembersStore(store => store.board)
 	const setBoardMemebers = useBoardMembersStore(store => store.setBoard)
 	const user = useUserStore(store => store.user)
+	const [isAdmin, setIsAdmin] = useState<boolean>(false)
 
 	const setActiveBoard = useBoardStore(store => store.setActiveBoard)
 	const activeBoard = useBoardStore(store => store.activeBoard) as IDeepBoard
@@ -75,7 +76,10 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 				return
 			}
 
-			setActiveBoard({ ...activeBoard, admins: savedBoard.admins })
+			const newBoard = { ...activeBoard, admins: savedBoard.admins }
+
+			setActiveBoard(newBoard)
+			setBoardMemebers(newBoard)
 
 			toast({
 				title: t('role_successfully_changed'),
@@ -101,7 +105,10 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 				return
 			}
 
-			setActiveBoard({ ...activeBoard, admins: savedBoard.admins })
+			const newBoard = { ...activeBoard, admins: savedBoard.admins }
+
+			setActiveBoard(newBoard)
+			setBoardMemebers(newBoard)
 
 			toast({
 				title: t('role_successfully_changed'),
@@ -112,9 +119,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 	}
 
 	useEffect(() => {
-		if (!board) {
-			return
-		}
+		if (!board) return
 
 		const fetchUsers = async () => {
 			try {
@@ -142,8 +147,12 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 	}, [board])
 
 	useEffect(() => {
-		setBoardMemebers(activeBoard)
-	}, [activeBoard])
+		if (!board || !user) return
+
+		const foundUser = board.admins.includes(user._id)
+
+		setIsAdmin(!!foundUser)
+	}, [board])
 
 	return (
 		<>
@@ -156,9 +165,12 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 						</DialogDescription>
 					</DialogHeader>
 					<ScrollArea
-						className={cn(['w-full relative', users.length >= 4 && 'h-52'])}
+						className={cn([
+							'w-full relative my-4',
+							users.length >= 4 && 'h-52',
+						])}
 					>
-						<div className="flex flex-col gap-4 w-full">
+						<div className="flex flex-col gap-6 w-full">
 							{isLoading && (
 								<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center  z-20">
 									<Icons.spinner className="animate-spin" />
@@ -185,7 +197,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 																? currUser.firstName + ' ' + currUser.lastName
 																: currUser.userName}
 														</p>
-														{board?.admins.includes(currUser._id) && (
+														{!!board?.admins.includes(currUser._id) && (
 															<span className="text-sm text-muted-foreground underline">
 																admin
 															</span>
@@ -196,64 +208,62 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 													</p>
 												</div>
 											</div>
-											{user &&
-												board?.admins.includes(user._id) &&
-												user._id !== currUser._id && (
-													<Popover>
-														<PopoverTrigger asChild>
-															<Button
-																variant="outline"
-																size="sm"
-																className="ml-auto"
-															>
-																{board?.admins.includes(currUser._id)
-																	? t('admin')
-																	: t('member')}
-																<ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
-															</Button>
-														</PopoverTrigger>
-														<PopoverContent className="p-0" align="end">
-															<Command>
-																<CommandInput
-																	placeholder={t('select_a_new_role') + '...'}
-																/>
-																<CommandList>
-																	<CommandEmpty>
-																		{t('role_not_found')}
-																	</CommandEmpty>
-																	<CommandGroup>
-																		<CommandItem className="teamaspace-y-1 flex flex-col items-start px-4 py-2">
-																			<div
-																				onClick={() =>
-																					addAdminHandler(currUser._id)
-																				}
-																			>
-																				<p>{t('admin')}</p>
-																				<p className="text-sm text-muted-foreground">
-																					{t('has_full_control_of_the_board')}
-																				</p>
-																			</div>
-																		</CommandItem>
-																		<CommandItem className="teamaspace-y-1 flex flex-col items-start px-4 py-2">
-																			<div
-																				onClick={() =>
-																					removeAdminHandler(currUser._id)
-																				}
-																			>
-																				<p>{t('member')}</p>
-																				<p className="text-sm text-muted-foreground">
-																					{t(
-																						'can_interact_with_the_board_in_a_limited_way',
-																					)}
-																				</p>
-																			</div>
-																		</CommandItem>
-																	</CommandGroup>
-																</CommandList>
-															</Command>
-														</PopoverContent>
-													</Popover>
-												)}
+											{user && isAdmin && user._id !== currUser._id && (
+												<Popover>
+													<PopoverTrigger asChild>
+														<Button
+															variant="outline"
+															size="sm"
+															className="ml-auto"
+														>
+															{!!board?.admins.includes(currUser._id)
+																? t('admin')
+																: t('member')}
+															<ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
+														</Button>
+													</PopoverTrigger>
+													<PopoverContent className="p-0" align="end">
+														<Command>
+															<CommandInput
+																placeholder={t('select_a_new_role') + '...'}
+															/>
+															<CommandList>
+																<CommandEmpty>
+																	{t('role_not_found')}
+																</CommandEmpty>
+																<CommandGroup>
+																	<CommandItem className="teamaspace-y-1 flex flex-col items-start px-4 py-2">
+																		<div
+																			onClick={() =>
+																				addAdminHandler(currUser._id)
+																			}
+																		>
+																			<p>{t('admin')}</p>
+																			<p className="text-sm text-muted-foreground">
+																				{t('has_full_control_of_the_board')}
+																			</p>
+																		</div>
+																	</CommandItem>
+																	<CommandItem className="teamaspace-y-1 flex flex-col items-start px-4 py-2">
+																		<div
+																			onClick={() =>
+																				removeAdminHandler(currUser._id)
+																			}
+																		>
+																			<p>{t('member')}</p>
+																			<p className="text-sm text-muted-foreground">
+																				{t(
+																					'can_interact_with_the_board_in_a_limited_way',
+																				)}
+																			</p>
+																		</div>
+																	</CommandItem>
+																</CommandGroup>
+															</CommandList>
+														</Command>
+													</PopoverContent>
+												</Popover>
+											)}
 										</div>
 									)}
 								/>

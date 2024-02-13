@@ -16,7 +16,7 @@ export const BoardCardWrapper: FC<IBoardCardWrapper> = ({
 	return (
 		<>
 			<TypographyH3>{title}</TypographyH3>
-			<div className="grid gap-3 grid-cols-3 lg:grid-cols-6 md:grid-cols-4">
+			<div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 md:grid-cols-4">
 				<BoardCardList
 					container={container}
 					activeBoards={activeBoards}
