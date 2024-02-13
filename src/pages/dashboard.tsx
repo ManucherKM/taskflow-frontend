@@ -41,9 +41,6 @@ export const Dashboard: FC = () => {
 
 	const intervalIdRef = useRef<NodeJS.Timeout | null>(null)
 
-	// Function for changing the active board.
-	const setActiveBoard = useBoardStore(store => store.setActiveBoard)
-
 	// Value for an active board.
 	const activeBoard = useBoardStore(store => store.activeBoard)
 
@@ -53,9 +50,6 @@ export const Dashboard: FC = () => {
 
 	// Get the function to redirect the user from the hook.
 	const navigate = useNavigate()
-
-	// Function to get complete board data, including milestones and tasks.
-	const getDeepBoard = useBoardStore(store => store.getDeepBoard)
 
 	// Function to change the modal window display for user invitation.
 	const setIsShowInviteUser = useInviteUserToBoardStore(
