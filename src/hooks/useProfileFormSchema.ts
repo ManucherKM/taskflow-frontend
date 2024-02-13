@@ -13,7 +13,8 @@ export function useProfileFormSchema() {
 			.max(30, {
 				message: t('the_name_should_be_no_more_than_30_characters'),
 			})
-			.optional(),
+			.optional()
+			.or(z.literal('')),
 		lastName: z
 			.string()
 			.min(2, {
@@ -22,7 +23,8 @@ export function useProfileFormSchema() {
 			.max(30, {
 				message: t('last_name_must_contain_no_more_than_30_characters'),
 			})
-			.optional(),
+			.optional()
+			.or(z.literal('')),
 		bio: z
 			.string()
 			.min(4, {
@@ -31,7 +33,8 @@ export function useProfileFormSchema() {
 			.max(160, {
 				message: t('the_biography_should_be_no_more_than_160_characters'),
 			})
-			.optional(),
+			.optional()
+			.or(z.literal('')),
 		birthday: z.date().optional(),
 		urls: z
 			.array(
