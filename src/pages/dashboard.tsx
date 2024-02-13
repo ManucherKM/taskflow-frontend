@@ -11,7 +11,6 @@ import {
 	ScrollArea,
 	ScrollBar,
 	StageBoardList,
-	toast,
 } from '@/components'
 
 // Storage
@@ -24,6 +23,7 @@ import {
 
 // Utils
 import { ERoutes } from '@/config/routes'
+import { useFetchBoard } from '@/hooks'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router'
@@ -71,6 +71,8 @@ export const Dashboard: FC = () => {
 	// Function to change the board ID for a modal window with board creation.
 	const setCreateStageBoardId = useCreateStageStore(store => store.setBoardId)
 
+	const fetchBoard = useFetchBoard()
+
 	// Handler function for creating a stage
 	function createStageHandler() {
 		// If no identifier is found, terminate the function.
@@ -112,45 +114,33 @@ export const Dashboard: FC = () => {
 			return
 		}
 
-		// Function to retrieve full board data.
-		const fetchBoard = async () => {
-			try {
-				// We get the board.
-				const board = await getDeepBoard(id)
+		// Call the function to get the full board data.
+		fetchBoard(id)
+	}, [])
 
-				// If the board is not found.
-				if (!board) {
-					// Showing the user a notification.
-					toast({
-						title: t('failed_to_get_the_board'),
-						description: t('maybe_this_board_doesnt_exist'),
-					})
-
-					// Redirect the user to the home page.
-					navigate(ERoutes.home)
-
-					// Finishing the function.
-					return
-				}
-
-				// Add the resulting board to the vault.
-				setActiveBoard(board)
-			} catch (e) {
-				// Show the error in the console
-				console.log(e)
-			}
+	useEffect(() => {
+		if (!id) {
+			return
 		}
 
 		// Temporary solution.
-		if (!intervalIdRef.current) {
+		if (intervalIdRef.current) {
+			clearTimeout(intervalIdRef.current)
 			intervalIdRef.current = setInterval(() => {
-				fetchBoard()
+				fetchBoard(id)
+			}, 5000)
+		} else {
+			intervalIdRef.current = setInterval(() => {
+				fetchBoard(id)
 			}, 5000)
 		}
 
-		// Call the function to get the full board data.
-		fetchBoard()
-	}, [])
+		return () => {
+			if (intervalIdRef.current) {
+				clearTimeout(intervalIdRef.current)
+			}
+		}
+	}, [intervalIdRef])
 
 	if (!activeBoard) {
 		return <></>

@@ -1,6 +1,7 @@
 export * from './useAccountFormSchema'
 export * from './useDelayForType'
 export * from './useEffectSkipFirstRender'
+export * from './useFetchBoard'
 export * from './useLoader'
 export * from './useLoginWithEmailFormSchema'
 export * from './useLoginWithNameFormSchema'
