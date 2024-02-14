@@ -17,7 +17,6 @@ import { I18nextProvider } from 'react-i18next'
 import {
 	CreateStageProvider,
 	CreateTaskProvider,
-	InitProvider,
 	LogoutProvider,
 	MultipleBoardActionsProvider,
 	UpdateBoardProvider,
@@ -55,9 +54,7 @@ export const App: FC = () => {
 																<OpenTaskProvider>
 																	<UpdateTaskProvider>
 																		<LogoutProvider>
-																			<InitProvider>
-																				<AppRouter />
-																			</InitProvider>
+																			<AppRouter />
 																		</LogoutProvider>
 																	</UpdateTaskProvider>
 																</OpenTaskProvider>
