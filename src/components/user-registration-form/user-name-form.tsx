@@ -13,7 +13,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useDelayForType, useLoader, useRegNameFormSchema } from '@/hooks'
+import { useDelayForType, useRegNameFormSchema } from '@/hooks'
 import { useAuthStore, useStore } from '@/storage'
 import clsx from 'clsx'
 import {
@@ -46,8 +46,6 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 
 	const isLoading = useStore(store => store.isLoading)
 
-	const loader = useLoader()
-
 	const [isValid, setIsValid] = useState<boolean>(false)
 	const [isExist, setIsExist] = useState<boolean>(false)
 
@@ -71,7 +69,7 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 
 	const checkUserNameHandler = async (userName: string) => {
 		try {
-			const isValid = await loader(checkUserName, userName)
+			const isValid = await checkUserName(userName)
 
 			setIsExist(!!isValid)
 		} catch (e) {
