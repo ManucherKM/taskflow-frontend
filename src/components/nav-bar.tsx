@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { ReactNode, useEffect, useRef, useState, type FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { Button, MobileView, NavbarContextMenu, SearchBoard } from '.'
+import { Button, Icons, MobileView, NavbarContextMenu, SearchBoard } from '.'
 import { CustomTooltip } from './custom-tooltip'
 import { DesktopView } from './desktop-view'
 import { Logo } from './logo'
@@ -19,6 +19,8 @@ export interface INavBar {
 
 export const NavBar: FC<INavBar> = ({ children }) => {
 	const { t } = useTranslation()
+	const containerMenuRef = useRef<HTMLDivElement | null>(null)
+	const isOutsideBurger = !useOutsideClick(containerMenuRef)
 
 	const navigation = useNavigate()
 
@@ -40,6 +42,10 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 			setIsShowSearchBoard(false)
 		}
 	}, [isClickNodeContain])
+
+	useEffect(() => {
+		setIsShowMenu(false)
+	}, [isOutsideBurger])
 
 	return (
 		<>
@@ -88,6 +94,7 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 			<MobileView>
 				<nav>
 					<div
+						ref={containerMenuRef}
 						className={clsx(['container relative', !isShowMenu && 'border-b'])}
 					>
 						<div className="py-4 flex justify-between items-center">
@@ -99,13 +106,14 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 
 							<Button
 								variant={'ghost'}
+								size={'icon'}
 								onClick={() => setIsShowMenu(prev => !prev)}
 							>
-								X
+								<Icons.burger />
 							</Button>
 						</div>
 						{isShowMenu && (
-							<div className="absolute left-0 p-4 flex flex-col gap-6 border-b bg-background w-full">
+							<div className="absolute z-50 left-0 p-4 flex flex-col gap-6 border-b bg-background w-full">
 								<Button
 									onClick={() => navigation(ERoutes.profile)}
 									variant={'link'}

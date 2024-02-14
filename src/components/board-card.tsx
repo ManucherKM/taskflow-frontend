@@ -1,6 +1,8 @@
+import { ERoutes } from '@/config/routes'
 import { cn } from '@/lib/utils'
 import { IBoard } from '@/storage/useBoardStore/types'
 import { FC, HTMLAttributes } from 'react'
+import { useNavigate } from 'react-router'
 import { BoardActionContextMenu, SlideLeft } from '.'
 import { AspectRatio } from './ui/aspect-ratio'
 
@@ -15,10 +17,15 @@ export const BoardCard: FC<IBoardCard> = ({
 	className,
 	...props
 }) => {
+	const navigate = useNavigate()
+
 	return (
 		<SlideLeft>
 			<BoardActionContextMenu board={board}>
-				<div className="cursor-pointer transition-all">
+				<div
+					className="cursor-pointer transition-all"
+					onDoubleClick={() => navigate(ERoutes.dashboard + '/' + board._id)}
+				>
 					<AspectRatio
 						ratio={16 / 9}
 						className={cn([

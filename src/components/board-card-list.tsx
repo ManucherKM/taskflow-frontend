@@ -2,6 +2,7 @@ import { IBoard } from '@/storage/useBoardStore/types'
 import { Dispatch, FC, SetStateAction } from 'react'
 import Selecto, { OnSelect } from 'react-selecto'
 import { BoardCard } from './board-card'
+import { DesktopView } from './desktop-view'
 import { List } from './list'
 
 export interface IBoardCardList {
@@ -56,17 +57,19 @@ export const BoardCardList: FC<IBoardCardList> = ({
 				)}
 			/>
 
-			<Selecto
-				container={container}
-				dragContainer={document.body}
-				selectableTargets={['.board']}
-				selectByClick
-				selectFromInside
-				continueSelect={false}
-				toggleContinueSelect={'shift'}
-				hitRate={100}
-				onSelect={selectHandler}
-			/>
+			<DesktopView>
+				<Selecto
+					container={container}
+					dragContainer={document.body}
+					selectableTargets={['.board']}
+					selectByClick
+					selectFromInside
+					continueSelect={false}
+					toggleContinueSelect={'shift'}
+					hitRate={100}
+					onSelect={selectHandler}
+				/>
+			</DesktopView>
 		</>
 	)
 }

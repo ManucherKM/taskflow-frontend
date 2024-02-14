@@ -1,6 +1,8 @@
 import { MutableRefObject, useEffect, useState } from 'react'
 
-export function useOutsideClick(ref: MutableRefObject<HTMLDivElement | null>) {
+export function useOutsideClick(
+	ref: MutableRefObject<HTMLDivElement | HTMLButtonElement | null>,
+) {
 	const [isContain, setIsContain] = useState<boolean | null>(null)
 
 	function clickHandler(event: MouseEvent) {
