@@ -48,11 +48,29 @@ const Otp = ({ length, otp, onOtpChange }: OtpInputProps): JSX.Element => {
 		inputRef.current?.focus()
 	}, [activeOtpIndex])
 
+	useEffect(() => {
+		if (!otp) return
+
+		const otpStr = otp.toString()
+		const newTemp: string[] = []
+
+		for (let i = 0; i < tempOtp.length; i++) {
+			if (!otpStr[i]) {
+				newTemp[i] = ''
+				continue
+			}
+
+			newTemp[i] = otpStr[i]
+		}
+
+		setTempOtp(newTemp)
+
+		inputRef.current?.blur()
+	}, [otp])
+
 	return (
 		<div className="flex items-center space-x-2  w-fit">
 			{tempOtp.map((_, index) => {
-				console.log(tempOtp, index)
-
 				return (
 					<Fragment key={index}>
 						<Input

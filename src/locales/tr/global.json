@@ -112,7 +112,6 @@
 	"update_profile": "Profili güncelle",
 	"enter_the_correct_email": "Doğru e-postayı girin",
 	"unable_to_find_the_user": "Kullanıcı bulunamıyor",
-	"account_restore": "Hesap Geri Yükleme",
 	"sign_in": "Oturum aç",
 	"invalid_one_time_code": "Geçersiz tek seferlik kod",
 	"enter_the_one_time_code": "Tek seferlik kodu girin",
@@ -269,5 +268,8 @@
 	"failed_to_update_account": "Hesap güncellenemedi",
 	"the_board_has_been_successfully_modified": "Pano başarıyla değiştirildi",
 	"stage_successfully_changed": "Aşama başarıyla değiştirildi",
-	"the_task_has_been_successfully_modified": "Görev başarıyla değiştirildi"
+	"the_task_has_been_successfully_modified": "Görev başarıyla değiştirildi",
+	"account_restore": "Hesap Geri Yükleme",
+	"participants": "Katılımcılar",
+	"birthday": "Doğum tarihi"
 }

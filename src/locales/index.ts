@@ -1,3 +1,4 @@
+import { env } from '@/config/env'
 import { useLanguageStore } from '@/storage'
 import i18next from 'i18next'
 import de from './de/global.json'
@@ -10,8 +11,11 @@ import ru from './ru/global.json'
 import tr from './tr/global.json'
 import uk from './uk/global.json'
 
+const IS_DEVELOPMENT = env.get('IS_DEVELOPMENT').required().asBool()
+
 i18next.init({
 	lng: useLanguageStore.getState().language,
+	debug: IS_DEVELOPMENT,
 	resources: {
 		ru: {
 			translation: ru,

@@ -112,7 +112,6 @@
 	"update_profile": "Mise à jour du profil",
 	"enter_the_correct_email": "Saisissez l'adresse électronique correcte",
 	"unable_to_find_the_user": "Impossible de trouver l'utilisateur",
-	"account_restore": "Restauration du compte",
 	"sign_in": "S'inscrire",
 	"invalid_one_time_code": "Code à usage unique invalide",
 	"enter_the_one_time_code": "Entrez le code à usage unique",
@@ -269,5 +268,8 @@
 	"failed_to_update_account": "Échec de la mise à jour du compte",
 	"the_board_has_been_successfully_modified": "La carte a été modifiée avec succès",
 	"stage_successfully_changed": "Changement d'étape réussi",
-	"the_task_has_been_successfully_modified": "La tâche a été modifiée avec succès"
+	"the_task_has_been_successfully_modified": "La tâche a été modifiée avec succès",
+	"account_restore": "Restauration du compte",
+	"participants": "Les participants",
+	"birthday": "Date de naissance"
 }

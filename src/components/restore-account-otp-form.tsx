@@ -34,13 +34,25 @@ export const RestoreAccountOTPForm: FC = () => {
 		}
 	}
 
+	async function pasteHandler() {
+		// Reading text from the user's buffer.
+		const data = await navigator.clipboard.readText()
+		console.log(data)
+
+		// Place the copied text in the sent state.
+		setOtp(Number(data))
+	}
+
 	useEffect(() => {
 		if (otp.toString().length === 6) {
 			onSubmit()
 		}
 	}, [otp])
 	return (
-		<div className="w-full flex flex-col justify-center items-center h-[calc(100vh-56px)] gap-6">
+		<div
+			className="w-full flex flex-col justify-center items-center h-[calc(100vh-56px)] gap-6"
+			onPaste={pasteHandler}
+		>
 			<TypographyH3>{t('enter_the_one_time_code')}</TypographyH3>
 
 			<Otp length={6} onOtpChange={setOtp} otp={otp} />

@@ -112,7 +112,6 @@
 	"update_profile": "Обновить профиль",
 	"enter_the_correct_email": "Введите корректную почту",
 	"unable_to_find_the_user": "Не удалось найти пользователя",
-	"account_restore": "Восстановление учетной записи",
 	"sign_in": "Войти",
 	"invalid_one_time_code": "Неверный одноразовый код",
 	"enter_the_one_time_code": "Введите одноразовый код",
@@ -271,6 +270,7 @@
 	"stage_successfully_changed": "Этап успешно изменен",
 	"the_task_has_been_successfully_modified": "Задача успешно изменена",
 
+	"account_restore": "Восстановление аккаунта",
 	"participants": "Участники",
 	"birthday": "Дата рождения"
 }

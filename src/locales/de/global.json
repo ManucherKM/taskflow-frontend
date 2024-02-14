@@ -112,7 +112,6 @@
 	"update_profile": "Profil aktualisieren",
 	"enter_the_correct_email": "Geben Sie die richtige E-Mail ein",
 	"unable_to_find_the_user": "Der Benutzer kann nicht gefunden werden",
-	"account_restore": "Konto wiederherstellen",
 	"sign_in": "Eintragen",
 	"invalid_one_time_code": "Ungültiger einmaliger Code",
 	"enter_the_one_time_code": "Geben Sie den einmaligen Code ein",
@@ -269,5 +268,8 @@
 	"failed_to_update_account": "Konto kann nicht aktualisiert werden",
 	"the_board_has_been_successfully_modified": "Die Karte wurde erfolgreich modifiziert",
 	"stage_successfully_changed": "Stufe erfolgreich gewechselt",
-	"the_task_has_been_successfully_modified": "Die Aufgabe wurde erfolgreich geändert"
+	"the_task_has_been_successfully_modified": "Die Aufgabe wurde erfolgreich geändert",
+	"account_restore": "Konto wiederherstellen",
+	"participants": "Teilnehmer",
+	"birthday": "Datum der Geburt"
 }

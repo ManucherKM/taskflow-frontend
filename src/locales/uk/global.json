@@ -112,7 +112,6 @@
 	"update_profile": "Оновити профіль",
 	"enter_the_correct_email": "Введіть коректну пошту",
 	"unable_to_find_the_user": "Не вдалося знайти користувача",
-	"account_restore": "Відновлення облікового запису",
 	"sign_in": "Увійти",
 	"invalid_one_time_code": "Невірний одноразовий код",
 	"enter_the_one_time_code": "Введіть одноразовий код",
@@ -269,5 +268,8 @@
 	"failed_to_update_account": "Не вдалося оновити акаунт",
 	"the_board_has_been_successfully_modified": "Дошку успішно змінено",
 	"stage_successfully_changed": "Етап успішно змінено",
-	"the_task_has_been_successfully_modified": "Завдання успішно змінено"
+	"the_task_has_been_successfully_modified": "Завдання успішно змінено",
+	"account_restore": "Відновлення акаунта",
+	"participants": "Учасники",
+	"birthday": "Дата народження"
 }

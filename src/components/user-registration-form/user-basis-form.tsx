@@ -16,6 +16,7 @@ import { useRegBasisFormSchema } from '@/hooks'
 import { useAuthStore } from '@/storage'
 import { t } from 'i18next'
 import { FC, FormEvent, useEffect, useRef } from 'react'
+import { PasswordInput } from '../password-input'
 
 export interface IUserBasisForm {
 	onNext: () => void
@@ -92,7 +93,7 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 						<FormItem>
 							<FormLabel>{t('password')}</FormLabel>
 							<FormControl>
-								<Input
+								<PasswordInput
 									placeholder="MyPassword123?"
 									{...field}
 									ref={e => {

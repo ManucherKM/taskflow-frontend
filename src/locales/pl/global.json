@@ -112,7 +112,6 @@
 	"update_profile": "Aktualizacja profilu",
 	"enter_the_correct_email": "Wprowadź poprawny adres e-mail",
 	"unable_to_find_the_user": "Nie można znaleźć użytkownika",
-	"account_restore": "Przywracanie konta",
 	"sign_in": "Zaloguj się",
 	"invalid_one_time_code": "Nieprawidłowy kod jednorazowy",
 	"enter_the_one_time_code": "Wprowadź jednorazowy kod",
@@ -269,5 +268,8 @@
 	"failed_to_update_account": "Nie udało się zaktualizować konta",
 	"the_board_has_been_successfully_modified": "Płyta została pomyślnie zmodyfikowana",
 	"stage_successfully_changed": "Etap został pomyślnie zmieniony",
-	"the_task_has_been_successfully_modified": "Zadanie zostało pomyślnie zmodyfikowane"
+	"the_task_has_been_successfully_modified": "Zadanie zostało pomyślnie zmodyfikowane",
+	"account_restore": "Przywracanie konta",
+	"participants": "Uczestnicy",
+	"birthday": "Data urodzenia"
 }

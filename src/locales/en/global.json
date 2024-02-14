@@ -112,7 +112,6 @@
 	"update_profile": "Update profile",
 	"enter_the_correct_email": "Enter the correct email",
 	"unable_to_find_the_user": "Unable to find the user",
-	"account_restore": "Account Restore",
 	"sign_in": "Sign in",
 	"invalid_one_time_code": "Invalid one-time code",
 	"enter_the_one_time_code": "Enter the one-time code",
@@ -269,5 +268,8 @@
 	"failed_to_update_account": "Failed to update account",
 	"the_board_has_been_successfully_modified": "The board has been successfully modified",
 	"stage_successfully_changed": "Stage successfully changed",
-	"the_task_has_been_successfully_modified": "The task has been successfully modified"
+	"the_task_has_been_successfully_modified": "The task has been successfully modified",
+	"account_restore": "Account Restore",
+	"participants": "Participants",
+	"birthday": "Date of birth"
 }

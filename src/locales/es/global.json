@@ -112,7 +112,6 @@
 	"update_profile": "Actualizar perfil",
 	"enter_the_correct_email": "Introduzca el correo electrónico correcto",
 	"unable_to_find_the_user": "No se puede encontrar al usuario",
-	"account_restore": "Restaurar cuenta",
 	"sign_in": "Iniciar sesión",
 	"invalid_one_time_code": "Código de un solo uso no válido",
 	"enter_the_one_time_code": "Introduzca el código de un solo uso",
@@ -269,5 +268,8 @@
 	"failed_to_update_account": "Error al actualizar la cuenta",
 	"the_board_has_been_successfully_modified": "El tablero ha sido modificado con éxito",
 	"stage_successfully_changed": "Etapa cambiada con éxito",
-	"the_task_has_been_successfully_modified": "La tarea se ha modificado correctamente"
+	"the_task_has_been_successfully_modified": "La tarea se ha modificado correctamente",
+	"account_restore": "Restaurar cuenta",
+	"participants": "Participantes",
+	"birthday": "Fecha de nacimiento"
 }

@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useDelayForType, useRegNameFormSchema } from '@/hooks'
-import { useAuthStore, useStore } from '@/storage'
+import { useAuthStore } from '@/storage'
 import clsx from 'clsx'
 import {
 	ChangeEvent,
@@ -44,7 +44,7 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 	const setRegInfo = useAuthStore(store => store.setRegInfo)
 	const checkUserName = useAuthStore(store => store.checkUserName)
 
-	const isLoading = useStore(store => store.isLoading)
+	const [isLoading, setLoading] = useState<boolean>(false)
 
 	const [isValid, setIsValid] = useState<boolean>(false)
 	const [isExist, setIsExist] = useState<boolean>(false)
@@ -79,9 +79,13 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 
 	async function changeHandler(e: ChangeEvent<HTMLInputElement>) {
 		setIsValid(false)
+		setLoading(true)
 
 		delayForType(() =>
-			checkUserNameHandler(e.target.value).finally(changeIsValid),
+			checkUserNameHandler(e.target.value).finally(() => {
+				setLoading(false)
+				changeIsValid()
+			}),
 		)
 	}
 
