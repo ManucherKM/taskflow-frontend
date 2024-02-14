@@ -37,6 +37,8 @@ export function ProfileForm() {
 
 	const user = useUserStore(store => store.user)
 
+	const setUser = useUserStore(store => store.setUser)
+
 	const update = useUserStore(store => store.update)
 
 	const [defaultValues, setDefaultValues] = useState<
@@ -76,6 +78,8 @@ export function ProfileForm() {
 			toast({
 				title: t('profile_successfully_modified'),
 			})
+
+			setUser(updatedUser)
 		} catch (e) {
 			console.log(e)
 		}

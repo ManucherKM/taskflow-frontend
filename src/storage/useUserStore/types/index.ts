@@ -18,7 +18,9 @@ export interface IUserStore {
 
 	getUser: () => Promise<boolean>
 
-	update: (target: Partial<IUser>) => Promise<boolean>
+	update: (target: Partial<IUser>) => Promise<IUser | undefined>
+
+	setUser: (user: IUser) => void
 }
 
 export enum EUserStoreApiRoutes {

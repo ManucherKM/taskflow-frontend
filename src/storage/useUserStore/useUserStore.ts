@@ -36,13 +36,16 @@ export const useUserStore = create<IUserStore>(set => ({
 			)
 
 			if (!data) {
-				return false
+				return
 			}
 
-			return true
+			return data
 		} catch (e) {
 			console.log(e)
-			return false
 		}
+	},
+
+	setUser(user: IUser) {
+		set({ user })
 	},
 }))
