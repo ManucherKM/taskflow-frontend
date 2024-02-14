@@ -24,7 +24,9 @@ export const CheckYourEmail: FC = () => {
 
 	return (
 		<div className="container flex flex-col justify-center items-center h-screen">
-			<TypographyH1>{t('check_your_e_mail')}</TypographyH1>
+			<TypographyH1 className="text-center">
+				{t('check_your_e_mail')}
+			</TypographyH1>
 			<TypographyP className="max-w-[500px] w-full text-center">
 				{t(
 					'to_use_our_service_you_must_confirm_your_account_a_link_to_activate_your_account_was_sent_to_the_e_mail_address_you_specified',

@@ -1,12 +1,23 @@
-import type { FC, ReactNode } from 'react'
+import clsx from 'clsx'
+import type { FC, HTMLAttributes, ReactNode } from 'react'
 
-export interface ITypographyH1 {
+export interface ITypographyH1 extends HTMLAttributes<HTMLHeadingElement> {
 	children: ReactNode
 }
 
-export const TypographyH1: FC<ITypographyH1> = ({ children }) => {
+export const TypographyH1: FC<ITypographyH1> = ({
+	children,
+	className,
+	...props
+}) => {
 	return (
-		<h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+		<h1
+			className={clsx([
+				'scroll-m-20 font-extrabold tracking-tight text-2xl md:text-3xl lg:text-5xl',
+				className,
+			])}
+			{...props}
+		>
 			{children}
 		</h1>
 	)
