@@ -1,5 +1,6 @@
 export * from './useAccountFormSchema'
 export * from './useDelayForType'
+export * from './useDeviceSize'
 export * from './useEffectSkipFirstRender'
 export * from './useFetchBoard'
 export * from './useLoader'

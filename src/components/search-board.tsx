@@ -1,10 +1,19 @@
-import { ReactNode, forwardRef, useEffect, useState } from 'react'
+import {
+	ComponentPropsWithoutRef,
+	ReactNode,
+	forwardRef,
+	useEffect,
+	useState,
+} from 'react'
+
+import { Root } from '@radix-ui/react-scroll-area'
 
 import { ERoutes } from '@/config/routes'
 import { useDelayForType } from '@/hooks'
 import { useBoardStore } from '@/storage'
 import { IBoard } from '@/storage/useBoardStore/types'
 import { formatDateDDMMYYYY, getAvatarFallback } from '@/utils'
+import clsx from 'clsx'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { TypographyP, toast } from '.'
@@ -12,14 +21,14 @@ import { Icons } from './icons'
 import { Avatar, AvatarFallback } from './ui/avatar'
 import { ScrollArea } from './ui/scroll-area'
 
-export interface ISearchBoard {
+export interface ISearchBoard extends ComponentPropsWithoutRef<typeof Root> {
 	query: string
 	searchComponent: ReactNode
 	isShow: boolean
 }
 
 export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
-	({ query, searchComponent, isShow }, ref) => {
+	({ query, searchComponent, isShow, className, ...props }, ref) => {
 		const { t } = useTranslation()
 
 		const delayForType = useDelayForType()
@@ -60,7 +69,12 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 			<div ref={ref} className="relative">
 				{searchComponent}
 				{query.length !== 0 && isShow && (
-					<ScrollArea className="!absolute top-10 h-72 rounded-md border w-96 bg-background z-50">
+					<ScrollArea
+						className={clsx([
+							'!absolute top-10 h-72 rounded-md border bg-background z-50',
+							className,
+						])}
+					>
 						{isLoading && (
 							<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-accent/75 z-20">
 								<Icons.spinner className="animate-spin" />
