@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export function useDeviceSize() {
-	const [width, setWidth] = useState<number>(0)
+	const [width, setWidth] = useState<number>(window.innerWidth)
 
 	function handleWindowSizeChange() {
 		setWidth(window.innerWidth)

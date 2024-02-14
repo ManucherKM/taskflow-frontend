@@ -270,5 +270,6 @@
 	"failed_to_update_account": "Не удалось обновить аккаунт",
 	"the_board_has_been_successfully_modified": "Доска успешно изменена",
 	"stage_successfully_changed": "Этап успешно изменен",
-	"the_task_has_been_successfully_modified": "Задача успешно изменена"
+	"the_task_has_been_successfully_modified": "Задача успешно изменена",
+	"participants": "Участники"
 }

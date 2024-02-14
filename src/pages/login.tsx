@@ -33,7 +33,7 @@ export const Login: FC = () => {
 				</div>
 			</div>
 			<div className="h-full">
-				<div className="flex justify-end py-8 lg:p-8">
+				<div className="flex justify-end pt-8 lg:p-8">
 					<Link
 						to={ERoutes.registration}
 						className={cn('text-sm font-medium hover:underline')}
@@ -41,7 +41,7 @@ export const Login: FC = () => {
 						{t('create')}
 					</Link>
 				</div>
-				<div className="lg:p-8">
+				<div className="lg:p-8 h-[calc(100%-52px)] flex justify-center">
 					<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
 						<div className="flex flex-col space-y-2 text-center">
 							<h1 className="text-2xl font-semibold tracking-tight">

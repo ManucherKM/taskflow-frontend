@@ -2,6 +2,7 @@ import {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
+	ContextMenuSeparator,
 	ContextMenuTrigger,
 } from '@/components/ui/context-menu'
 import { ERoutes } from '@/config/routes'
@@ -123,29 +124,23 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 	return (
 		<ContextMenu>
 			<ContextMenuTrigger>{children}</ContextMenuTrigger>
-			<ContextMenuContent className="w-64">
-				<ContextMenuItem inset onClick={openHandler}>
-					{t('open')}
-				</ContextMenuItem>
+			<ContextMenuContent className="w-48">
+				<ContextMenuItem onClick={openHandler}>{t('open')}</ContextMenuItem>
 
-				<ContextMenuItem inset onClick={changeHandler}>
-					{t('edit')}
-				</ContextMenuItem>
+				<ContextMenuItem onClick={changeHandler}>{t('edit')}</ContextMenuItem>
 
-				<ContextMenuItem inset onClick={favoriteHandler}>
+				<ContextMenuItem onClick={favoriteHandler}>
 					{board.isFavorite ? t('unfavorite') : t('into_favorites')}
 				</ContextMenuItem>
 
-				<ContextMenuItem inset onClick={leaveHandler} className="text-red-400">
+				<ContextMenuSeparator />
+
+				<ContextMenuItem onClick={leaveHandler} className="text-red-400">
 					{t('leave')}
 				</ContextMenuItem>
 
 				{!!user && board.admins.includes(user._id) && (
-					<ContextMenuItem
-						inset
-						onClick={removeHandler}
-						className="text-red-400"
-					>
+					<ContextMenuItem onClick={removeHandler} className="text-red-400">
 						{t('delete')}
 					</ContextMenuItem>
 				)}

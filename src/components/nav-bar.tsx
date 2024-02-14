@@ -50,8 +50,8 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 	return (
 		<>
 			<DesktopView>
-				<nav>
-					<div className="container border-b">
+				<nav className="border-b">
+					<div className="container">
 						<div className="py-4 flex justify-between items-center">
 							<CustomTooltip text={t('home')}>
 								<Link to={ERoutes.home} className="hover:opacity-80">

@@ -24,7 +24,7 @@ export const BoardCard: FC<IBoardCard> = ({
 			<BoardActionContextMenu board={board}>
 				<div
 					className="cursor-pointer transition-all"
-					onDoubleClick={() => navigate(ERoutes.dashboard + '/' + board._id)}
+					onClick={() => navigate(ERoutes.dashboard + '/' + board._id)}
 				>
 					<AspectRatio
 						ratio={16 / 9}

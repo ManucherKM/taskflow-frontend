@@ -143,9 +143,12 @@ export const Dashboard: FC = () => {
 	return (
 		<>
 			<NavBar>
-				<Button variant={'ghost'} size={'icon'} onClick={boardMembersHandler}>
-					<Icons.users />
-				</Button>
+				<CustomTooltip text={t('participants')}>
+					<Button variant={'ghost'} size={'icon'} onClick={boardMembersHandler}>
+						<Icons.users />
+					</Button>
+				</CustomTooltip>
+
 				<CustomTooltip text={t('invite_to_the_board')}>
 					<Button variant={'ghost'} size={'icon'} onClick={inviteUserHandler}>
 						<Icons.userPlus />

@@ -1,18 +1,21 @@
-import {
-	ContextMenu,
-	ContextMenuContent,
-	ContextMenuItem,
-	ContextMenuSeparator,
-	ContextMenuSub,
-	ContextMenuSubContent,
-	ContextMenuSubTrigger,
-	ContextMenuTrigger,
-} from '@/components/ui/context-menu'
 import { ERoutes } from '@/config/routes'
 import { useCraeteBoardStore, useLogoutStore } from '@/storage'
 import type { FC, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
+
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuPortal,
+	DropdownMenuSeparator,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 export interface INavbarContextMenu {
 	children: ReactNode
@@ -46,45 +49,46 @@ export const NavbarContextMenu: FC<INavbarContextMenu> = ({ children }) => {
 	}
 
 	return (
-		<ContextMenu>
-			<ContextMenuTrigger>{children}</ContextMenuTrigger>
-			<ContextMenuContent className="w-64">
-				<ContextMenuItem inset onClick={backHandler}>
-					{t('back')}
-				</ContextMenuItem>
-				<ContextMenuItem inset onClick={nextHandler}>
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+			<DropdownMenuContent className="w-56">
+				<DropdownMenuItem onClick={backHandler}>{t('back')}</DropdownMenuItem>
+				<DropdownMenuItem onClick={nextHandler}>
 					{t('forward')}
-				</ContextMenuItem>
-				<ContextMenuItem inset onClick={reloadPageHandler}>
+				</DropdownMenuItem>
+				<DropdownMenuItem onClick={reloadPageHandler}>
 					{t('reload')}
-				</ContextMenuItem>
-				<ContextMenuSeparator />
-				<ContextMenuSub>
-					<ContextMenuSubTrigger inset>{t('settings')}</ContextMenuSubTrigger>
-					<ContextMenuSubContent className="w-48">
-						<ContextMenuItem onClick={() => navigation(ERoutes.profile)}>
-							{t('profile')}
-						</ContextMenuItem>
-						<ContextMenuItem onClick={() => navigation(ERoutes.account)}>
-							{t('account')}
-						</ContextMenuItem>
-						<ContextMenuItem onClick={() => navigation(ERoutes.display)}>
-							{t('interface')}
-						</ContextMenuItem>
-					</ContextMenuSubContent>
-				</ContextMenuSub>
-				<ContextMenuSeparator />
-				<ContextMenuItem inset onClick={newBoardHandler}>
+				</DropdownMenuItem>
+				<DropdownMenuSeparator />
+				<DropdownMenuGroup>
+					<DropdownMenuSub>
+						<DropdownMenuSubTrigger>{t('settings')}</DropdownMenuSubTrigger>
+						<DropdownMenuPortal>
+							<DropdownMenuSubContent>
+								<DropdownMenuItem onClick={() => navigation(ERoutes.profile)}>
+									{t('profile')}
+								</DropdownMenuItem>
+								<DropdownMenuItem onClick={() => navigation(ERoutes.account)}>
+									{t('account')}
+								</DropdownMenuItem>
+								<DropdownMenuItem onClick={() => navigation(ERoutes.display)}>
+									{t('interface')}
+								</DropdownMenuItem>
+							</DropdownMenuSubContent>
+						</DropdownMenuPortal>
+					</DropdownMenuSub>
+				</DropdownMenuGroup>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem onClick={newBoardHandler}>
 					{t('new_board')}
-				</ContextMenuItem>
-				<ContextMenuItem
-					inset
+				</DropdownMenuItem>
+				<DropdownMenuItem
 					onClick={logoutHandler}
 					className="text-red-400 !hover:text-red-600"
 				>
 					{t('get_out')}
-				</ContextMenuItem>
-			</ContextMenuContent>
-		</ContextMenu>
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
 	)
 }
