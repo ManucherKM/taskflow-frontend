@@ -74,6 +74,7 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 							'!absolute top-10 h-72 rounded-md border bg-background z-50',
 							className,
 						])}
+						{...props}
 					>
 						{isLoading && (
 							<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-accent/75 z-20">
