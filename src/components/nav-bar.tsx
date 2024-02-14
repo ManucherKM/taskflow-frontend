@@ -1,6 +1,6 @@
 import { ERoutes } from '@/config/routes'
 import { useOutsideClick } from '@/hooks'
-import { useCraeteBoardStore, useUserStore } from '@/storage'
+import { useCraeteBoardStore, useLogoutStore, useUserStore } from '@/storage'
 import clsx from 'clsx'
 import { ReactNode, useEffect, useRef, useState, type FC } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -30,11 +30,16 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 	const isClickNodeContain = useOutsideClick(searchBoardRef)
 	const [isShowMenu, setIsShowMenu] = useState<boolean>(false)
 	const setIsShowCreateBoard = useCraeteBoardStore(store => store.setIsShow)
+	const setIsShowLogout = useLogoutStore(store => store.setIsShow)
 
 	const user = useUserStore(store => store.user)
 
 	function newBoardHandler() {
 		setIsShowCreateBoard(true)
+	}
+
+	function logoutHandler() {
+		setIsShowLogout(true)
 	}
 
 	useEffect(() => {
@@ -104,46 +109,25 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 								</Link>
 							</CustomTooltip>
 
-							<Button
-								variant={'ghost'}
-								size={'icon'}
-								onClick={() => setIsShowMenu(prev => !prev)}
-							>
-								<Icons.burger />
-							</Button>
+							<div className="flex gap-2">
+								<Button
+									variant={'ghost'}
+									size={'icon'}
+									onClick={() => newBoardHandler()}
+								>
+									<Icons.plus />
+								</Button>
+								<Button
+									variant={'ghost'}
+									size={'icon'}
+									onClick={() => setIsShowMenu(prev => !prev)}
+								>
+									<Icons.burger />
+								</Button>
+							</div>
 						</div>
 						{isShowMenu && (
-							<div className="absolute z-50 left-0 p-4 flex flex-col gap-6 border-b bg-background w-full">
-								<Button
-									onClick={() => navigation(ERoutes.profile)}
-									variant={'link'}
-									className="mr-auto p-0 h-auto"
-								>
-									{t('profile')}
-								</Button>
-								<Button
-									onClick={() => navigation(ERoutes.account)}
-									variant={'link'}
-									className="mr-auto p-0 h-auto"
-								>
-									{t('account')}
-								</Button>
-								<Button
-									onClick={() => navigation(ERoutes.display)}
-									variant={'link'}
-									className="mr-auto p-0 h-auto"
-								>
-									{t('interface')}
-								</Button>
-								<Button
-									onClick={() => newBoardHandler()}
-									variant={'link'}
-									className="mr-auto p-0 h-auto"
-								>
-									{t('new_board')}
-								</Button>
-
-								{children}
+							<div className="absolute z-50 left-0 p-4 flex flex-col gap-4 border-b bg-background w-full">
 								<SearchBoard
 									ref={searchBoardRef}
 									className="w-full"
@@ -158,6 +142,30 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 									query={searchQuery}
 									isShow={isShowSearchBoard && !!isClickNodeContain}
 								/>
+
+								<Button
+									onClick={() => navigation(ERoutes.profile)}
+									variant={'outline'}
+								>
+									{t('profile')}
+								</Button>
+								<Button
+									onClick={() => navigation(ERoutes.account)}
+									variant={'outline'}
+								>
+									{t('account')}
+								</Button>
+								<Button
+									onClick={() => navigation(ERoutes.display)}
+									variant={'outline'}
+								>
+									{t('interface')}
+								</Button>
+								<Button onClick={() => logoutHandler()} variant={'destructive'}>
+									{t('get_out')}
+								</Button>
+
+								{children}
 							</div>
 						)}
 					</div>

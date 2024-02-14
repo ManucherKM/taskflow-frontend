@@ -99,7 +99,6 @@
 	"this_is_your_public_display_name": "Это ваше общедоступное отображаемое имя.",
 	"surname": "Фамилия",
 	"this_is_your_publicly_available_displayed_last_name": "Это ваша общедоступная отображаемая фамилия.",
-	"birthday": "День рождения",
 	"select_a_date": "Выбрать дату",
 	"your_date_of_birth_is_usedto_calculate_your_age": "Дата рождения используется для расчета вашего возраста.",
 	"biography": "Биография",
@@ -271,5 +270,7 @@
 	"the_board_has_been_successfully_modified": "Доска успешно изменена",
 	"stage_successfully_changed": "Этап успешно изменен",
 	"the_task_has_been_successfully_modified": "Задача успешно изменена",
-	"participants": "Участники"
+
+	"participants": "Участники",
+	"birthday": "Дата рождения"
 }

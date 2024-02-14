@@ -9,7 +9,7 @@ export interface IUser {
 	email: string
 	userName: string
 	bio?: string
-	birthday?: Date
+	birthday?: string
 	urls: IUrl[]
 }
 

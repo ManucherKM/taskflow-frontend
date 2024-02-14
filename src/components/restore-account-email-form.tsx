@@ -66,7 +66,7 @@ export const RestoreAccountEmailForm: FC = () => {
 	}
 	return (
 		<div className={'grid gap-6 max-w-96'}>
-			<TypographyH3>{t('account_restore')}</TypographyH3>
+			<TypographyH3 className='text-center'>{t('account_restore')}</TypographyH3>
 			<Form {...form}>
 				<form onSubmit={e => e.preventDefault()} className="w-full space-y-6">
 					<FormField

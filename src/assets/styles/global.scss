@@ -8,14 +8,28 @@
 		@apply border-border select-none;
 	}
 
+	// Chromium
 	input[type='number']::-webkit-inner-spin-button,
 	input[type='number']::-webkit-outer-spin-button {
 		-webkit-appearance: none;
 		margin: 0;
 	}
 
+	// Mozilla
+	input[type='number'] {
+		-moz-appearance: textfield;
+		margin: 0;
+	}
+
+	.dark {
+		input[type='date']::-webkit-inner-spin-button,
+		input[type='date']::-webkit-calendar-picker-indicator {
+			filter: invert(1);
+		}
+	}
+
 	body {
-		@apply bg-background text-foreground w-full h-screen;
+		@apply bg-background text-foreground w-full h-screen appearance-none;
 	}
 
 	#root {

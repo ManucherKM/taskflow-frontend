@@ -35,7 +35,7 @@ export function useProfileFormSchema() {
 			})
 			.optional()
 			.or(z.literal('')),
-		birthday: z.date().optional(),
+		birthday: z.string().optional().or(z.literal('')),
 		urls: z
 			.array(
 				z.object({
