@@ -339,7 +339,7 @@ export const Icons = {
 			strokeWidth="2"
 			strokeLinecap="round"
 			strokeLinejoin="round"
-			className={cn(['text-black dark:text-white', className])}
+			className={cn(['text-background', className])}
 			{...props}
 		>
 			<path d="M21 12a9 9 0 1 1-6.219-8.56" />
@@ -445,7 +445,7 @@ export const Icons = {
 			fill="none"
 			strokeLinecap="round"
 			strokeLinejoin="round"
-			className="dark:text-inherit text-input"
+			className="text-foreground"
 			{...props}
 		>
 			<path stroke="none" d="M0 0h24v24H0z" fill="none" />

@@ -1,4 +1,4 @@
-import { Button, Input, TypographyH3, toast } from '@/components'
+import { Button, TypographyH3, toast } from '@/components'
 import {
 	Form,
 	FormControl,
@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router'
 import * as z from 'zod'
 
 import { useTranslation } from 'react-i18next'
+import { PasswordInput } from './password-input'
 
 export const RestoreAccountPasswordForm: FC = () => {
 	const { t } = useTranslation()
@@ -83,7 +84,7 @@ export const RestoreAccountPasswordForm: FC = () => {
 							<FormItem>
 								<FormLabel>{t('new_password')}</FormLabel>
 								<FormControl>
-									<Input
+									<PasswordInput
 										placeholder="MyPassword1!?"
 										{...field}
 										ref={e => {

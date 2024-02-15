@@ -14,7 +14,7 @@ export const LoaderProvider: FC<ILoaderProvider> = ({ children }) => {
 		<>
 			{isLoading && (
 				<div className="absolute top-0 left-0 w-screen h-screen flex justify-center items-center bg-accent/75 z-[100]">
-					<Icons.spinner className="animate-spin" />
+					<Icons.spinner className="animate-spin text-foreground" />
 				</div>
 			)}
 			{children}

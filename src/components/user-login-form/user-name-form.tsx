@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import * as z from 'zod'
+import { PasswordInput } from '../password-input'
 import { TypographyP } from '../typography-p'
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -110,7 +111,7 @@ export function UserNameForm({ className, ...props }: UserNameFormProps) {
 								<FormItem>
 									<FormLabel>{t('password')}</FormLabel>
 									<FormControl>
-										<Input
+										<PasswordInput
 											placeholder="MyPassword1!?"
 											{...field}
 											ref={e => {
