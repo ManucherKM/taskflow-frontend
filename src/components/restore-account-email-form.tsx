@@ -90,6 +90,7 @@ export const RestoreAccountEmailForm: FC = () => {
 												nextButtonRef.current?.click()
 											}
 										}}
+										autoFocus
 									/>
 								</FormControl>
 								<FormMessage />
