@@ -49,7 +49,7 @@ export const InviteUserToBoardProvider: FC<IInviteUserToBoardProvider> = ({
 				title: t('the_link_has_been_successfully_copied'),
 			})
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 

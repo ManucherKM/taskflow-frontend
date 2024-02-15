@@ -87,7 +87,7 @@ export function ProfileForm() {
 
 			setUser(updatedUser)
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 

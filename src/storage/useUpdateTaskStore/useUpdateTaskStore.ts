@@ -36,7 +36,7 @@ export const useUpdateTaskStore = create<IUpdateTaskStore>((set, get) => ({
 
 			return data
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	},
 }))

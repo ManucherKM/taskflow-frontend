@@ -36,7 +36,7 @@ export const useCreateTaskStore = create<ICreateTaskStore>((set, get) => ({
 
 			return data
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	},
 }))

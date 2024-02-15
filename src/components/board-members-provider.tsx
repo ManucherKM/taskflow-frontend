@@ -85,7 +85,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 				title: t('role_successfully_changed'),
 			})
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 
@@ -114,7 +114,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 				title: t('role_successfully_changed'),
 			})
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 
@@ -137,7 +137,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 
 				setUsers(foundUsers)
 			} catch (e) {
-				console.log(e)
+				console.error(e)
 			} finally {
 				setIsLoading(false)
 			}

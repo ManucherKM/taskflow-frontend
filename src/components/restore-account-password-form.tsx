@@ -55,7 +55,7 @@ export const RestoreAccountPasswordForm: FC = () => {
 
 			navigation(ERoutes.login)
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 

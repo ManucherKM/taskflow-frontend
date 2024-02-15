@@ -37,7 +37,6 @@ export const RestoreAccountOTPForm: FC = () => {
 	async function pasteHandler() {
 		// Reading text from the user's buffer.
 		const data = await navigator.clipboard.readText()
-		console.log(data)
 
 		// Place the copied text in the sent state.
 		setOtp(Number(data))

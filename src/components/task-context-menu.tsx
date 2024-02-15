@@ -87,7 +87,7 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({
 				title: t('task_successfully_duplicated'),
 			})
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 
@@ -125,7 +125,7 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({
 				title: t('task_successfully_deleted'),
 			})
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 

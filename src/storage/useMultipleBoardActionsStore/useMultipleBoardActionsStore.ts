@@ -46,7 +46,7 @@ export const useMultipleBoardActionStore = create<IMultipleBoardActionsStore>(
 
 				return true
 			} catch (e) {
-				console.log(e)
+				console.error(e)
 
 				return false
 			}

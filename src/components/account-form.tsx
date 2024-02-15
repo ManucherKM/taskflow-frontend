@@ -76,7 +76,7 @@ export function AccountForm() {
 				title: t('account_successfully_changed'),
 			})
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 

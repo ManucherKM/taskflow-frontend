@@ -56,7 +56,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 
 	async function favoriteHandler() {
 		try {
-			console.log(board)
+			console.error(board)
 
 			const updatedBoard = await loader(update, board._id, {
 				isFavorite: !board.isFavorite,
@@ -79,7 +79,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 
 			setBoards(newBoards)
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 
@@ -102,7 +102,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 				title: t('the_board_has_been_successfully_abandoned'),
 			})
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 
@@ -117,7 +117,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 				return
 			}
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 

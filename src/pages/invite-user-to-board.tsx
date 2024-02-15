@@ -62,7 +62,7 @@ export const InviteUserToBoard: FC = () => {
 			navigate(ERoutes.dashboard + '/' + id)
 		} catch (e) {
 			// Show the error in the console.
-			console.log(e)
+			console.error(e)
 		}
 	}
 

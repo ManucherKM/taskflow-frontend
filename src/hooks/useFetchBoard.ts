@@ -40,7 +40,7 @@ export function useFetchBoard() {
 			setActiveBoard(board)
 		} catch (e) {
 			// Show the error in the console
-			console.log(e)
+			console.error(e)
 		}
 	}
 }

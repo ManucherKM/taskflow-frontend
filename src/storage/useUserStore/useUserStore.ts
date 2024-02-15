@@ -23,7 +23,7 @@ export const useUserStore = create<IUserStore>(set => ({
 
 			return true
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 			return false
 		}
 	},
@@ -41,7 +41,7 @@ export const useUserStore = create<IUserStore>(set => ({
 
 			return data
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	},
 

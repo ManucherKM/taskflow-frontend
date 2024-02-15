@@ -61,7 +61,7 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 				title: t('stage_successfully_duplicated'),
 			})
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 
@@ -93,7 +93,7 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 				title: t('stage_successfully_deleted'),
 			})
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 

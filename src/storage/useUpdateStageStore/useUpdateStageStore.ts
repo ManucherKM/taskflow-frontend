@@ -36,7 +36,7 @@ export const useUpdateStageStore = create<IUpdateStageStore>((set, get) => ({
 
 			return data
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	},
 }))

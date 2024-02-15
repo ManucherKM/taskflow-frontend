@@ -62,7 +62,7 @@ export const StageBoardList: FC<IStageBoardList> = ({ stages, boardId }) => {
 					title: t('the_order_has_been_successfully_changed'),
 				})
 			} catch (e) {
-				console.log(e)
+				console.error(e)
 			}
 
 			return
@@ -130,7 +130,7 @@ export const StageBoardList: FC<IStageBoardList> = ({ stages, boardId }) => {
 						title: t('the_order_has_been_successfully_changed'),
 					})
 				} catch (e) {
-					console.log(e)
+					console.error(e)
 				}
 			} else {
 				const foundStage = board.stages.find(
@@ -175,7 +175,7 @@ export const StageBoardList: FC<IStageBoardList> = ({ stages, boardId }) => {
 						title: t('the_order_has_been_successfully_changed'),
 					})
 				} catch (e) {
-					console.log(e)
+					console.error(e)
 				}
 			}
 

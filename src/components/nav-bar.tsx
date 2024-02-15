@@ -100,7 +100,10 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 				<nav>
 					<div
 						ref={containerMenuRef}
-						className={clsx(['container relative', !isShowMenu && 'border-b'])}
+						className={clsx([
+							'container relative px-[1rem]',
+							!isShowMenu && 'border-b',
+						])}
 					>
 						<div className="py-4 flex justify-between items-center">
 							<CustomTooltip text={t('home')}>
@@ -110,13 +113,6 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 							</CustomTooltip>
 
 							<div className="flex gap-2">
-								<Button
-									variant={'ghost'}
-									size={'icon'}
-									onClick={() => newBoardHandler()}
-								>
-									<Icons.plus />
-								</Button>
 								<Button
 									variant={'ghost'}
 									size={'icon'}
@@ -161,11 +157,24 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 								>
 									{t('interface')}
 								</Button>
-								<Button onClick={() => logoutHandler()} variant={'destructive'}>
-									{t('get_out')}
-								</Button>
 
-								{children}
+								<div className="flex gap-2 flex-wrap justify-center">
+									<Button
+										variant={'ghost'}
+										size={'icon'}
+										onClick={() => newBoardHandler()}
+									>
+										<Icons.plus />
+									</Button>
+									{children}
+									<Button
+										variant={'ghost'}
+										size={'icon'}
+										onClick={() => logoutHandler()}
+									>
+										<Icons.logout />
+									</Button>
+								</div>
 							</div>
 						)}
 					</div>

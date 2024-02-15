@@ -52,7 +52,7 @@ export const MultipleBoardActions = () => {
 				return
 			}
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		} finally {
 			setIsShow(false)
 		}
