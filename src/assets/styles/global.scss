@@ -8,6 +8,21 @@
 		@apply border-border select-none;
 	}
 
+	*::-webkit-scrollbar {
+		-webkit-appearance: none;
+		width: 0.7rem;
+		height: 0.7rem;
+		background-color: transparent;
+	}
+
+	*::-webkit-scrollbar-thumb {
+		border: 2px solid rgba(0, 0, 0, 0);
+		border-radius: 999px;
+		background-clip: padding-box;
+
+		@apply bg-border;
+	}
+
 	// Chromium
 	input[type='number']::-webkit-inner-spin-button,
 	input[type='number']::-webkit-outer-spin-button {

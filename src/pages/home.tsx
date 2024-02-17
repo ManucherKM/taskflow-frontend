@@ -63,7 +63,7 @@ export const Home: FC = () => {
 		<>
 			<NavBar />
 			{boards.length !== 0 && (
-				<div ref={containerBoardsRef} className="container">
+				<div ref={containerBoardsRef} className="container overflow-hidden">
 					<div className="mt-10 flex flex-col gap-10 select-none">
 						{favoriteBoards.length !== 0 && (
 							<BoardCardWrapper
