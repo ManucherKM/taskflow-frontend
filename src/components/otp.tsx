@@ -49,7 +49,7 @@ const Otp = ({ length, otp, onOtpChange }: OtpInputProps): JSX.Element => {
 	}, [activeOtpIndex])
 
 	useEffect(() => {
-		if (!otp) return
+		if (otp.toString().length !== length) return
 
 		const otpStr = otp.toString()
 		const newTemp: string[] = []

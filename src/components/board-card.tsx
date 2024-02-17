@@ -36,7 +36,7 @@ export const BoardCard: FC<IBoardCard> = ({
 						tabIndex={0}
 						{...props}
 					>
-						<div className="w-3/4 overflow-hidden text-ellipsis ">
+						<div className="w-3/4 overflow-hidden text-ellipsis text-center">
 							<span className="text-foreground font-medium">{board.name}</span>
 						</div>
 					</AspectRatio>
