@@ -50,7 +50,9 @@ export const StageBoard: FC<IStageBoard> = ({
 			>
 				<CustomTooltip text={t('right_click_to_open_the_stage_options_menu')}>
 					<CardHeader className="p-4 pb-6">
-						<CardTitle>{stage.name}</CardTitle>
+						<CardTitle className="overflow-hidden text-ellipsis">
+							{stage.name}
+						</CardTitle>
 					</CardHeader>
 				</CustomTooltip>
 

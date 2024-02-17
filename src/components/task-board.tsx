@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { useOpenTaskStore } from '@/storage'
 import { ITask } from '@/storage/useTaskStore/types'
 import type { FC, HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +19,14 @@ export const TaskBoard: FC<ITaskBoard> = ({
 }) => {
 	const { t } = useTranslation()
 
+	const setIsShowTask = useOpenTaskStore(store => store.setIsShow)
+	const setTaskInfo = useOpenTaskStore(store => store.setTask)
+
+	function openHandler() {
+		setTaskInfo(task)
+		setIsShowTask(true)
+	}
+
 	return (
 		<TaskContextMenu task={task} stageId={stageId}>
 			<CustomTooltip text={t('right_click_to_open_the_task_options_menu')}>
@@ -27,8 +36,14 @@ export const TaskBoard: FC<ITaskBoard> = ({
 						className,
 					])}
 					{...props}
+					onClick={e => {
+						openHandler()
+						if (props.onClick) {
+							props.onClick(e)
+						}
+					}}
 				>
-					{task.title}
+					<span className="overflow-hidden text-ellipsis">{task.title}</span>
 				</div>
 			</CustomTooltip>
 		</TaskContextMenu>

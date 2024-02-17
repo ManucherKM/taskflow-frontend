@@ -120,7 +120,7 @@ export function ProfileForm() {
 						<FormItem>
 							<FormLabel>{t('firstname')}</FormLabel>
 							<FormControl>
-								<Input placeholder={t('ivan')} {...field} />
+								<Input className="w-72" placeholder={t('ivan')} {...field} />
 							</FormControl>
 							<FormDescription>
 								{t('this_is_your_public_display_name')}
@@ -137,7 +137,7 @@ export function ProfileForm() {
 						<FormItem>
 							<FormLabel>{t('surname')}</FormLabel>
 							<FormControl>
-								<Input placeholder={t('ivanov')} {...field} />
+								<Input className="w-72" placeholder={t('ivanov')} {...field} />
 							</FormControl>
 							<FormDescription>
 								{t('this_is_your_publicly_available_displayed_last_name')}
@@ -157,7 +157,10 @@ export function ProfileForm() {
 								<Input
 									type="date"
 									placeholder={t('select_a_date')}
-									className=""
+									className="w-48"
+									min={'1899-01-01'}
+									max={new Date().toISOString().split('T')[0]}
+									onKeyDown={e => e.preventDefault()}
 									{...field}
 								/>
 							</FormControl>

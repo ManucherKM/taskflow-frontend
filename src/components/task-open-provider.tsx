@@ -32,15 +32,17 @@ export const OpenTaskProvider: FC<IOpenTaskProvider> = ({ children }) => {
 	return (
 		<>
 			<Dialog open={isShow} onOpenChange={setIsShow}>
-				<DialogContent className="sm:max-w-[425px]">
-					<DialogHeader>
-						<DialogTitle>{task?.title || t('not_found')}</DialogTitle>
-						<DialogDescription className="!mt-6 text-justify">
+				<DialogContent className="sm:max-w-[425px] max-h-[80%] overflow-auto">
+					<DialogHeader className="max-w-[inherit] w-full mt-3">
+						<DialogTitle className="break-all">
+							{task?.title || t('not_found')}
+						</DialogTitle>
+						<DialogDescription className="break-all !mt-6 text-justify">
 							{task?.description || t('not_found')}
 						</DialogDescription>
 					</DialogHeader>
 
-					<DialogFooter>
+					<DialogFooter className="pr-2">
 						<DialogClose asChild>
 							<Button ref={closeButtonRef} type="button">
 								{t('close')}

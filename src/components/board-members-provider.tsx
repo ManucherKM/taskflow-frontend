@@ -54,7 +54,7 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 	const getBoardUsers = useBoardStore(store => store.getBoardUsers)
 	const removeAdmin = useBoardStore(store => store.removeAdmin)
 	const addAdmin = useBoardStore(store => store.addAdmin)
-	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [isLoading, setIsLoading] = useState<boolean>(true)
 
 	const [users, setUsers] = useState<IUser[]>([])
 
@@ -170,13 +170,13 @@ export const BoardMembersProvider: FC<IBoardMembersProvider> = ({
 							users.length >= 4 && 'h-52',
 						])}
 					>
-						<div className="flex flex-col gap-6 w-full">
+						<div className="flex flex-col gap-6 w-full relative">
 							{isLoading && (
-								<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center  z-20">
-									<Icons.spinner className="animate-spin" />
+								<div className="w-full min-h-10 max-h-full h-full flex justify-center items-center z-20 ">
+									<Icons.spinner className="animate-spin text-foreground" />
 								</div>
 							)}
-							{users.length !== 0 && (
+							{users.length !== 0 && !isLoading && (
 								<List
 									arr={users}
 									callback={currUser => (

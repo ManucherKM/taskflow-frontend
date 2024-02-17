@@ -78,7 +78,7 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 					>
 						{isLoading && (
 							<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-accent/75 z-20">
-								<Icons.spinner className="animate-spin" />
+								<Icons.spinner className="animate-spin text-foreground" />
 							</div>
 						)}
 
