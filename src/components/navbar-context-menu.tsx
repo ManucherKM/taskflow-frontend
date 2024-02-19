@@ -49,7 +49,7 @@ export const NavbarContextMenu: FC<INavbarContextMenu> = ({ children }) => {
 	}
 
 	return (
-		<DropdownMenu>
+		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuItem onClick={backHandler}>{t('back')}</DropdownMenuItem>
