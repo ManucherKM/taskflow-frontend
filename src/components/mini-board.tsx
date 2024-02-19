@@ -32,8 +32,8 @@ export const MiniBoard: FC<IMiniBoard> = ({
 						modalBorder,
 					])}
 				>
-					<div className={cn(['h-2 w-[80px] rounded-lg', skeleton])} />
-					<div className={cn(['h-2 w-[100px] rounded-lg'], skeleton)} />
+					<div className={cn(['h-2 w-3/5 rounded-lg', skeleton])} />
+					<div className={cn(['h-2 w-4/5 rounded-lg'], skeleton)} />
 				</div>
 				<div
 					className={cn([
@@ -43,7 +43,7 @@ export const MiniBoard: FC<IMiniBoard> = ({
 					])}
 				>
 					<div className={cn(['h-4 w-4 rounded-full', skeleton])} />
-					<div className={cn(['h-2 w-[100px] rounded-lg', skeleton])} />
+					<div className={cn(['h-2 w-4/5 rounded-lg', skeleton])} />
 				</div>
 				<div
 					className={cn([
@@ -53,7 +53,7 @@ export const MiniBoard: FC<IMiniBoard> = ({
 					])}
 				>
 					<div className={cn(['h-4 w-4 rounded-full', skeleton])} />
-					<div className={cn(['h-2 w-[100px] rounded-lg', skeleton])} />
+					<div className={cn(['h-2 w-4/5 rounded-lg', skeleton])} />
 				</div>
 			</div>
 		</div>
