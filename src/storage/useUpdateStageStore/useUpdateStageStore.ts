@@ -8,7 +8,7 @@ import { IStage } from '../useStageStore/types'
 
 const defaultStore = {
 	isShow: false,
-	stageId: null,
+	stage: null,
 } as IUpdateStageStore
 
 export const useUpdateStageStore = create<IUpdateStageStore>((set, get) => ({
@@ -16,17 +16,17 @@ export const useUpdateStageStore = create<IUpdateStageStore>((set, get) => ({
 	setIsShow(isShow) {
 		set({ isShow })
 	},
-	setStageId(stageId) {
-		set({ stageId })
+	setStage(stage) {
+		set({ stage })
 	},
 	async update(target) {
 		try {
-			const stageId = get().stageId
+			const stage = get().stage
 
-			if (!stageId) return
+			if (!stage) return
 
 			const { data } = await axios.patch<IStage>(
-				EUpdateStageStoreApiRoutes.update + '/' + stageId,
+				EUpdateStageStoreApiRoutes.update + '/' + stage._id,
 				target,
 			)
 

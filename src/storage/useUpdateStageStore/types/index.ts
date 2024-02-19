@@ -6,11 +6,11 @@ export interface IUpdateTarget extends ICreateTarget {}
 export interface IUpdateStageStore {
 	isShow: boolean
 
-	stageId: string | null
+	stage: IStage | null
 
 	setIsShow: (target: boolean) => void
 
-	setStageId: (target: string) => void
+	setStage: (stage: IStage | null) => void
 
 	update: (target: IUpdateTarget) => Promise<IStage | undefined>
 }

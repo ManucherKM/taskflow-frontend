@@ -27,7 +27,7 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 	const remove = useStageStore(store => store.remove)
 	const duplication = useStageStore(store => store.duplication)
 	const setIsShowUpdate = useUpdateStageStore(store => store.setIsShow)
-	const setStageId = useUpdateStageStore(store => store.setStageId)
+	const setStage = useUpdateStageStore(store => store.setStage)
 	const setActiveBoard = useBoardStore(store => store.setActiveBoard)
 	const activeBoard = useBoardStore(store => store.activeBoard) as IDeepBoard
 
@@ -66,7 +66,7 @@ export const StageContextMenu: FC<IStageContextMenu> = ({
 	}
 
 	async function updateHandler() {
-		setStageId(stage._id)
+		setStage(stage)
 		setIsShowUpdate(true)
 	}
 

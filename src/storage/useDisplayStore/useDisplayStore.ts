@@ -1,4 +1,5 @@
 // Types
+import { persist } from 'zustand/middleware'
 import type { IDisplayStore } from './types'
 
 // Utils
@@ -12,15 +13,22 @@ const defaultStore = {
 } as IDisplayStore
 
 /** With this hook you can access shared storage. */
-export const useDisplayStore = create<IDisplayStore>(set => ({
-	...defaultStore,
-	setTheme(target) {
-		set({ theme: target })
-	},
-	setFont(target) {
-		set({ font: target })
-	},
-	setLanguage(target) {
-		set({ laguage: target })
-	},
-}))
+export const useDisplayStore = create(
+	persist<IDisplayStore>(
+		set => ({
+			...defaultStore,
+			setTheme(target) {
+				set({ theme: target })
+			},
+			setFont(target) {
+				set({ font: target })
+			},
+			setLanguage(target) {
+				set({ laguage: target })
+			},
+		}),
+		{
+			name: 'font-store',
+		},
+	),
+)

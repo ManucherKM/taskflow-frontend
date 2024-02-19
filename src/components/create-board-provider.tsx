@@ -56,6 +56,8 @@ export const CreateBoardProvider: FC<ICreateBoardProvider> = ({ children }) => {
 			navigate(ERoutes.dashboard + '/' + createdBoard._id)
 		} catch (e) {
 			console.error(e)
+		} finally {
+			setName('')
 		}
 	}
 

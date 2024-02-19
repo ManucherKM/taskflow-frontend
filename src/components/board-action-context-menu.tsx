@@ -29,7 +29,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 
 	const setIsShow = useUpdateBoardStore(store => store.setIsShow)
 
-	const setId = useUpdateBoardStore(store => store.setId)
+	const setUpdateBoard = useUpdateBoardStore(store => store.setBoard)
 
 	const navigate = useNavigate()
 
@@ -50,7 +50,7 @@ export const BoardActionContextMenu: FC<IBoardActionContextMenu> = ({
 	}
 
 	function changeHandler() {
-		setId(board._id)
+		setUpdateBoard(board)
 		setIsShow(true)
 	}
 

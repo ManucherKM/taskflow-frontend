@@ -6,11 +6,11 @@ export interface IUpdateTarget extends Partial<ICreateTarget> {}
 export interface IUpdateTaskStore {
 	isShow: boolean
 
-	taskId: string | null
+	task: ITask | null
 
 	setIsShow: (target: boolean) => void
 
-	setTaskId: (target: string) => void
+	setTask: (task: ITask | null) => void
 
 	update: (target: IUpdateTarget) => Promise<ITask | undefined>
 }

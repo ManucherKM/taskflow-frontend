@@ -9,11 +9,18 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useLoader } from '@/hooks'
+import { useEffectSkipFirstRender, useLoader } from '@/hooks'
 import { useBoardStore, useUpdateTaskStore } from '@/storage'
 import { IDeepBoard } from '@/storage/useBoardStore/types'
 import { DialogClose } from '@radix-ui/react-dialog'
-import { MouseEvent, useRef, useState, type FC, type ReactNode } from 'react'
+import {
+	MouseEvent,
+	useEffect,
+	useRef,
+	useState,
+	type FC,
+	type ReactNode,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { Textarea } from './ui/textarea'
 import { toast } from './ui/use-toast'
@@ -27,7 +34,8 @@ export const UpdateTaskProvider: FC<IUpdateTaskProvider> = ({ children }) => {
 
 	const isShow = useUpdateTaskStore(store => store.isShow)
 	const setIsShow = useUpdateTaskStore(store => store.setIsShow)
-	const taskId = useUpdateTaskStore(store => store.taskId)
+	const task = useUpdateTaskStore(store => store.task)
+	const setTask = useUpdateTaskStore(store => store.setTask)
 
 	const createButtonRef = useRef<HTMLButtonElement | null>(null)
 
@@ -46,6 +54,10 @@ export const UpdateTaskProvider: FC<IUpdateTaskProvider> = ({ children }) => {
 	const activeBoard = useBoardStore(store => store.activeBoard) as IDeepBoard
 
 	async function onSubmit() {
+		if (!task) {
+			return
+		}
+
 		try {
 			const updatedTask = await loader(update, {
 				title: title || undefined,
@@ -61,7 +73,7 @@ export const UpdateTaskProvider: FC<IUpdateTaskProvider> = ({ children }) => {
 			}
 
 			const newStages = activeBoard.stages.map(stage => {
-				const foundIdx = stage.tasks.findIndex(task => task._id === taskId)
+				const foundIdx = stage.tasks.findIndex(pred => pred._id === task._id)
 
 				if (foundIdx !== -1) {
 					stage.tasks[foundIdx] = updatedTask
@@ -91,6 +103,21 @@ export const UpdateTaskProvider: FC<IUpdateTaskProvider> = ({ children }) => {
 		e.preventDefault()
 		onSubmit()
 	}
+
+	useEffect(() => {
+		if (!task) return
+
+		setTitle(task.title)
+		setDescription(task.description)
+	}, [task])
+
+	useEffectSkipFirstRender(() => {
+		if (isShow) return
+
+		if (task === null) return
+
+		setTask(null)
+	}, [isShow])
 
 	return (
 		<>

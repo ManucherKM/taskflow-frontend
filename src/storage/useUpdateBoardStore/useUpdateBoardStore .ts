@@ -4,7 +4,7 @@ import { create } from 'zustand'
 
 const defaultStore = {
 	isShow: false,
-	id: '',
+	board: null,
 } as IUpdateBoardStore
 
 export const useUpdateBoardStore = create<IUpdateBoardStore>(set => ({
@@ -12,7 +12,7 @@ export const useUpdateBoardStore = create<IUpdateBoardStore>(set => ({
 	setIsShow(target) {
 		set({ isShow: target })
 	},
-	setId(id) {
-		set({ id })
+	setBoard(board) {
+		set({ board })
 	},
 }))

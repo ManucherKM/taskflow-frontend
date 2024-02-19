@@ -62,6 +62,8 @@ export const CreateStageProvider: FC<ICreateStageProvider> = ({ children }) => {
 			setIsShow(false)
 		} catch (e) {
 			console.error(e)
+		} finally {
+			setName('')
 		}
 	}
 

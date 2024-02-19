@@ -1,9 +1,11 @@
+import { IBoard } from '@/storage/useBoardStore/types'
+
 export interface IUpdateBoardStore {
-	id: string
+	board: IBoard | null
 
 	isShow: boolean
 
 	setIsShow: (target: boolean) => void
 
-	setId: (id: string) => void
+	setBoard: (board: IBoard | null) => void
 }

@@ -9,10 +9,17 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useLoader } from '@/hooks'
+import { useEffectSkipFirstRender, useLoader } from '@/hooks'
 import { useBoardStore, useUpdateBoardStore } from '@/storage'
 import { DialogClose } from '@radix-ui/react-dialog'
-import { MouseEvent, useRef, useState, type FC, type ReactNode } from 'react'
+import {
+	MouseEvent,
+	useEffect,
+	useRef,
+	useState,
+	type FC,
+	type ReactNode,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from './ui/use-toast'
 
@@ -25,7 +32,8 @@ export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
 
 	const isShow = useUpdateBoardStore(store => store.isShow)
 	const setIsShow = useUpdateBoardStore(store => store.setIsShow)
-	const id = useUpdateBoardStore(store => store.id)
+	const board = useUpdateBoardStore(store => store.board)
+	const setBoard = useUpdateBoardStore(store => store.setBoard)
 
 	const createButtonRef = useRef<HTMLButtonElement | null>(null)
 
@@ -40,10 +48,10 @@ export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
 	const setBoards = useBoardStore(store => store.setBoards)
 
 	async function onUpdateSubmit() {
-		if (!id.length) return
+		if (!board) return
 
 		try {
-			const updatedBoard = await loader(update, id, { name })
+			const updatedBoard = await loader(update, board._id, { name })
 
 			if (!updatedBoard) {
 				toast({
@@ -77,6 +85,20 @@ export const UpdateBoardProvider: FC<IUpdateBoardProvider> = ({ children }) => {
 		e.preventDefault()
 		onUpdateSubmit()
 	}
+
+	useEffect(() => {
+		if (!board) return
+
+		setName(board.name)
+	}, [board])
+
+	useEffectSkipFirstRender(() => {
+		if (isShow) return
+
+		if (board === null) return
+
+		setBoard(null)
+	}, [isShow])
 
 	return (
 		<>

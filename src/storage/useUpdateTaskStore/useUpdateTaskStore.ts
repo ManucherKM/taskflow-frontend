@@ -8,7 +8,7 @@ import { ITask } from '../useTaskStore/types'
 
 const defaultStore = {
 	isShow: false,
-	taskId: null,
+	task: null,
 } as IUpdateTaskStore
 
 export const useUpdateTaskStore = create<IUpdateTaskStore>((set, get) => ({
@@ -16,17 +16,17 @@ export const useUpdateTaskStore = create<IUpdateTaskStore>((set, get) => ({
 	setIsShow(isShow) {
 		set({ isShow })
 	},
-	setTaskId(target) {
-		set({ taskId: target })
+	setTask(task) {
+		set({ task })
 	},
 	async update(target) {
 		try {
-			const taskId = get().taskId
+			const task = get().task
 
-			if (!taskId) return
+			if (!task) return
 
 			const { data } = await axios.patch<ITask>(
-				EUpdateTaskStoreApiRoutes.update + '/' + taskId,
+				EUpdateTaskStoreApiRoutes.update + '/' + task._id,
 				target,
 			)
 

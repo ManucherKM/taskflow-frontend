@@ -9,11 +9,18 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useLoader } from '@/hooks'
+import { useEffectSkipFirstRender, useLoader } from '@/hooks'
 import { useBoardStore, useUpdateStageStore } from '@/storage'
 import { IDeepBoard } from '@/storage/useBoardStore/types'
 import { DialogClose } from '@radix-ui/react-dialog'
-import { MouseEvent, useRef, useState, type FC, type ReactNode } from 'react'
+import {
+	MouseEvent,
+	useEffect,
+	useRef,
+	useState,
+	type FC,
+	type ReactNode,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from './ui/use-toast'
 
@@ -28,7 +35,9 @@ export const UpdateStageProvider: FC<IUpdateStageProvider> = ({ children }) => {
 
 	const setIsShow = useUpdateStageStore(store => store.setIsShow)
 
-	const stageId = useUpdateStageStore(store => store.stageId)
+	const stage = useUpdateStageStore(store => store.stage)
+
+	const setStage = useUpdateStageStore(store => store.setStage)
 
 	const updateButtonRef = useRef<HTMLButtonElement | null>(null)
 
@@ -43,6 +52,10 @@ export const UpdateStageProvider: FC<IUpdateStageProvider> = ({ children }) => {
 	const activeBoard = useBoardStore(store => store.activeBoard) as IDeepBoard
 
 	async function onSubmit() {
+		if (!stage) {
+			return
+		}
+
 		try {
 			const updatedStage = await loader(update, { name })
 
@@ -57,15 +70,15 @@ export const UpdateStageProvider: FC<IUpdateStageProvider> = ({ children }) => {
 			const newBoard = {
 				...activeBoard,
 				stages: [
-					...activeBoard.stages.map(stage => {
-						if (stage._id === stageId) {
+					...activeBoard.stages.map(pred => {
+						if (pred._id === stage._id) {
 							return {
-								...stage,
+								...pred,
 								name,
 							}
 						}
 
-						return stage
+						return pred
 					}),
 				],
 			} as IDeepBoard
@@ -86,6 +99,20 @@ export const UpdateStageProvider: FC<IUpdateStageProvider> = ({ children }) => {
 		e.preventDefault()
 		onSubmit()
 	}
+
+	useEffect(() => {
+		if (!stage) return
+
+		setName(stage.name)
+	}, [stage])
+
+	useEffectSkipFirstRender(() => {
+		if (isShow) return
+
+		if (stage === null) return
+
+		setStage(null)
+	}, [isShow])
 
 	return (
 		<>

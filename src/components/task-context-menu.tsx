@@ -34,7 +34,7 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({
 	const setIsShowTask = useOpenTaskStore(store => store.setIsShow)
 	const setTaskInfo = useOpenTaskStore(store => store.setTask)
 
-	const setTaskIdForUpdate = useUpdateTaskStore(store => store.setTaskId)
+	const setTaskForUpdate = useUpdateTaskStore(store => store.setTask)
 	const setIsShowForUpdate = useUpdateTaskStore(store => store.setIsShow)
 
 	const setActiveBoard = useBoardStore(store => store.setActiveBoard)
@@ -92,7 +92,7 @@ export const TaskContextMenu: FC<ITaskContextMenu> = ({
 	}
 
 	function updateHandler() {
-		setTaskIdForUpdate(task._id)
+		setTaskForUpdate(task)
 		setIsShowForUpdate(true)
 	}
 

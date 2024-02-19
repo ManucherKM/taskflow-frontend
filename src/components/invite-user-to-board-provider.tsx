@@ -65,29 +65,31 @@ export const InviteUserToBoardProvider: FC<IInviteUserToBoardProvider> = ({
 		<>
 			<Dialog open={isShow} onOpenChange={setIsShow}>
 				<DialogContent className="sm:max-w-[425px]">
-					<DialogHeader>
-						<DialogTitle>
-							{t('invite_to_the_board')} {board?.name}
-						</DialogTitle>
-						<DialogDescription className="!mt-5">
-							{t(
-								'to_invite_a_user_to_the_board_he_needs_to_authorize_in_our_service_and_then_follow_the_link_below',
-							)}
-						</DialogDescription>
-					</DialogHeader>
-					<div>
-						<Input readOnly value={link} />
+					<div className="max-w-[inherit] w-[calc(100%-48px)] flex flex-col gap-4">
+						<DialogHeader>
+							<DialogTitle className="text-ellipsis overflow-hidden text-nowrap w-11/12">
+								{t('invite_to_the_board')} {board?.name}
+							</DialogTitle>
+							<DialogDescription className="!mt-5">
+								{t(
+									'to_invite_a_user_to_the_board_he_needs_to_authorize_in_our_service_and_then_follow_the_link_below',
+								)}
+							</DialogDescription>
+						</DialogHeader>
+						<div className="w-full">
+							<Input readOnly value={link} />
+						</div>
+						<DialogFooter>
+							<Button
+								type="button"
+								className="mr-auto"
+								onClick={copyLinkHandler}
+								autoFocus
+							>
+								{t('copy')}
+							</Button>
+						</DialogFooter>
 					</div>
-					<DialogFooter>
-						<Button
-							type="button"
-							className="mr-auto"
-							onClick={copyLinkHandler}
-							autoFocus
-						>
-							{t('copy')}
-						</Button>
-					</DialogFooter>
 				</DialogContent>
 			</Dialog>
 

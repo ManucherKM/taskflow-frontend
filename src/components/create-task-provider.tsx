@@ -73,6 +73,9 @@ export const CreateTaskProvider: FC<ICreateTaskProvider> = ({ children }) => {
 			setIsShow(false)
 		} catch (e) {
 			console.error(e)
+		} finally {
+			setTitle('')
+			setDescription('')
 		}
 	}
 
