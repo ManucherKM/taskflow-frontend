@@ -28,7 +28,7 @@ export const MultipleBoardActions = () => {
 
 	const containerRef = useRef<HTMLDivElement | null>(null)
 
-	const isClickNodeContain = useOutsideClick(containerRef)
+	const isClickNodeContain = useOutsideClick(containerRef)[0]
 
 	async function removeHandler() {
 		try {

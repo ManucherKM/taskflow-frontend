@@ -20,14 +20,15 @@ export interface INavBar {
 export const NavBar: FC<INavBar> = ({ children }) => {
 	const { t } = useTranslation()
 	const containerMenuRef = useRef<HTMLDivElement | null>(null)
-	const isOutsideBurger = !useOutsideClick(containerMenuRef)
+	const isOutsideBurger = !useOutsideClick(containerMenuRef)[0]
 
 	const navigation = useNavigate()
 
 	const [searchQuery, setSearchQuery] = useState<string>('')
 	const [isShowSearchBoard, setIsShowSearchBoard] = useState<boolean>(false)
 	const searchBoardRef = useRef<HTMLDivElement | null>(null)
-	const isClickNodeContain = useOutsideClick(searchBoardRef)
+	const [isClickNodeContain, setIsClickNodeContain] =
+		useOutsideClick(searchBoardRef)
 	const [isShowMenu, setIsShowMenu] = useState<boolean>(false)
 	const setIsShowCreateBoard = useCraeteBoardStore(store => store.setIsShow)
 	const setIsShowLogout = useLogoutStore(store => store.setIsShow)
@@ -49,6 +50,12 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 	}, [isClickNodeContain])
 
 	useEffect(() => {
+		if (isShowSearchBoard) {
+			setIsClickNodeContain(true)
+		}
+	}, [isShowSearchBoard])
+
+	useEffect(() => {
 		setIsShowMenu(false)
 	}, [isOutsideBurger])
 
@@ -59,7 +66,10 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 					<div className="container">
 						<div className="py-4 flex justify-between items-center">
 							<CustomTooltip text={t('home')}>
-								<Link to={ERoutes.home} className="hover:opacity-80">
+								<Link
+									to={ERoutes.home}
+									className="hover:opacity-80 focus:opacity-80 outline-none"
+								>
 									<Logo />
 								</Link>
 							</CustomTooltip>
@@ -78,14 +88,17 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 										/>
 									}
 									query={searchQuery}
-									isShow={isShowSearchBoard && !!isClickNodeContain}
+									isShow={isShowSearchBoard}
 								/>
 
 								<TypographyP className="w-24 overflow-hidden text-ellipsis !mt-0 ml-2">
 									{user?.email}
 								</TypographyP>
 								<NavbarContextMenu>
-									<Avatar className="cursor-pointer hover:opacity-80">
+									<Avatar
+										tabIndex={0}
+										className="cursor-pointer hover:opacity-80 focus:opacity-80 outline-none"
+									>
 										{/* <AvatarImage src={user?.avatar} /> */}
 										<AvatarFallback>CN</AvatarFallback>
 									</Avatar>
@@ -107,7 +120,10 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 					>
 						<div className="py-4 flex justify-between items-center">
 							<CustomTooltip text={t('home')}>
-								<Link to={ERoutes.home} className="hover:opacity-80">
+								<Link
+									to={ERoutes.home}
+									className="hover:opacity-80 focus:opacity-80 outline-none"
+								>
 									<Logo />
 								</Link>
 							</CustomTooltip>
@@ -136,7 +152,7 @@ export const NavBar: FC<INavBar> = ({ children }) => {
 										/>
 									}
 									query={searchQuery}
-									isShow={isShowSearchBoard && !!isClickNodeContain}
+									isShow={isShowSearchBoard}
 								/>
 
 								<Button

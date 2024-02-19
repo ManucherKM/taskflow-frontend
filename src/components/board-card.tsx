@@ -29,7 +29,7 @@ export const BoardCard: FC<IBoardCard> = ({
 					<AspectRatio
 						ratio={16 / 9}
 						className={cn([
-							'bg-background rounded-sm border border-input flex justify-center items-center relative hover:bg-input',
+							'bg-background rounded-sm border border-input flex justify-center items-center relative focus:bg-input hover:bg-input outline-none',
 							isActive && 'bg-input',
 							className,
 						])}

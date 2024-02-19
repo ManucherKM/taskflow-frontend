@@ -1,4 +1,10 @@
-import { MutableRefObject, useEffect, useState } from 'react'
+import {
+	Dispatch,
+	MutableRefObject,
+	SetStateAction,
+	useEffect,
+	useState,
+} from 'react'
 
 export function useOutsideClick(
 	ref: MutableRefObject<HTMLDivElement | HTMLButtonElement | null>,
@@ -21,5 +27,8 @@ export function useOutsideClick(
 		}
 	}, [])
 
-	return isContain
+	return [isContain, setIsContain] as [
+		boolean | null,
+		Dispatch<SetStateAction<boolean | null>>,
+	]
 }

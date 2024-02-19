@@ -86,11 +86,11 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 							<Link
 								key={board._id}
 								to={ERoutes.dashboard + '/' + board._id}
-								className="flex flex-col"
+								className="flex flex-col focus:bg-accent hover:bg-accent outline-none"
 							>
 								<div
 									key={board._id}
-									className="flex space-x-4 cursor-pointer hover:bg-accent p-3 rounded-sm"
+									className="flex space-x-4 cursor-pointer p-3 rounded-sm"
 								>
 									<Avatar>
 										{/* <AvatarImage src="https://github.com/vercel.png" /> */}
