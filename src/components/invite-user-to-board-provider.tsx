@@ -64,8 +64,8 @@ export const InviteUserToBoardProvider: FC<IInviteUserToBoardProvider> = ({
 	return (
 		<>
 			<Dialog open={isShow} onOpenChange={setIsShow}>
-				<DialogContent className="sm:max-w-[425px]">
-					<div className="max-w-[inherit] w-[calc(100%-48px)] flex flex-col gap-4">
+				<DialogContent className="sm:max-w-[425px] !p-0">
+					<div className="max-w-[inherit] w-full flex flex-col gap-4 p-6">
 						<DialogHeader>
 							<DialogTitle className="text-ellipsis overflow-hidden text-nowrap w-11/12">
 								{t('invite_to_the_board')} {board?.name}
@@ -76,7 +76,7 @@ export const InviteUserToBoardProvider: FC<IInviteUserToBoardProvider> = ({
 								)}
 							</DialogDescription>
 						</DialogHeader>
-						<div className="w-full">
+						<div>
 							<Input readOnly value={link} />
 						</div>
 						<DialogFooter>
