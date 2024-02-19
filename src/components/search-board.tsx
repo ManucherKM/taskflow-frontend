@@ -57,18 +57,18 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 		}
 
 		useEffect(() => {
-			if (!query) return
+			if (!isShow) return
 
 			setIsLoading(true)
 
 			delayForType(() => {
 				fetchBoards().finally(() => setIsLoading(false))
 			})
-		}, [query])
+		}, [query, isShow])
 		return (
 			<div ref={ref} className="relative">
 				{searchComponent}
-				{query.length !== 0 && isShow && (
+				{isShow && (
 					<ScrollArea
 						className={clsx([
 							'!absolute top-10 h-72 rounded-md border bg-background z-50',
@@ -98,8 +98,8 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 											{getAvatarFallback(board.name)}
 										</AvatarFallback>
 									</Avatar>
-									<div className="space-y-1 overflow-hidden ">
-										<p className="text-sm text-ellipsis overflow-hidden  text-nowrap">
+									<div className="space-y-1">
+										<p className="text-sm text-nowrap w-[250px] text-ellipsis overflow-hidden">
 											{board.name}
 										</p>
 										<div className="flex items-center pt-2">
