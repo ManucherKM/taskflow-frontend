@@ -75,6 +75,13 @@ export const SearchBoard = forwardRef<HTMLDivElement, ISearchBoard>(
 							className,
 						])}
 						{...props}
+						onMouseDown={e => {
+							e.stopPropagation()
+
+							if (props.onMouseDown) {
+								props.onMouseDown(e)
+							}
+						}}
 					>
 						{isLoading && (
 							<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-accent/75 z-20">
