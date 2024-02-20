@@ -3,7 +3,12 @@ import { IBoard } from '@/storage/useBoardStore/types'
 import type { FC } from 'react'
 
 // Components
-import { BoardCardWrapper, BoardsNotFound, NavBar } from '@/components'
+import {
+	BoardCardWrapper,
+	BoardsNotFound,
+	InitProvider,
+	NavBar,
+} from '@/components'
 
 // Storage
 import { useBoardStore, useMultipleBoardActionStore } from '@/storage'
@@ -60,7 +65,7 @@ export const Home: FC = () => {
 	}, [selectedBoards])
 
 	return (
-		<>
+		<InitProvider>
 			<NavBar />
 			{boards.length !== 0 && (
 				<div ref={containerBoardsRef} className="container overflow-hidden">
@@ -93,6 +98,6 @@ export const Home: FC = () => {
 					<BoardsNotFound />
 				</div>
 			)}
-		</>
+		</InitProvider>
 	)
 }
