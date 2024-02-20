@@ -1,5 +1,5 @@
 import { ERoutes } from '@/config/routes'
-import { useLoader } from '@/hooks'
+import { useLoader, useWindowFocus } from '@/hooks'
 import { useAuthStore, useBoardStore, useUserStore } from '@/storage'
 import { useEffect, type FC, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,34 +20,37 @@ export const InitProvider: FC<IInitProvider> = ({ children }) => {
 
 	const navigate = useNavigate()
 
+	async function fetchData() {
+		try {
+			const fetchedBoards = await getAllBoards()
+
+			if (!fetchedBoards) {
+				toast({
+					title: t('failed_to_get_the_list_of_boards'),
+				})
+			}
+
+			const fetchedUser = await getUser()
+
+			if (!fetchedUser) {
+				toast({
+					title: t('failed_to_retrieve_account_information'),
+				})
+
+				navigate(ERoutes.login)
+			}
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+	useWindowFocus(() => fetchData())
+
 	useEffect(() => {
 		if (!token) return
 
-		const fetch = async () => {
-			try {
-				const fetchedBoards = await getAllBoards()
-
-				if (!fetchedBoards) {
-					toast({
-						title: t('failed_to_get_the_list_of_boards'),
-					})
-				}
-
-				const fetchedUser = await getUser()
-
-				if (!fetchedUser) {
-					toast({
-						title: t('failed_to_retrieve_account_information'),
-					})
-
-					navigate(ERoutes.login)
-				}
-			} catch (e) {
-				console.error(e)
-			}
-		}
-
-		loader(fetch)
+		loader(fetchData)
 	}, [token])
+
 	return <>{children}</>
 }

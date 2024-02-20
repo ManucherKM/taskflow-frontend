@@ -25,6 +25,11 @@ export const BoardCard: FC<IBoardCard> = ({
 				<div
 					className="cursor-pointer transition-all"
 					onClick={() => navigate(ERoutes.dashboard + '/' + board._id)}
+					onKeyDown={e => {
+						if (e.key === 'Enter') {
+							navigate(ERoutes.dashboard + '/' + board._id)
+						}
+					}}
 				>
 					<AspectRatio
 						ratio={16 / 9}

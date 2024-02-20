@@ -110,7 +110,7 @@ export const Dashboard: FC = () => {
 
 		// Call the function to get the full board data.
 		fetchBoard(id)
-	}, [])
+	}, [id])
 
 	useEffect(() => {
 		if (!id) {
@@ -134,7 +134,7 @@ export const Dashboard: FC = () => {
 				clearTimeout(intervalIdRef.current)
 			}
 		}
-	}, [intervalIdRef])
+	}, [intervalIdRef, id])
 
 	if (!activeBoard) {
 		return <></>
