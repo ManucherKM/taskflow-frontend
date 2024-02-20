@@ -1,31 +1,37 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-export function useWindowFocus(func: () => void) {
+export function useWindowFocus() {
 	const [isFocus, setIsFocus] = useState<boolean>(true)
+	const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+	const inactivityLimit = 5000
 
-	function focusHandler() {
-		setIsFocus(true)
-	}
-
-	function blurHandler() {
+	function disableFocus() {
 		setIsFocus(false)
 	}
 
+	function mouseMoveHandler() {
+		setIsFocus(true)
+
+		if (timeoutRef.current) {
+			clearTimeout(timeoutRef.current)
+			timeoutRef.current = setTimeout(disableFocus, inactivityLimit)
+		} else {
+			timeoutRef.current = setTimeout(disableFocus, inactivityLimit)
+		}
+	}
+
+	function documentVisibilityHandler() {
+		setIsFocus(!document.hidden)
+	}
+
 	useEffect(() => {
-		window.addEventListener('focus', focusHandler)
-		window.addEventListener('blur', blurHandler)
+		window.addEventListener('mousemove', mouseMoveHandler)
+		document.addEventListener('visibilitychange', documentVisibilityHandler)
 
 		return () => {
-			window.removeEventListener('focus', focusHandler)
-			window.removeEventListener('blur', blurHandler)
+			window.removeEventListener('mousemove', mouseMoveHandler)
 		}
 	}, [])
-
-	useEffect(() => {
-		if (!isFocus) return
-
-		func()
-	}, [isFocus])
 
 	return isFocus
 }

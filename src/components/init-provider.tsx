@@ -1,5 +1,5 @@
 import { ERoutes } from '@/config/routes'
-import { useLoader, useWindowFocus } from '@/hooks'
+import { useFuncWhenWindowFocus, useLoader } from '@/hooks'
 import { useAuthStore, useBoardStore, useUserStore } from '@/storage'
 import { useEffect, type FC, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -44,7 +44,7 @@ export const InitProvider: FC<IInitProvider> = ({ children }) => {
 		}
 	}
 
-	useWindowFocus(() => fetchData())
+	useFuncWhenWindowFocus(() => fetchData())
 
 	useEffect(() => {
 		if (!token) return
