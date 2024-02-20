@@ -30,6 +30,10 @@ export function useWindowFocus() {
 
 		return () => {
 			window.removeEventListener('mousemove', mouseMoveHandler)
+			document.removeEventListener(
+				'visibilitychange',
+				documentVisibilityHandler,
+			)
 		}
 	}, [])
 
