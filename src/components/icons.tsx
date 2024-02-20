@@ -380,7 +380,7 @@ export const Icons = {
 			fill="none"
 			strokeLinecap="round"
 			strokeLinejoin="round"
-			className="dark:text-inherit text-input"
+			className="dark:text-inherit text-foreground"
 			{...props}
 		>
 			<path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -401,7 +401,7 @@ export const Icons = {
 			fill="none"
 			strokeLinecap="round"
 			strokeLinejoin="round"
-			className="dark:text-inherit text-input"
+			className="dark:text-inherit text-foreground"
 			{...props}
 		>
 			<path stroke="none" d="M0 0h24v24H0z" fill="none" />
