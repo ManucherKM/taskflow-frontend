@@ -41,9 +41,6 @@ export interface IRegistrationTarget {
 
 	/** Last name. */
 	lastName?: string
-
-	/** Avatar */
-	avatar?: string
 }
 
 /** Interface, the data returned by the server during registration. */

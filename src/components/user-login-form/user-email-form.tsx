@@ -10,35 +10,35 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { ERoutes } from '@/config/routes'
-import { useLoader, useLoginWithEmailFormSchema } from '@/hooks'
+import {
+	TLoginWithEmailFormSchema,
+	useLoader,
+	useLoginWithEmailFormSchema,
+} from '@/hooks'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { MouseEvent, useEffect, useRef } from 'react'
+import { HTMLAttributes, MouseEvent, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import * as z from 'zod'
 import { PasswordInput } from '../password-input'
 import { TypographyP } from '../typography-p'
 
-interface UserEmailFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface UserEmailFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
-	const { t } = useTranslation()
-
-	const formSchema = useLoginWithEmailFormSchema()
-
-	const emailInputRef = useRef<HTMLInputElement | null>(null)
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
 	const loginButtonRef = useRef<HTMLButtonElement | null>(null)
+
+	const formSchema = useLoginWithEmailFormSchema()
 	const login = useAuthStore(store => store.loginWithEmail)
 	const loader = useLoader()
-
+	const { t } = useTranslation()
 	const navigation = useNavigate()
 
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<TLoginWithEmailFormSchema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -47,7 +47,7 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 		},
 	})
 
-	async function onSubmit(data: z.infer<typeof formSchema>) {
+	async function onSubmit(data: TLoginWithEmailFormSchema) {
 		try {
 			const isSuccess = await loader(login, data)
 
@@ -59,7 +59,9 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 			}
 
 			navigation(ERoutes.home)
-		} catch (e) {}
+		} catch (e) {
+			console.error(e)
+		}
 	}
 
 	function sendHandler(e: MouseEvent<HTMLButtonElement>) {
@@ -67,11 +69,6 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 		form.handleSubmit(onSubmit)()
 	}
 
-	useEffect(() => {
-		if (!emailInputRef.current) return
-
-		emailInputRef.current.focus()
-	}, [emailInputRef.current])
 	return (
 		<div className={cn('grid gap-6', className)} {...props}>
 			<Form {...form}>
@@ -84,12 +81,9 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 								<FormLabel>{t('mail')}</FormLabel>
 								<FormControl>
 									<Input
-										placeholder="name@example.com"
 										{...field}
-										ref={e => {
-											field.ref(e)
-											emailInputRef.current = e
-										}}
+										placeholder="name@example.com"
+										autoFocus
 										onKeyDown={e => {
 											if (e.key === 'Enter') {
 												passwordInputRef.current?.focus()
@@ -110,8 +104,8 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 								<FormLabel>{t('password')}</FormLabel>
 								<FormControl>
 									<PasswordInput
-										placeholder="MyPassword1!?"
 										{...field}
+										placeholder="MyPassword1!?"
 										ref={e => {
 											field.ref(e)
 											passwordInputRef.current = e
@@ -140,7 +134,7 @@ export function UserEmailForm({ className, ...props }: UserEmailFormProps) {
 						ref={loginButtonRef}
 						onClick={sendHandler}
 						type="button"
-						disabled={!form.formState.isDirty || !form.formState.isValid}
+						disabled={!form.formState.isValid}
 						className="w-full"
 					>
 						{t('sign_in')}

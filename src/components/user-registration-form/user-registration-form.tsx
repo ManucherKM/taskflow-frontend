@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { SlideLeft } from '..'
+import { useStep } from '@/hooks'
+import { SlideLeft } from '../slide-left'
 import { UserBasisForm } from './user-basis-form'
 import { UserNameForm } from './user-name-form'
 import { UserOtherForm } from './user-other-form'
@@ -13,39 +13,15 @@ export enum ESteps {
 const steps: ESteps[] = [ESteps.basis, ESteps.userName, ESteps.other]
 
 export function UserRegistrationForm() {
-	const [step, setStep] = useState<number>(0)
-
-	function nextStep() {
-		if (steps[step + 1] !== undefined) {
-			setStep(prev => prev + 1)
-		}
-	}
-
-	function prevStep() {
-		if (steps[step - 1] !== undefined) {
-			setStep(prev => prev - 1)
-		}
-	}
+	const { nextStep, prevStep, step } = useStep(steps)
 
 	return (
-		<>
-			{steps[step] === ESteps.basis && (
-				<SlideLeft>
-					<UserBasisForm onNext={nextStep} />
-				</SlideLeft>
+		<SlideLeft key={step}>
+			{step === ESteps.basis && <UserBasisForm onNext={nextStep} />}
+			{step === ESteps.userName && (
+				<UserNameForm onNext={nextStep} onPrev={prevStep} />
 			)}
-
-			{steps[step] === ESteps.userName && (
-				<SlideLeft>
-					<UserNameForm onNext={nextStep} onPrev={prevStep} />{' '}
-				</SlideLeft>
-			)}
-
-			{steps[step] === ESteps.other && (
-				<SlideLeft>
-					<UserOtherForm onPrev={prevStep} />{' '}
-				</SlideLeft>
-			)}
-		</>
+			{step === ESteps.other && <UserOtherForm onPrev={prevStep} />}
+		</SlideLeft>
 	)
 }

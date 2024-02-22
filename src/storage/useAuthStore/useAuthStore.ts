@@ -36,7 +36,7 @@ export const useAuthStore = create(
 			},
 			setRegInfo(target) {
 				// Add non-existent fields and replace existing ones from the passed data.
-				set(prev => ({ regInfo: { ...(prev.regInfo || {}), ...target } }))
+				set({ regInfo: target })
 			},
 			async loginWithEmail(loginDto) {
 				try {

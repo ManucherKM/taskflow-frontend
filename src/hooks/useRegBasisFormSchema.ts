@@ -7,16 +7,27 @@ export function useRegBasisFormSchema() {
 	return z.object({
 		email: z
 			.string()
-			.regex(
-				/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
-				{
-					message: t('enter_the_correct_email'),
-				},
-			),
-		password: z.string().min(8, {
-			message: t(
-				'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
-			),
-		}),
+			.email({
+				message: t('enter_the_correct_email'),
+			})
+			.max(254, {
+				message: t('enter_the_correct_email'),
+			}),
+		password: z
+			.string()
+			.min(8, {
+				message: t(
+					'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
+				),
+			})
+			.max(32, {
+				message: t(
+					'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
+				),
+			}),
 	})
 }
+
+export type TRegBasisFormSchema = z.infer<
+	ReturnType<typeof useRegBasisFormSchema>
+>

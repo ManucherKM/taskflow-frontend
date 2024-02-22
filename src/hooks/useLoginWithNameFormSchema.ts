@@ -13,10 +13,21 @@ export function useLoginWithNameFormSchema() {
 			.max(30, {
 				message: t('the_username_must_not_exceed_30_characters'),
 			}),
-		password: z.string().min(8, {
-			message: t(
-				'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
-			),
-		}),
+		password: z
+			.string()
+			.min(8, {
+				message: t(
+					'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
+				),
+			})
+			.max(32, {
+				message: t(
+					'the_password_must_have_at_least_8_characters_and_no_more_than_32_characters',
+				),
+			}),
 	})
 }
+
+export type TLoginWithNameFormSchema = z.infer<
+	ReturnType<typeof useLoginWithNameFormSchema>
+>

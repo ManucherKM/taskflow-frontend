@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -13,10 +12,10 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ERoutes } from '@/config/routes'
-import { useLoader, useRegOtherFormSchema } from '@/hooks'
+import { TRegOtherFormSchema, useLoader, useRegOtherFormSchema } from '@/hooks'
 import { useAuthStore } from '@/storage'
 import { IRegistrationTarget } from '@/storage/useAuthStore/types'
-import { FC, FormEvent, useEffect, useRef } from 'react'
+import { FC, FormEvent, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { useToast } from '../ui/use-toast'
@@ -26,26 +25,26 @@ export interface UserOtherForm {
 }
 
 export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
-	const { t } = useTranslation()
+	const lastNameInputRef = useRef<HTMLInputElement | null>(null)
+	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
+
+	const registration = useAuthStore(store => store.registration)
+	const regInfo = useAuthStore(store => store.regInfo)
 
 	const formSchema = useRegOtherFormSchema()
 
-	const firstNameInputRef = useRef<HTMLInputElement | null>(null)
-	const lastNameInputRef = useRef<HTMLInputElement | null>(null)
-	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
 	const navigate = useNavigate()
-	const registration = useAuthStore(store => store.registration)
-	const regInfo = useAuthStore(store => store.regInfo)
 	const loader = useLoader()
+	const { t } = useTranslation()
 
 	const { toast } = useToast()
 
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<TRegOtherFormSchema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 	})
 
-	async function onSubmit(data: z.infer<typeof formSchema>) {
+	async function onSubmit(data: TRegOtherFormSchema) {
 		const totalInfo = { ...regInfo, ...data } as IRegistrationTarget
 
 		try {
@@ -70,11 +69,6 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 		form.handleSubmit(onSubmit)()
 	}
 
-	useEffect(() => {
-		if (!firstNameInputRef.current) return
-
-		firstNameInputRef.current.focus()
-	}, [firstNameInputRef.current])
 	return (
 		<Form {...form}>
 			<form className="w-full space-y-6">
@@ -88,12 +82,9 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 							</FormLabel>
 							<FormControl>
 								<Input
-									placeholder={t('ivan')}
 									{...field}
-									ref={e => {
-										field.ref(e)
-										firstNameInputRef.current = e
-									}}
+									placeholder={t('ivan')}
+									autoFocus
 									onKeyDown={e => {
 										if (e.key === 'Enter') {
 											lastNameInputRef.current?.focus()
@@ -116,8 +107,8 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 							</FormLabel>
 							<FormControl>
 								<Input
-									placeholder={t('ivanov')}
 									{...field}
+									placeholder={t('ivanov')}
 									ref={e => {
 										field.ref(e)
 										lastNameInputRef.current = e

@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -13,20 +12,17 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useDelayForType, useRegNameFormSchema } from '@/hooks'
+import {
+	TRegNameFormSchema,
+	useCheckUserName,
+	useDelayForType,
+	useRegNameFormSchema,
+} from '@/hooks'
 import { useAuthStore } from '@/storage'
 import clsx from 'clsx'
-import {
-	ChangeEvent,
-	FC,
-	FormEvent,
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from 'react'
+import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Icons } from '..'
+import { Icons } from '../icons'
 
 export interface IUserNameForm {
 	onNext: () => void
@@ -34,48 +30,27 @@ export interface IUserNameForm {
 }
 
 export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
-	const { t } = useTranslation()
-
-	const formSchema = useRegNameFormSchema()
-
-	const userNameInputRef = useRef<HTMLInputElement | null>(null)
-	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
-
-	const setRegInfo = useAuthStore(store => store.setRegInfo)
-	const checkUserName = useAuthStore(store => store.checkUserName)
-
 	const [isLoading, setLoading] = useState<boolean>(false)
 
-	const [isValid, setIsValid] = useState<boolean>(false)
-	const [isExist, setIsExist] = useState<boolean>(false)
+	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
 
+	const regInfo = useAuthStore(store => store.regInfo)
+	const setRegInfo = useAuthStore(store => store.setRegInfo)
+
+	const [isValid, setIsValid] = useState<boolean>(!!regInfo?.userName)
+
+	const { isExist, checkUserNameHandler } = useCheckUserName()
+	const formSchema = useRegNameFormSchema()
 	const delayForType = useDelayForType()
+	const { t } = useTranslation()
 
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<TRegNameFormSchema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			userName: '',
+			userName: regInfo?.userName || '',
 		},
 	})
-
-	const changeIsValid = useCallback(() => {
-		setIsValid(form.formState.isDirty && form.formState.isValid && !isExist)
-	}, [form.formState.isDirty, form.formState.isValid, isExist])
-
-	function onSubmit(data: z.infer<typeof formSchema>) {
-		setRegInfo({ userName: data.userName })
-	}
-
-	const checkUserNameHandler = async (userName: string) => {
-		try {
-			const isValid = await checkUserName(userName)
-
-			setIsExist(!!isValid)
-		} catch (e) {
-			console.error(e)
-		}
-	}
 
 	async function changeHandler(e: ChangeEvent<HTMLInputElement>) {
 		setIsValid(false)
@@ -84,9 +59,14 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 		delayForType(() =>
 			checkUserNameHandler(e.target.value).finally(() => {
 				setLoading(false)
-				changeIsValid()
+				const { isValid } = form.formState
+				setIsValid(isValid && !isExist)
 			}),
 		)
+	}
+
+	function onSubmit(data: TRegNameFormSchema) {
+		setRegInfo({ ...regInfo, ...data })
 	}
 
 	function nextHandler(e: FormEvent) {
@@ -96,12 +76,6 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 
 		onNext()
 	}
-
-	useEffect(() => {
-		if (!userNameInputRef.current) return
-
-		userNameInputRef.current.focus()
-	}, [userNameInputRef.current])
 
 	return (
 		<Form {...form}>
@@ -116,16 +90,13 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 							</FormLabel>
 							<FormControl>
 								<Input
-									placeholder="mypersonalname"
 									{...field}
+									placeholder="mypersonalname"
 									onChange={e => {
 										field.onChange(e)
 										changeHandler(e)
 									}}
-									ref={e => {
-										field.ref(e)
-										userNameInputRef.current = e
-									}}
+									autoFocus
 									onKeyDown={e => {
 										if (e.key === 'Enter' && isValid && !isLoading) {
 											nextButtonRef.current?.click()

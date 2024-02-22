@@ -28,3 +28,7 @@ export function useRegOtherFormSchema() {
 			.or(z.literal('')),
 	})
 }
+
+export type TRegOtherFormSchema = z.infer<
+	ReturnType<typeof useRegOtherFormSchema>
+>

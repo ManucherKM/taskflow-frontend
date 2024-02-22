@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -12,10 +11,10 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useRegBasisFormSchema } from '@/hooks'
+import { TRegBasisFormSchema, useRegBasisFormSchema } from '@/hooks'
 import { useAuthStore } from '@/storage'
 import { t } from 'i18next'
-import { FC, FormEvent, useEffect, useRef } from 'react'
+import { FC, FormEvent, useRef } from 'react'
 import { PasswordInput } from '../password-input'
 
 export interface IUserBasisForm {
@@ -23,25 +22,25 @@ export interface IUserBasisForm {
 }
 
 export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
-	const emailInputRef = useRef<HTMLInputElement | null>(null)
 	const passwordInputRef = useRef<HTMLInputElement | null>(null)
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
 
 	const formSchema = useRegBasisFormSchema()
 
+	const regInfo = useAuthStore(store => store.regInfo)
 	const setRegInfo = useAuthStore(store => store.setRegInfo)
 
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<TRegBasisFormSchema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			email: '',
-			password: '',
+			email: regInfo?.email || '',
+			password: regInfo?.password || '',
 		},
 	})
 
-	function onSubmit(data: z.infer<typeof formSchema>) {
-		setRegInfo(data)
+	function onSubmit(data: TRegBasisFormSchema) {
+		setRegInfo({ ...regInfo, ...data })
 	}
 
 	function nextHandler(e: FormEvent) {
@@ -52,11 +51,6 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 		onNext()
 	}
 
-	useEffect(() => {
-		if (!emailInputRef.current) return
-
-		emailInputRef.current.focus()
-	}, [emailInputRef.current])
 	return (
 		<Form {...form}>
 			<form className="w-full space-y-6">
@@ -68,12 +62,9 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 							<FormLabel>{t('mail')}</FormLabel>
 							<FormControl>
 								<Input
-									placeholder="name@example.com"
 									{...field}
-									ref={e => {
-										field.ref(e)
-										emailInputRef.current = e
-									}}
+									placeholder="name@example.com"
+									autoFocus
 									onKeyDown={e => {
 										if (e.key === 'Enter') {
 											passwordInputRef.current?.focus()
@@ -94,18 +85,14 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 							<FormLabel>{t('password')}</FormLabel>
 							<FormControl>
 								<PasswordInput
-									placeholder="MyPassword123?"
 									{...field}
+									placeholder="MyPassword123?"
 									ref={e => {
 										field.ref(e)
 										passwordInputRef.current = e
 									}}
 									onKeyDown={e => {
-										if (
-											e.key === 'Enter' &&
-											form.formState.isDirty &&
-											form.formState.isValid
-										) {
+										if (e.key === 'Enter' && form.formState.isValid) {
 											nextButtonRef.current?.click()
 										}
 									}}
@@ -119,7 +106,7 @@ export const UserBasisForm: FC<IUserBasisForm> = ({ onNext }) => {
 				<div className="w-full flex justify-end">
 					<Button
 						onClick={nextHandler}
-						disabled={!form.formState.isDirty || !form.formState.isValid}
+						disabled={!form.formState.isValid}
 						type="button"
 						ref={nextButtonRef}
 					>
