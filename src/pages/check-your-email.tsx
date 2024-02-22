@@ -32,7 +32,7 @@ export const CheckYourEmail: FC = () => {
 					'to_use_our_service_you_must_confirm_your_account_a_link_to_activate_your_account_was_sent_to_the_e_mail_address_you_specified',
 				)}
 			</TypographyP>
-			<Button onClick={clickHandler} className="mt-3">
+			<Button onClick={clickHandler} className="mt-3" autoFocus>
 				{t('activated')}
 			</Button>
 		</div>

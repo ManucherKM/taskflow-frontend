@@ -8,13 +8,16 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { ERoutes } from '@/config/routes'
-import { useLoader, useRestoreAccountPasswordFormSchema } from '@/hooks'
+import {
+	TRestoreAccountPasswordFormSchema,
+	useLoader,
+	useRestoreAccountPasswordFormSchema,
+} from '@/hooks'
 import { useRestoreAccount } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { MouseEvent, useEffect, useRef, type FC } from 'react'
+import { MouseEvent, useRef, type FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
-import * as z from 'zod'
 
 import { useTranslation } from 'react-i18next'
 import { PasswordInput } from './password-input'
@@ -24,14 +27,13 @@ export const RestoreAccountPasswordForm: FC = () => {
 
 	const formSchema = useRestoreAccountPasswordFormSchema()
 
-	const passwordInputRef = useRef<HTMLInputElement | null>(null)
 	const loginButtonRef = useRef<HTMLButtonElement | null>(null)
 	const changePassword = useRestoreAccount(store => store.changePassword)
 	const loader = useLoader()
 
 	const navigation = useNavigate()
 
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<TRestoreAccountPasswordFormSchema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -39,7 +41,7 @@ export const RestoreAccountPasswordForm: FC = () => {
 		},
 	})
 
-	async function onSubmit(data: z.infer<typeof formSchema>) {
+	async function onSubmit(data: TRestoreAccountPasswordFormSchema) {
 		try {
 			const isSuccess = await loader(changePassword, data.password)
 
@@ -64,11 +66,6 @@ export const RestoreAccountPasswordForm: FC = () => {
 		form.handleSubmit(onSubmit)()
 	}
 
-	useEffect(() => {
-		if (!passwordInputRef.current) return
-
-		passwordInputRef.current.focus()
-	}, [passwordInputRef.current])
 	return (
 		<div className="flex flex-col gap-6 justify-center items-center h-[calc(100vh-56px)]">
 			<TypographyH3>{t('change_password')}</TypographyH3>
@@ -85,12 +82,9 @@ export const RestoreAccountPasswordForm: FC = () => {
 								<FormLabel>{t('new_password')}</FormLabel>
 								<FormControl>
 									<PasswordInput
-										placeholder="MyPassword1!?"
 										{...field}
-										ref={e => {
-											field.ref(e)
-											passwordInputRef.current = e
-										}}
+										placeholder="MyPassword1!?"
+										autoFocus
 										onKeyDown={e => {
 											if (e.key === 'Enter') {
 												loginButtonRef.current?.click()
@@ -107,7 +101,7 @@ export const RestoreAccountPasswordForm: FC = () => {
 						ref={loginButtonRef}
 						onClick={sendHandler}
 						type="button"
-						disabled={!form.formState.isDirty || !form.formState.isValid}
+						disabled={!form.formState.isValid}
 						className="w-full"
 					>
 						{t('modify')}

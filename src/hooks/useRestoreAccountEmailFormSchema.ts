@@ -7,11 +7,15 @@ export function useRestoreAccountEmailFormSchema() {
 	return z.object({
 		email: z
 			.string()
-			.regex(
-				/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
-				{
-					message: t('enter_the_correct_email'),
-				},
-			),
+			.email({
+				message: t('enter_the_correct_email'),
+			})
+			.max(254, {
+				message: t('enter_the_correct_email'),
+			}),
 	})
 }
+
+export type TRestoreAccountEmailFormSchema = z.infer<
+	ReturnType<typeof useRestoreAccountEmailFormSchema>
+>

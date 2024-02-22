@@ -11,7 +11,11 @@ import {
 	toast,
 } from '@/components'
 import { ERoutes } from '@/config/routes'
-import { useLoader, useRestoreAccountEmailFormSchema } from '@/hooks'
+import {
+	TRestoreAccountEmailFormSchema,
+	useLoader,
+	useRestoreAccountEmailFormSchema,
+} from '@/hooks'
 import { useRestoreAccount } from '@/storage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { FC } from 'react'
@@ -19,23 +23,18 @@ import { MouseEvent, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
-import * as z from 'zod'
 
 export const RestoreAccountEmailForm: FC = () => {
-	const { t } = useTranslation()
-
-	const formSchema = useRestoreAccountEmailFormSchema()
-
-	const emailInputRef = useRef<HTMLInputElement | null>(null)
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null)
 
 	const createOtp = useRestoreAccount(store => store.createOtp)
 
+	const formSchema = useRestoreAccountEmailFormSchema()
 	const loader = useLoader()
-
 	const navigation = useNavigate()
+	const { t } = useTranslation()
 
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<TRestoreAccountEmailFormSchema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -43,7 +42,7 @@ export const RestoreAccountEmailForm: FC = () => {
 		},
 	})
 
-	async function onSubmit(data: z.infer<typeof formSchema>) {
+	async function onSubmit(data: TRestoreAccountEmailFormSchema) {
 		try {
 			const isSuccess = await loader(createOtp, data.email)
 
@@ -62,8 +61,10 @@ export const RestoreAccountEmailForm: FC = () => {
 
 	function sendHandler(e: MouseEvent<HTMLButtonElement>) {
 		e.preventDefault()
+
 		form.handleSubmit(onSubmit)()
 	}
+
 	return (
 		<div className={'grid gap-6 w-full max-w-96'}>
 			<TypographyH3 className="text-center">
@@ -79,18 +80,14 @@ export const RestoreAccountEmailForm: FC = () => {
 								<FormLabel>{t('mail')}</FormLabel>
 								<FormControl>
 									<Input
-										placeholder="name@example.com"
 										{...field}
-										ref={e => {
-											field.ref(e)
-											emailInputRef.current = e
-										}}
+										autoFocus
+										placeholder="name@example.com"
 										onKeyDown={e => {
 											if (e.key === 'Enter') {
 												nextButtonRef.current?.click()
 											}
 										}}
-										autoFocus
 									/>
 								</FormControl>
 								<FormMessage />
@@ -102,7 +99,7 @@ export const RestoreAccountEmailForm: FC = () => {
 						ref={nextButtonRef}
 						onClick={sendHandler}
 						type="button"
-						disabled={!form.formState.isDirty || !form.formState.isValid}
+						disabled={!form.formState.isValid}
 						className="w-full"
 					>
 						{t('sign_in')}
