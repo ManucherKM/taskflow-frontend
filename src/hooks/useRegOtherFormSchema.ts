@@ -14,7 +14,8 @@ export function useRegOtherFormSchema() {
 				message: t('the_name_should_be_no_more_than_30_characters'),
 			})
 			.optional()
-			.or(z.literal('')),
+			.or(z.literal(''))
+			.transform(e => (e === '' ? undefined : e)),
 
 		lastName: z
 			.string()
@@ -25,7 +26,8 @@ export function useRegOtherFormSchema() {
 				message: t('last_name_must_contain_no_more_than_30_characters'),
 			})
 			.optional()
-			.or(z.literal('')),
+			.or(z.literal(''))
+			.transform(e => (e === '' ? undefined : e)),
 	})
 }
 

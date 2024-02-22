@@ -128,7 +128,7 @@ export interface IAuthStore {
 	 * @param regInfo The value to be added/replaced in the user's registration
 	 *   information.
 	 */
-	setRegInfo: (regInfo: Partial<IRegistrationTarget>) => void
+	setRegInfo: (regInfo: Partial<IRegistrationTarget> | null) => void
 
 	/**
 	 * Function for logging out of a user account.

@@ -30,6 +30,7 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 
 	const registration = useAuthStore(store => store.registration)
 	const regInfo = useAuthStore(store => store.regInfo)
+	const setRegInfo = useAuthStore(store => store.setRegInfo)
 
 	const formSchema = useRegOtherFormSchema()
 
@@ -42,6 +43,10 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 	const form = useForm<TRegOtherFormSchema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
+		defaultValues: {
+			firstName: '',
+			lastName: '',
+		},
 	})
 
 	async function onSubmit(data: TRegOtherFormSchema) {
@@ -57,6 +62,8 @@ export const UserOtherForm: FC<UserOtherForm> = ({ onPrev }) => {
 				})
 				return
 			}
+
+			setRegInfo(null)
 
 			navigate(ERoutes.checkYourEmail)
 		} catch (e) {

@@ -20,7 +20,14 @@ import {
 } from '@/hooks'
 import { useAuthStore } from '@/storage'
 import clsx from 'clsx'
-import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react'
+import {
+	ChangeEvent,
+	FC,
+	FormEvent,
+	useCallback,
+	useRef,
+	useState,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { Icons } from '../icons'
 
@@ -52,6 +59,10 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 		},
 	})
 
+	const changeIsValid = useCallback(() => {
+		setIsValid(form.formState.isValid && !isExist)
+	}, [form.formState.isValid, isExist])
+
 	async function changeHandler(e: ChangeEvent<HTMLInputElement>) {
 		setIsValid(false)
 		setLoading(true)
@@ -59,8 +70,7 @@ export const UserNameForm: FC<IUserNameForm> = ({ onNext, onPrev }) => {
 		delayForType(() =>
 			checkUserNameHandler(e.target.value).finally(() => {
 				setLoading(false)
-				const { isValid } = form.formState
-				setIsValid(isValid && !isExist)
+				changeIsValid()
 			}),
 		)
 	}

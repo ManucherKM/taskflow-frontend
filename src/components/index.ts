@@ -1,6 +1,7 @@
 export * from './account-form'
 export * from './app'
 export * from './app-router'
+export * from './auth-page-wrapper'
 export * from './board-action-context-menu'
 export * from './board-card'
 export * from './board-card-list'
